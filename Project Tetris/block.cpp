@@ -5,7 +5,7 @@ void Block::moveTo(int x, int y)
 {
 	gotoxy(this->x, this->y);
 	cout << " ";
-	//hello+vbdsvdvd
+	//yeleshara
 	setCords(x, y);
 }
 void Block::moveBy(int x, int y)
