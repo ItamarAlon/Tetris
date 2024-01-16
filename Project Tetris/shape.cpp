@@ -2,39 +2,51 @@
 
 Shape::Shape(string string, const Board& _board, char ch) : board(_board)
 {
-	//int k = 0;
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	if (string[k] != ' ')
-	//	{
-	//		blockArr[i].setChar(ch);
-	//		blockArr[i].setCords(i + board.X_START + board.WIDTH / 2, board.Y_START + 1);
-	//		//block.setCords(X_START + WIDTH / 2, Y_START + 1);
-	//	}
-	//	k++;
-	//	
-	//}
-
 	setShape(string, ch);
-
 }
 
 void Shape::setShape(string string, char ch)
 {
-	int k = 0;
-	for (int i = 0; i < 4; i++)
+	int  positions[8] = {};
+	randomShape(positions);
+	for (int i = 0; i < 8; i += 2)
 	{
-		if (string[k] != ' ')
-		{
-			blockArr[i].setChar(ch);
-			blockArr[i].setCords(i + board.X_START + board.WIDTH / 2, board.Y_START + 1);
-			//block.setCords(X_START + WIDTH / 2, Y_START + 1);
-		}
-		k++;
+
+		blockArr[i/2].setChar(254);
+		blockArr[i/2].setCords(positions[i], positions[i + 1]);
+
 
 	}
 }
 
+void Shape::randomShape(int positions[8]) {
+	int anchorX = board.X_START + board.WIDTH / 2, anchorY = board.Y_START + 1;
+	int shape = rand() % 7;
+	switch (shape) {
+	case (int)Shapes::I:
+		createShape(positions, anchorX, anchorY, 1, 0, 2, 0, 3, 0);
+		break;
+	case (int)Shapes::O:
+		createShape(positions, anchorX, anchorY, 1, 0, 0, 1, 1, 1);
+		break;
+	case(int)Shapes::T:
+		createShape(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 0);
+		break;
+	case(int)Shapes::S:
+		createShape(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 1);
+		break;
+	case(int)Shapes::Z:
+		createShape(positions, anchorX, anchorY, -1, 0, 0, 1, 1, 1);
+		break;
+	case(int)Shapes::J:
+		createShape(positions, anchorX, anchorY + 1, 0, -1, 0, 1, 0, 2);
+		break;
+	case(int)Shapes::L:
+		createShape(positions, anchorX, anchorY, 0, 1, 0, 2, 1, 0);
+		break;
+	}
+}
+//{I,O,T,S,Z,J,L};
 void Shape::print()
 {
 	for (int i = 0; i < 4; i++)
@@ -99,6 +111,18 @@ void Shape::moveShapeLeftRight(int playerNum)
 			}
 		}
 	}
+}
+
+void Shape::createShape(int positions[8], int anchorX, int anchorY, int x1, int y1, int x2, int y2, int x3, int y3)
+{
+	positions[0] = anchorX;
+	positions[1] = anchorY;
+	positions[2] = anchorX + x1;
+	positions[3] = anchorY + y1;
+	positions[4] = anchorX + x2;
+	positions[5] = anchorY + y2;
+	positions[6] = anchorX + x3;
+	positions[7] = anchorY + y3;
 }
 
 
