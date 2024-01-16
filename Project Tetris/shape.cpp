@@ -20,6 +20,7 @@ void Shape::setShape(string string, char ch)
 }
 
 void Shape::randomShape(int positions[8]) {
+	srand(time(nullptr));
 	int anchorX = board.X_START + board.WIDTH / 2, anchorY = board.Y_START + 1;
 	int shape = rand() % 7;
 	switch (shape) {
@@ -39,10 +40,10 @@ void Shape::randomShape(int positions[8]) {
 		createShape(positions, anchorX, anchorY, -1, 0, 0, 1, 1, 1);
 		break;
 	case(int)Shapes::J:
-		createShape(positions, anchorX, anchorY + 1, 0, -1, 0, 1, 0, 2);
+		createShape(positions, anchorX, anchorY, 1, 0, 2,0, 0, 1);
 		break;
 	case(int)Shapes::L:
-		createShape(positions, anchorX, anchorY, 0, 1, 0, 2, 1, 0);
+		createShape(positions, anchorX, anchorY, -1,0, -2, 0, 0, 1);
 		break;
 	}
 }
