@@ -1,5 +1,25 @@
 ﻿#include "Board.h"
 
+//void Board::resetBoard() {
+//	int i, j;
+//	for (i = 1; i < 11; i++) {
+//		for (j = 1; j < 21; j++) {
+//			this->freeSpace[i][j] = true;
+//
+//		}
+//	}
+//}
+Board::Board(int x, int y, int _playerNum) :X_START(x), Y_START(y), playerNum(_playerNum)
+{
+	int i, j;
+	for (i = 1; i < 11; i++) {
+		for (j = 1; j < 21; j++) {
+			this->freeSpace[i][j] = true;
+
+		}
+	}
+}
+
 void Board::print()
 {
 	for (int col = this->X_START; col <= this->X_END; col++) //print ceiling and floor

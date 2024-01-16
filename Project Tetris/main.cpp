@@ -6,26 +6,21 @@
 
 void main()
 {
+	bool shapeP1 = true;
 	Board board;
 	board.print();
-	Shape s("XXXX",board);
-	//s.print();
-	//while(_getch() != (char)GameConfig::Lkeys::ESC)
+	Shape s("XXXX",board, 254);
+
 
 	while (true)
 	{
-		s.moveShapeDown();
+		shapeP1=s.moveShapeDown();
 		Sleep(500);
+		if (shapeP1 == false)
+			s.setShape("XXXX", 254);
+
 	}
 
-
-
-	//s.moveShapeDown(500);
-	//Block block(254);
-	//board.moveBlockDownBoard(s, 500);
-	//Shape shape("  X   X  X     X", b);
-	//shape.moveBy(2, 2);
-	//shape.print();
 
 	gotoxy(0,board.Y_END + 2);
 }

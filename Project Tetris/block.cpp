@@ -71,3 +71,22 @@ void Block::moveBlockLeftRight(char key, int playerNum)
 	}
 }
 
+bool Block::checkFreeSpace(int offsetX, int offsetY, Board& playerBoard) 
+{
+	int freeSpaceX = x - playerBoard.X_START;
+	int freeSpaceY = y - playerBoard.Y_START;
+
+	if (playerBoard.freeSpace[offsetX + freeSpaceX][freeSpaceY] == false || playerBoard.freeSpace[freeSpaceX][offsetY + freeSpaceY] == false)
+		return true;
+	return false;
+}
+
+void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY)
+{
+	if (key == (char)GameConfig::Lkeys::LEFT)
+		offsetX = -1; offsetY = 0;
+	if (key == (char)GameConfig::Lkeys::RIGHT)
+		offsetX = 1; offsetY = 0;
+}
+
+
