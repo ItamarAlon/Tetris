@@ -8,8 +8,8 @@ class Shape
 	Board board;
 	enum class Shapes {I,O,T,S,Z,J,L};
 public:
-	Shape(string string, const Board& _board, char ch = 254);
-	void setShape(string string, char ch = 254);
+	Shape(const Board& _board, char ch = 254);
+	void setShape(char ch = 254);
 	void randomShape(int positions[8]);
 	void print();
 	void moveBy(int x, int y);

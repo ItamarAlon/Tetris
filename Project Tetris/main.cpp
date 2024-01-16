@@ -9,7 +9,7 @@ void main()
 	bool shapeP1 = true;
 	Board board;
 	board.print();
-	Shape s("XXXX",board);
+	Shape s(board);
 
 
 	while (true)
@@ -17,7 +17,7 @@ void main()
 		shapeP1=s.moveShapeDown();
 		Sleep(200);
 		if (shapeP1 == false)
-			s.setShape("XXXX", 254);
+			s.setShape(254);
 
 	}
 

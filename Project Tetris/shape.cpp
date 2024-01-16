@@ -1,11 +1,11 @@
 #include "shape.h"
 
-Shape::Shape(string string, const Board& _board, char ch) : board(_board)
+Shape::Shape(const Board& _board, char ch) : board(_board)
 {
-	setShape(string, ch);
+	setShape(ch);
 }
 
-void Shape::setShape(string string, char ch)
+void Shape::setShape(char ch)
 {
 	int  positions[8] = {};
 	randomShape(positions);
