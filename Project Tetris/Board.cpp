@@ -11,9 +11,27 @@
 //}
 Board::Board(int x, int y, int _playerNum) :X_START(x), Y_START(y), playerNum(_playerNum)
 {
-	int i, j;
-	for (i = 1; i < 11; i++) {
-		for (j = 1; j < 21; j++) {
+	//for (int i = 0; i < WIDTH + 1; i++)
+	//{
+	//	this->freeSpace[i][0] = 186; 
+	//	this->freeSpace[i][HEIGHT + 1] = 186; 
+	//}
+	//for (int i = 0; i < HEIGHT + 2; i++)
+	//{
+	//	freeSpace[0][i] = 220; 
+	//	freeSpace[WIDTH][i] = 223; 
+	//}
+	//for (int i = 1; i < WIDTH; i++)
+	//{
+	//	for (int j = 1; j < HEIGHT + 1; j++)
+	//	{
+	//		this->freeSpace[i][j] = ' ';
+	//	}
+	//}
+
+
+	for (int i = 1; i < WIDTH; i++) {
+		for (int j = 1; j < HEIGHT + 1; j++) {
 			this->freeSpace[i][j] = true;
 
 		}
@@ -40,6 +58,18 @@ void Board::print()
 		cout << (char)186;
 	}
 }
+
+//void Board::printFreeSpace()
+//{
+//	for (int i = 0; i < WIDTH + 1; i++)
+//	{
+//		for (int j = 0; j < HEIGHT + 2; j++)
+//		{
+//			cout << freeSpace[i][j];
+//		}
+//		cout << endl;
+//	}
+//}
 
 //void Board::moveBlockDownBoard(Block block, int speed)
 //{

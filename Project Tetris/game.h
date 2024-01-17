@@ -6,6 +6,7 @@ class Block;
 class Game
 {
 public:
-	static void moveBlockLeftRight(Block& block, int playerNum);
+	static int printMenu(bool isGamePaused);
+	static void printInstructions();
 };
 

@@ -6,21 +6,36 @@
 
 void main()
 {
-	bool shapeP1 = true;
 	Board board;
-	board.print();
+	//board.printFreeSpace();
+	bool shapeP1 = true;
 	Shape s(board);
 
-
+	board.print();
 	while (true)
 	{
-		shapeP1=s.moveShapeDown();
-		Sleep(200);
+		shapeP1 = s.moveShapeDown();
+		Sleep(300);
 		if (shapeP1 == false)
 			s.setShape(254);
-
 	}
-
-
-	gotoxy(0,board.Y_END + 2);
+	
+	////DON'T DELETE::
+	//int menuInput = Game::printMenu(false);
+	//switch (menuInput)
+	//{
+	//case 1:
+	//	board.print();
+	//	while (true)
+	//	{
+	//		shapeP1 = s.moveShapeDown();
+	//		Sleep(300);
+	//		if (shapeP1 == false)
+	//			s.setShape(254);
+	//	}
+	//	break;
+	//case 8:
+	//	Game::printInstructions(); //Will code this function later
+	//	break;
+	//}
 }

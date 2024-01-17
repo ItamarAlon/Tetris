@@ -47,7 +47,7 @@ void Shape::randomShape(int positions[8]) {
 		break;
 	}
 }
-//{I,O,T,S,Z,J,L};
+
 void Shape::print()
 {
 	for (int i = 0; i < 4; i++)

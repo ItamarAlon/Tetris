@@ -21,11 +21,13 @@ public:
 	const int Y_END = Y_START + HEIGHT;
 
 	bool freeSpace[12][22] = {};
+	//char freeSpace[12][22];
 
 	const int playerNum;
 
-	Board(int x = 20, int y = 0, int _playerNum = 1);
+	Board(int x = 30, int y = 0, int _playerNum = 1);
 	//void resetBoard();
 	void print();
+	//void printFreeSpace();
 	//void moveBlockDownBoard(Block block, int speed);
 };

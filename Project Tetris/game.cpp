@@ -1,24 +1,30 @@
 #include "game.h"
 
-//void Game::moveBlockLeftRight(Block& block, int playerNum)
-//{
-//	if (_kbhit())
-//	{
-//		char key = _getch();
-//		if (playerNum == 1)
-//		{
-//			if (key == (char)GameConfig::Lkeys::LEFT)
-//				block.moveBy(-1, 0);
-//			else if (key == (char)GameConfig::Lkeys::RIGHT)
-//				block.moveBy(1, 0);
-//		}
-//		else if (playerNum == 2)
-//		{
-//			if (key == (char)GameConfig::Rkeys::LEFT)
-//				block.moveBy(-1, 0);
-//			else if (key == (char)GameConfig::Rkeys::RIGHT)
-//				block.moveBy(1, 0);
-//		}
-//	}
-//
-//}
+int Game::printMenu(bool isGamePaused)
+{
+	clrscr();
+	cout << "Welcome to Tetris! Pick one of the options below:\n\n";
+	cout << "(1) Start a new Game" << endl;
+	if (isGamePaused)
+		cout << "(2) Continue a paused game" << endl;
+	cout << "(8) Present instructions and keys" << endl;
+	cout << "(9) EXIT" << endl;
+
+	int input;
+	cin >> input;
+
+	if ((input != 1 && input != 8 && input != 9) || (input == 2 && !isGamePaused))
+	{
+		clrscr();
+		cout << "Invalid input. Try again";
+		Sleep(1600);
+		return printMenu(isGamePaused);
+	}
+
+	clrscr();
+	return input;
+}
+
+void Game::printInstructions()
+{
+}
