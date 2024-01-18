@@ -5,7 +5,6 @@ void Block::moveTo(int x, int y)
 {
 	gotoxy(this->x, this->y);
 	cout << " ";
-	//yeleshara
 	setCords(x, y);
 }
 void Block::moveBy(int x, int y)
@@ -71,12 +70,17 @@ void Block::moveBlockLeftRight(char key, int playerNum)
 	}
 }
 
-bool Block::checkFreeSpace(int offsetX, int offsetY, Board& playerBoard) 
+bool Block::checkFreeSpaceOffset(int offsetX, int offsetY, Board& playerBoard) 
 {
-	int freeSpaceX = x - playerBoard.X_START;
-	int freeSpaceY = y - playerBoard.Y_START;
+	int freeSpaceX, freeSpaceY;
+	getFreeSpaceXY(playerBoard, freeSpaceX, freeSpaceY);
 
-	if (playerBoard.freeSpace[offsetX + freeSpaceX][freeSpaceY] == false || playerBoard.freeSpace[freeSpaceX][offsetY + freeSpaceY] == false)
+	//if (playerBoard.checkFreeSpaceCoordinates(freeSpaceX + offsetX, freeSpaceY) || playerBoard.checkFreeSpaceCoordinates(freeSpaceX, freeSpaceY + offsetY))
+	//	return true;
+	//return false;
+
+
+	if (playerBoard.freeSpace[freeSpaceX + offsetX][freeSpaceY] == false || playerBoard.freeSpace[freeSpaceX][freeSpaceY + offsetY] == false)
 		return true;
 	return false;
 }
@@ -87,6 +91,12 @@ void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY)
 		offsetX = -1; offsetY = 0;
 	if (key == (char)GameConfig::Lkeys::RIGHT)
 		offsetX = 1; offsetY = 0;
+}
+
+void Block::getFreeSpaceXY(const Board& playerBoard, int& x, int& y)
+{
+	x = this->x - playerBoard.X_START;
+	y = this->y - playerBoard.Y_START;
 }
 
 

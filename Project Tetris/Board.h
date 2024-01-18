@@ -28,6 +28,7 @@ public:
 	Board(int x = 30, int y = 0, int _playerNum = 1);
 	//void resetBoard();
 	void print();
+	bool checkFreeSpaceCoordinates(int freeSpaceX, int freeSpaceY);
 	//void printFreeSpace();
 	//void moveBlockDownBoard(Block block, int speed);
 };

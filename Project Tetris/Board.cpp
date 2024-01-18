@@ -59,6 +59,13 @@ void Board::print()
 	}
 }
 
+bool Board::checkFreeSpaceCoordinates(int freeSpaceX, int freeSpaceY)
+{
+	if (freeSpace[freeSpaceX][freeSpaceY] == false)
+		return true;
+	return false;
+}
+
 //void Board::printFreeSpace()
 //{
 //	for (int i = 0; i < WIDTH + 1; i++)
