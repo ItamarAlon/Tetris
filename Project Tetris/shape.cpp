@@ -177,13 +177,7 @@ void Shape::rotateShape(char key)
 { 
 	int positions[8] = {};
 	int anchorX = blockArr[0].x, anchorY = blockArr[0].y;
-	int nextOrientation;
-
-	if (key == (char)GameConfig::Lkeys::CLOCKWISE)
-		nextOrientation = (orientation + 1) % divider;
-	else
-		nextOrientation = divider - 1;
-
+	int nextOrientation = getNextOrientation(key);
 
 	switch (shape)
 	{
@@ -259,6 +253,21 @@ void Shape::changeShapePosition(int positions[8])
 		}
 		print();
 	}
+}
+
+int Shape::getNextOrientation(int key)
+{
+	int nextOrientation;
+
+	if (key == (char)GameConfig::Lkeys::CLOCKWISE)
+		nextOrientation = (orientation + 1) % divider;
+	else
+		nextOrientation = orientation - 1;
+
+	if (nextOrientation == -1)
+		nextOrientation = divider - 1;
+
+	return nextOrientation;
 }
 
 

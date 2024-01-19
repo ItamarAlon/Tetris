@@ -23,6 +23,7 @@ public:
 	void moveShapeToBottom();
 	void rotateShape(char key);
 	void changeShapePosition(int positions[8]);
+	int getNextOrientation(int key);
 	//void
 
 };
