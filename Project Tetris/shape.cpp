@@ -22,8 +22,8 @@ void Shape::setShape(char ch)
 void Shape::randomShape(int positions[8]) {
 	srand(time(nullptr));
 	int anchorX = board.X_START + board.WIDTH / 2, anchorY = board.Y_START + 1;
-	//shape = (Shapes)(rand() % 7);
-	shape = (Shapes)(2);
+	shape = (Shapes)(rand() % 7);
+	//shape = (Shapes)(2);
 	switch (shape) 
 	{
 	case Shapes::I: 
@@ -182,11 +182,8 @@ void Shape::rotateShape(char key)
 	if (key == (char)GameConfig::Lkeys::CLOCKWISE)
 		nextOrientation = (orientation + 1) % divider;
 	else
-	{
-		nextOrientation = orientation - 1;
-		if (nextOrientation < 0)
-			nextOrientation == 3;
-	}
+		nextOrientation = divider - 1;
+
 
 	switch (shape)
 	{
@@ -219,21 +216,21 @@ void Shape::rotateShape(char key)
 			createCordsArr(positions, anchorX, anchorY, -1, 0, 0, 1, 1, 1); //orientation 0
 		break;
 	case Shapes::J:
-		if (orientation == 0)
+		if (nextOrientation == 1)
 			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, 1, -1); //orientation 1
-		else if (orientation == 1)
+		else if (nextOrientation == 2)
 			createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, -1, -1); //orientation 2
-		else if (orientation == 2)
+		else if (nextOrientation == 3)
 			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, -1, 1); //orientation 3
 		else
 			createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, 1, 1); //orientation 0
 		break;
 	case Shapes::L:
-		if (orientation == 0)
+		if (nextOrientation == 1)
 			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, 1, 1); //orientation 1
-		else if (orientation == 1)
+		else if (nextOrientation == 2)
 			createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, 1, -1); //orientation 2
-		else if (orientation == 2)
+		else if (nextOrientation == 3)
 			createCordsArr(positions, anchorX, anchorY, 0, 1, 0, -1, -1, -1); //orientation 3
 		else
 			createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, -1, 1); //orientation 0
