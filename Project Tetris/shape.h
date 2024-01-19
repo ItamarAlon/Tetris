@@ -22,6 +22,7 @@ public:
 	void handleInput(int playerNum);
 	void moveShapeToBottom();
 	void rotateShape(char key);
+	void changeShapePosition(int positions[8]);
 	//void
 
 };

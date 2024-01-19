@@ -29,6 +29,6 @@ public:
 	//void resetBoard();
 	void print();
 	bool checkFreeSpaceCoordinates(int freeSpaceX, int freeSpaceY);
-	//void printFreeSpace();
+	void printFreeSpace();
 	//void moveBlockDownBoard(Block block, int speed);
 };

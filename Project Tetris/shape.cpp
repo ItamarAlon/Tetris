@@ -23,35 +23,36 @@ void Shape::randomShape(int positions[8]) {
 	srand(time(nullptr));
 	int anchorX = board.X_START + board.WIDTH / 2, anchorY = board.Y_START + 1;
 	//shape = (Shapes)(rand() % 7);
-	shape = (Shapes)(0);
-	switch (shape) {
-	case Shapes::I:
+	shape = (Shapes)(2);
+	switch (shape) 
+	{
+	case Shapes::I: 
 		divider = 2;
-		createCordsArr(positions, anchorX, anchorY, 1, 0, 2, 0, 3, 0);
+		createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, 2, 0);
 		break;
-	case Shapes::O:
+	case Shapes::O: 
 		divider = 1;
 		createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, 1, 1);
 		break;
-	case Shapes::T:
+	case Shapes::T: 
 		divider = 4;
-		createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 0);
+		createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 0); 
 		break;
-	case Shapes::S:
+	case Shapes::S: 
 		divider = 2;
 		createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 1);
 		break;
-	case Shapes::Z:
+	case Shapes::Z: 
 		divider = 2;
 		createCordsArr(positions, anchorX, anchorY, -1, 0, 0, 1, 1, 1);
 		break;
-	case Shapes::J:
+	case Shapes::J: 
 		divider = 4;
-		createCordsArr(positions, anchorX, anchorY, 1, 0, 2,0, 0, 1);
+		createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, 1, 1);
 		break;
-	case Shapes::L:
+	case Shapes::L: 
 		divider = 4;
-		createCordsArr(positions, anchorX, anchorY, -1,0, -2, 0, 0, 1);
+		createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, -1, 1);
 		break;
 	}
 }
@@ -173,32 +174,93 @@ void Shape::moveShapeToBottom()
 }
 
 void Shape::rotateShape(char key)
-{
-	bool cantMove = false;
+{ 
 	int positions[8] = {};
 	int anchorX = blockArr[0].x, anchorY = blockArr[0].y;
+	int nextOrientation;
+
+	if (key == (char)GameConfig::Lkeys::CLOCKWISE)
+		nextOrientation = (orientation + 1) % divider;
+	else
+	{
+		nextOrientation = orientation - 1;
+		if (nextOrientation < 0)
+			nextOrientation == 3;
+	}
+
 	switch (shape)
 	{
 	case Shapes::I:
-		if (orientation == 0)
-			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, 0, 2);
+		if (orientation == 0) 
+			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, 0, 2); //orientation 1
 		else
-			createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, 2, 0);
-		orientation = (orientation + 1) % divider;
+			createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, 2, 0); //orientation 0
+		break;
+	case Shapes::T:
+		if (nextOrientation == 1)
+		    createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, 1, 0); //orientation 1
+		else if (nextOrientation == 2)
+			createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, 0, -1); //orientation 2
+		else if (nextOrientation == 3)
+			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, -1, 0); //orientation 3
+		else
+			createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 0); //orientation 0
+		break;
+	case Shapes::S:
+		if (orientation == 0)
+		    createCordsArr(positions, anchorX, anchorY, -1, 0, -1, -1, 0, 1); //orientation 1
+		else
+			createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 1); //orientation 0
+		break;
+	case Shapes::Z:
+		if (orientation == 0)
+		    createCordsArr(positions, anchorX, anchorY, -1, 0, -1, 1, 0, -1);//orientation 1
+		else
+			createCordsArr(positions, anchorX, anchorY, -1, 0, 0, 1, 1, 1); //orientation 0
+		break;
+	case Shapes::J:
+		if (orientation == 0)
+			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, 1, -1); //orientation 1
+		else if (orientation == 1)
+			createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, -1, -1); //orientation 2
+		else if (orientation == 2)
+			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, -1, 1); //orientation 3
+		else
+			createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, 1, 1); //orientation 0
+		break;
+	case Shapes::L:
+		if (orientation == 0)
+			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, 1, 1); //orientation 1
+		else if (orientation == 1)
+			createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, 1, -1); //orientation 2
+		else if (orientation == 2)
+			createCordsArr(positions, anchorX, anchorY, 0, 1, 0, -1, -1, -1); //orientation 3
+		else
+			createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, -1, 1); //orientation 0
+		break;
 	}
+
+	orientation = nextOrientation;
+	changeShapePosition(positions);
+}
+
+void Shape::changeShapePosition(int positions[8])
+{
+	bool cantMove = false;
 	for (int i = 1; i < 4; i++)
 	{
-		if (blockArr[i].checkFreeSpaceOffset(positions[i*2], positions[i * 2+1], board) == true)
+		if (board.checkFreeSpaceCoordinates(positions[i * 2] - board.X_START, positions[i * 2 + 1] - board.Y_START) == true)
 			cantMove = true;
+		//if (blockArr[i].checkFreeSpaceOffset(positions[i * 2], positions[i * 2 + 1], board) == true)
+		//	cantMove = true;
 	}
-	if(!cantMove)
+	if (!cantMove)
 	{
 		for (int i = 1; i < 4; i++)
 		{
 			blockArr[i].moveTo(positions[i * 2], positions[i * 2 + 1]);
 		}
 		print();
-
 	}
 }
 

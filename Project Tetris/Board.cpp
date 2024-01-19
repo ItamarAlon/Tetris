@@ -66,17 +66,21 @@ bool Board::checkFreeSpaceCoordinates(int freeSpaceX, int freeSpaceY)
 	return false;
 }
 
-//void Board::printFreeSpace()
-//{
-//	for (int i = 0; i < WIDTH + 1; i++)
-//	{
-//		for (int j = 0; j < HEIGHT + 2; j++)
-//		{
-//			cout << freeSpace[i][j];
-//		}
-//		cout << endl;
-//	}
-//}
+void Board::printFreeSpace()
+{
+	gotoxy(0, 0);
+	for (int i = 0; i < WIDTH + 1; i++)
+	{
+		for (int j = 0; j < HEIGHT + 2; j++)
+		{
+			if (freeSpace[i][j] == true)
+				cout << "O";
+			else
+				cout << "X";
+		}
+		cout << endl;
+	}
+}
 
 //void Board::moveBlockDownBoard(Block block, int speed)
 //{
