@@ -142,7 +142,7 @@ void Shape::handleInput(int playerNum)
 			moveShapeLeftRight(key, playerNum);
 			break;
 		case (char)GameConfig::Lkeys::ESC:
-			Game::printMenu(true);
+			//Game::printMenu(true);
 			break;
 		case (char)GameConfig::Lkeys::DOWN:
 			moveShapeToBottom();

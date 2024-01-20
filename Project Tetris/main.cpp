@@ -1,19 +1,21 @@
-#include "Libraries.h"
-#include "block.h"
-#include "Board.h"
 #include "shape.h"
+#include "game.h"
+#include "Block.h"
+#include "Board.h"
 
+#include "Libraries.h"
 
 void main()
 {
 	Board board;
-	//board.printFreeSpace(0,0);
+	////board.printFreeSpace(0,0);
 	bool shapeP1 = true;
 	Shape s(board);
 	bool isDeleted=false;
+	Game game(board, s);
 
 
-	//board.print();
+	board.print();
 	board.printFreeSpace();
 	while (true)
 	{
@@ -33,22 +35,13 @@ void main()
 		}
 	}
 	
-	////DON'T DELETE::
-	//int menuInput = Game::printMenu(false);
+	//int menuInput = game.printMenu(false);
 	//switch (menuInput)
 	//{
 	//case 1:
-	//	board.print();
-	//	while (true)
-	//	{
-	//		shapeP1 = s.moveShapeDown();
-	//		Sleep(300);
-	//		if (shapeP1 == false)
-	//			s.setShape(254);
-	//	}
-	//	break;
+	//	game.runGame();
 	//case 8:
-	//	Game::printInstructions(); //Will code this function later
+	//	game.printInstructions(); //Will code this function later
 	//	break;
 	//}
 }

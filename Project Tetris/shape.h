@@ -1,18 +1,22 @@
 #pragma once
-#include "Libraries.h"
-class Block;
-class Board;
+#include "Block.h"
+#include "Board.h"
+
+//class Block;
+//class Board;
+
 class Shape
 {
-	Block blockArr[4];
+	Block block;
 	Board &board;
+	Block blockArr[4] = {};
 	int divider;
 	int orientation;
 	enum class Shapes {I,O,T,S,Z,J,L};
 	Shapes shape;
 public:
-	Shape(Board& _board, char ch = 254);
-	void setShape(char ch = 254);
+	Shape(Board& _board, char ch = -2);
+	void setShape(char ch = -2);
 	void randomShape(int positions[8]);
 	void print();
 	void moveBy(int x, int y);
@@ -24,7 +28,6 @@ public:
 	void rotateShape(char key);
 	void changeShapePosition(int positions[8]);
 	int getNextOrientation(int key);
-	//void
 
 };
 

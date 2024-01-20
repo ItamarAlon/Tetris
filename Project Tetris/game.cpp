@@ -1,5 +1,10 @@
 #include "game.h"
 
+Game::Game(Board& board1, Shape& shape1) : board(board1), shape(shape1)
+{
+	
+}
+
 int Game::printMenu(bool isGamePaused)
 {
 	clrscr();
@@ -27,4 +32,33 @@ int Game::printMenu(bool isGamePaused)
 
 void Game::printInstructions()
 {
+}
+
+void Game::runGame()
+{
+	Board board;
+	bool shapeP1 = true;
+	Shape s(board);
+	bool isDeleted = false;
+
+
+	//board.print();
+	board.printFreeSpace();
+	while (true)
+	{
+		shapeP1 = s.moveShapeDown();
+		Sleep(200);
+		if (shapeP1 == false)
+		{
+			//board.printFreeSpace(0, 0);
+			s.setShape(254);
+			isDeleted = board.checkFullLine();
+			//board.print();
+			if (isDeleted)
+			{
+				board.printFreeSpace();
+				isDeleted = false;
+			}
+		}
+	}
 }

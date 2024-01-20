@@ -82,6 +82,7 @@ bool Board::checkFullLine()
 		{
 			lineDeleted = true;
 			moveLinesDown(i);
+			i++;
 
 		}
 	}
@@ -92,7 +93,7 @@ void Board::moveLinesDown(int line)
 {
 	for (int i = line; i > 1;i--) 
 	{
-		for (int j = 0; j < WIDTH; j++)
+		for (int j = 0; j < WIDTH+1; j++)
 		{
 			freeSpace[i][j] = freeSpace[i - 1][j];
 		} 
