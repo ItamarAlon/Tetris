@@ -11,31 +11,28 @@
 //}
 Board::Board(int x, int y, int _playerNum) :X_START(x), Y_START(y), playerNum(_playerNum)
 {
-	//for (int i = 0; i < WIDTH + 1; i++)
-	//{
-	//	this->freeSpace[i][0] = 186; 
-	//	this->freeSpace[i][HEIGHT + 1] = 186; 
-	//}
-	//for (int i = 0; i < HEIGHT + 2; i++)
-	//{
-	//	freeSpace[0][i] = 220; 
-	//	freeSpace[WIDTH][i] = 223; 
-	//}
-	//for (int i = 1; i < WIDTH; i++)
-	//{
-	//	for (int j = 1; j < HEIGHT + 1; j++)
-	//	{
-	//		this->freeSpace[i][j] = ' ';
-	//	}
-	//}
-
-
-	for (int i = 1; i < WIDTH; i++) {
-		for (int j = 1; j < HEIGHT + 1; j++) {
-			this->freeSpace[i][j] = true;
-
+	for (int i = 1; i < HEIGHT+1; i++)
+	{
+		freeSpace[i][0] = 186;
+		freeSpace[i][WIDTH + 1] = 186;
+		for (int j = 1; j < WIDTH + 1; j++)
+		{
+			this->freeSpace[i][j] = ' ';
 		}
 	}
+	for (int i = 0; i < WIDTH + 2; i++)
+	{
+		this->freeSpace[0][i] = 220; 
+		this->freeSpace[HEIGHT + 1][i] = 223; 
+	}
+
+
+	//for (int i = 1; i < WIDTH; i++) {
+	//	for (int j = 1; j < HEIGHT + 1; j++) {
+	//		this->freeSpace[i][j] = true;
+
+	//	}
+	//}
 }
 
 void Board::print()
@@ -61,24 +58,63 @@ void Board::print()
 
 bool Board::checkFreeSpaceCoordinates(int freeSpaceX, int freeSpaceY)
 {
-	if (freeSpace[freeSpaceX][freeSpaceY] == false)
+	if (freeSpace[freeSpaceY][freeSpaceX] != ' ')
 		return true;
 	return false;
 }
 
-void Board::printFreeSpace()
+bool Board::checkFullLine()
 {
-	gotoxy(0, 0);
-	for (int i = 0; i < WIDTH + 1; i++)
+	bool fullLine, lineDeleted = false;
+	for (int i = HEIGHT; i > 0; i--)
 	{
-		for (int j = 0; j < HEIGHT + 2; j++)
+		fullLine = true;
+		for (int j = 1; j < WIDTH + 1; j++)
 		{
-			if (freeSpace[i][j] == true)
-				cout << "O";
-			else
-				cout << "X";
+			if (freeSpace[i][j] == ' ')
+			{
+				fullLine = false;
+				break;
+			}
+
 		}
-		cout << endl;
+		if (fullLine)
+		{
+			lineDeleted = true;
+			moveLinesDown(i);
+
+		}
+	}
+	return lineDeleted;
+}
+
+void Board::moveLinesDown(int line)
+{
+	for (int i = line; i > 1;i--) 
+	{
+		for (int j = 0; j < WIDTH; j++)
+		{
+			freeSpace[i][j] = freeSpace[i - 1][j];
+		} 
+	
+	}
+}
+
+void Board::printFreeSpace(int x, int y)
+{
+	//gotoxy(x, y);
+	for (int i = 0; i < HEIGHT + 2; i++)
+	{
+		gotoxy(x, y + i);
+		for (int j = 0; j < WIDTH + 2; j++)
+		{
+			cout << freeSpace[i][j];
+			//if (freeSpace[j][i] == true)
+			//	cout << "O";
+			//else
+			//	cout << "X";
+		}
+		//cout << endl;
 	}
 }
 

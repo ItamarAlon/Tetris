@@ -1,6 +1,6 @@
 #include "shape.h"
 
-Shape::Shape(const Board& _board, char ch) : board(_board)
+Shape::Shape(Board& _board, char ch) : board(_board)
 {
 	setShape(ch);
 }
@@ -12,8 +12,7 @@ void Shape::setShape(char ch)
 	orientation = 0; //change to enum later
 	for (int i = 0; i < 8; i += 2)
 	{
-
-		blockArr[i/2].setChar(254);
+		blockArr[i/2].setChar(ch);
 		blockArr[i/2].setCords(positions[i], positions[i + 1]);
 
 	}
@@ -22,8 +21,8 @@ void Shape::setShape(char ch)
 void Shape::randomShape(int positions[8]) {
 	srand(time(nullptr));
 	int anchorX = board.X_START + board.WIDTH / 2, anchorY = board.Y_START + 1;
-	shape = (Shapes)(rand() % 7);
-	//shape = (Shapes)(2);
+	//shape = (Shapes)(rand() % 7);
+	shape = (Shapes)(0);
 	switch (shape) 
 	{
 	case Shapes::I: 
@@ -93,7 +92,7 @@ bool Shape::moveShapeDown()
 	else
 	{
 		for (int i = 0; i < 4; i++)
-			board.freeSpace[blockArr[i].x - board.X_START][blockArr[i].y - board.Y_START] = false;
+			board.freeSpace[blockArr[i].y - board.Y_START][blockArr[i].x - board.X_START] = blockArr[i].ch;
 		return false;
 	}
 }

@@ -80,7 +80,7 @@ bool Block::checkFreeSpaceOffset(int offsetX, int offsetY, Board& playerBoard)
 	//return false;
 
 
-	if (playerBoard.freeSpace[freeSpaceX + offsetX][freeSpaceY] == false || playerBoard.freeSpace[freeSpaceX][freeSpaceY + offsetY] == false)
+	if (playerBoard.freeSpace[freeSpaceY][freeSpaceX + offsetX] != ' ' || playerBoard.freeSpace[freeSpaceY + offsetY][freeSpaceX] != ' ')
 		return true;
 	return false;
 }

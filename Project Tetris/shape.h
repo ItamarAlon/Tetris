@@ -5,13 +5,13 @@ class Board;
 class Shape
 {
 	Block blockArr[4];
-	Board board;
+	Board &board;
 	int divider;
 	int orientation;
 	enum class Shapes {I,O,T,S,Z,J,L};
 	Shapes shape;
 public:
-	Shape(const Board& _board, char ch = 254);
+	Shape(Board& _board, char ch = 254);
 	void setShape(char ch = 254);
 	void randomShape(int positions[8]);
 	void print();
