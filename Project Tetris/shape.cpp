@@ -27,7 +27,6 @@ void Shape::setShape(char ch)
 
 void Shape::randomShape(int positions[8]) 
 {
-	//srand(time(nullptr));
 	int anchorX = board.X_START + board.WIDTH / 2, anchorY = board.Y_START + 1;
 	shape = (Shapes)(rand() % 7);
 	//shape = (Shapes)(0);

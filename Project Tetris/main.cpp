@@ -15,14 +15,5 @@ void main()
 
 	//game.runGame();
 
-	
 	game.printMenu();
-	//switch (menuInput)
-	//{
-	//case 1:
-	//	game.runGame();
-	//case 8:
-	//	game.printInstructions(); //Will code this function later
-	//	break;
-	//}
 }

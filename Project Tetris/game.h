@@ -10,8 +10,8 @@ class Board;
 
 class Game
 {
-	Board &board;
-	bool shapeP1 = true;
+	Board &boardP1;
+	bool IsShapeP1InAir = true;
 	Shape &shape;
 	bool isLineDeleted = false;
 	int speed;
