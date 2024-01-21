@@ -131,6 +131,8 @@ int Game::handleInput()
 			isGamePaused = true;
 			menuInput = printMenu();
 			break;
+		default:
+			break;
 		}
 	}
 	return menuInput;
