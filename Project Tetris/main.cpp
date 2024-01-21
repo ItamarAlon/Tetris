@@ -13,7 +13,7 @@ void main()
 	Game game(board, s);
 
 
-	//game.runGame();
+	game.runGame();
 
-	game.printMenu();
+	//game.printMenu();
 }

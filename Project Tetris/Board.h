@@ -23,11 +23,10 @@ public:
 	const int X_END = X_START + WIDTH;
 	const int Y_END = Y_START + HEIGHT;
 
-	//bool freeSpace[12][22] = {};
-	//char freeSpace[12][22];
 	char freeSpace[BOARD_HEIGHT + 2][BOARD_WIDTH + 2];
 
 	const int playerNum;
+	bool isLineDeleted = false;
 
 	Board(int x = 30, int y = 0, int _playerNum = 1);
 	//Board& operator=(const Board& newBoard);

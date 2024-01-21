@@ -11,11 +11,10 @@ class Board;
 class Game
 {
 	Board &boardP1;
-	bool IsShapeP1InAir = true;
-	Shape &shape;
-	bool isLineDeleted = false;
-	int speed;
+	Shape &shapeP1;
+	int speed; 
 	bool isGamePaused = false;
+
 public:
 	Game(Board& board1, Shape& shape1, int _speed = 200);
 	int printMenu();

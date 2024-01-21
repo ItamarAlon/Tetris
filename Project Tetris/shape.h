@@ -16,6 +16,8 @@ class Shape
 	enum class Shapes {I,O,T,S,Z,J,L};
 	Shapes shape;
 public:
+	bool IsShapeInAir = true;
+
 	Shape(Board& _board, char ch = -2);
 	//Shape& operator=(const Shape& newShape);
 	void setShape(char ch = -2);

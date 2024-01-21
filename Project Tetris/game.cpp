@@ -1,6 +1,6 @@
 #include "game.h"
 
-Game::Game(Board& board1, Shape& shape1, int _speed) : boardP1(board1), shape(shape1), speed(_speed)
+Game::Game(Board& board1, Shape& shape1, int _speed) : boardP1(board1), shapeP1(shape1), speed(_speed)
 {
 	
 }
@@ -63,16 +63,16 @@ void Game::runGame()
 		input = handleInput(boardP1.playerNum);
 		if (input == 9)
 			break;
-		IsShapeP1InAir = shape.moveShapeDown();
+		shapeP1.IsShapeInAir = shapeP1.moveShapeDown();
 		Sleep(speed);
-		if (IsShapeP1InAir == false)
+		if (shapeP1.IsShapeInAir == false)
 		{
-			shape.setShape();
-			isLineDeleted = boardP1.checkFullLine();
-			if (isLineDeleted)
+			shapeP1.setShape();
+			boardP1.isLineDeleted = boardP1.checkFullLine();
+			if (boardP1.isLineDeleted)
 			{
 				boardP1.printFreeSpace();
-				isLineDeleted = false;
+				boardP1.isLineDeleted = false;
 			}
 		}
 	}
@@ -90,7 +90,7 @@ int Game::handleInput(int playerNum)
 			{
 			case (char)GameConfig::Lkeys::LEFT:
 			case (char)GameConfig::Lkeys::RIGHT:
-				shape.moveShapeLeftRight(key, playerNum);
+				shapeP1.moveShapeLeftRight(key, playerNum);
 				break;
 			case (char)GameConfig::Lkeys::ESC:
 				isGamePaused = true;
@@ -98,11 +98,11 @@ int Game::handleInput(int playerNum)
 				break;
 			case (char)GameConfig::Lkeys::DOWN:
 				//shape.speedUpShape();
-				shape.moveShapeDown();
+				shapeP1.moveShapeDown();
 				break;
 			case (char)GameConfig::Lkeys::CLOCKWISE:
 			case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
-				shape.rotateShape(key);
+				shapeP1.rotateShape(key);
 				break;
 			}
 		else if (playerNum == 2)
@@ -110,7 +110,7 @@ int Game::handleInput(int playerNum)
 			{
 			case (char)GameConfig::Rkeys::LEFT:
 			case (char)GameConfig::Rkeys::RIGHT:
-				shape.moveShapeLeftRight(key, playerNum);
+				shapeP1.moveShapeLeftRight(key, playerNum);
 				break;
 			case (char)GameConfig::Rkeys::ESC:
 				isGamePaused = true;
@@ -118,11 +118,11 @@ int Game::handleInput(int playerNum)
 				break;
 			case (char)GameConfig::Rkeys::DOWN:
 				//shape.speedUpShape();
-				shape.moveShapeDown();
+				shapeP1.moveShapeDown();
 				break;
 			case (char)GameConfig::Rkeys::CLOCKWISE:
 			case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE:
-				shape.rotateShape(key);
+				shapeP1.rotateShape(key);
 				break;
 			}
 
@@ -133,7 +133,7 @@ int Game::handleInput(int playerNum)
 void Game::restartGame()
 {
 	boardP1.resetBoard();
-	shape.setShape();
+	shapeP1.setShape();
 }
 
 void Game::handleMenuInput(char input)
