@@ -1,6 +1,6 @@
 #include "game.h"
 
-Game::Game(Board& board1, Shape& shape1, int _speed) : boardP1(board1), shapeP1(shape1), speed(_speed)
+Game::Game(Board& board1, Board& board2, Shape& shape1, Shape& shape2, int _speed) : boardP1(board1), boardP2(board2), shapeP1(shape1), shapeP2(shape2), speed(_speed)
 {
 	
 }
@@ -57,75 +57,81 @@ void Game::runGame()
 {
 	int input;
 
-	boardP1.printFreeSpace();
+	boardP1.print();
+	boardP2.print();
 	while (true)
 	{
-		input = handleInput(boardP1.playerNum);
+		input = handleInput();
 		if (input == 9)
 			break;
 		shapeP1.IsShapeInAir = shapeP1.moveShapeDown();
+		shapeP2.IsShapeInAir = shapeP2.moveShapeDown();
 		Sleep(speed);
+
 		if (shapeP1.IsShapeInAir == false)
 		{
 			shapeP1.setShape();
 			boardP1.isLineDeleted = boardP1.checkFullLine();
 			if (boardP1.isLineDeleted)
 			{
-				boardP1.printFreeSpace();
+				boardP1.print();
 				boardP1.isLineDeleted = false;
+			}
+		}
+
+		if (shapeP2.IsShapeInAir == false)
+		{
+			shapeP2.setShape();
+			boardP2.isLineDeleted = boardP2.checkFullLine();
+			if (boardP2.isLineDeleted)
+			{
+				boardP2.print();
+				boardP2.isLineDeleted = false;
 			}
 		}
 	}
 }
 
-int Game::handleInput(int playerNum)
+int Game::handleInput()
 {
 	int menuInput = -394;
 	if (_kbhit())
 	{
 		char key = _getch();
 
-		if (playerNum == 1)
-			switch (key)
-			{
-			case (char)GameConfig::Lkeys::LEFT:
-			case (char)GameConfig::Lkeys::RIGHT:
-				shapeP1.moveShapeLeftRight(key, playerNum);
-				break;
-			case (char)GameConfig::Lkeys::ESC:
-				isGamePaused = true;
-				menuInput = printMenu();
-				break;
-			case (char)GameConfig::Lkeys::DOWN:
-				//shape.speedUpShape();
-				shapeP1.moveShapeDown();
-				break;
-			case (char)GameConfig::Lkeys::CLOCKWISE:
-			case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
-				shapeP1.rotateShape(key);
-				break;
-			}
-		else if (playerNum == 2)
-			switch (key)
-			{
-			case (char)GameConfig::Rkeys::LEFT:
-			case (char)GameConfig::Rkeys::RIGHT:
-				shapeP1.moveShapeLeftRight(key, playerNum);
-				break;
-			case (char)GameConfig::Rkeys::ESC:
-				isGamePaused = true;
-				menuInput = printMenu();
-				break;
-			case (char)GameConfig::Rkeys::DOWN:
-				//shape.speedUpShape();
-				shapeP1.moveShapeDown();
-				break;
-			case (char)GameConfig::Rkeys::CLOCKWISE:
-			case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE:
-				shapeP1.rotateShape(key);
-				break;
-			}
+		switch (key)
+		{
+		case (char)GameConfig::Lkeys::LEFT:
+		case (char)GameConfig::Lkeys::RIGHT:
+			shapeP1.moveShapeLeftRight(key);
+			break;
+		case (char)GameConfig::Lkeys::DOWN:
+			//shape.speedUpShape();
+			shapeP1.moveShapeDown();
+			break;
+		case (char)GameConfig::Lkeys::CLOCKWISE:
+		case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
+			shapeP1.rotateShape(key);
+			break;
 
+		case (char)GameConfig::Rkeys::LEFT:
+		case (char)GameConfig::Rkeys::RIGHT:
+			shapeP2.moveShapeLeftRight(key);
+			break;
+		case (char)GameConfig::Rkeys::DOWN:
+			//shape.speedUpShape();
+			shapeP2.moveShapeDown();
+			break;
+		case (char)GameConfig::Rkeys::CLOCKWISE:
+		case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE:
+			shapeP2.rotateShape(key);
+			break;
+
+		case (char)GameConfig::Lkeys::ESC:
+			isGamePaused = true;
+			menuInput = printMenu();
+			break;
+		}
 	}
 	return menuInput;
 }
@@ -133,7 +139,10 @@ int Game::handleInput(int playerNum)
 void Game::restartGame()
 {
 	boardP1.resetBoard();
+	boardP2.resetBoard();
+
 	shapeP1.setShape();
+	shapeP2.setShape();
 }
 
 void Game::handleMenuInput(char input)

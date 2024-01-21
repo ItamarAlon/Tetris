@@ -28,12 +28,12 @@ public:
 	const int playerNum;
 	bool isLineDeleted = false;
 
-	Board(int x = 30, int y = 0, int _playerNum = 1);
+	Board(int x, int y, int _playerNum = 1);
 	//Board& operator=(const Board& newBoard);
 	void resetBoard();
-	void print();
+	//void print();
 	bool checkFreeSpaceCoordinates(int freeSpaceX, int freeSpaceY);
-	void printFreeSpace(int x = 30, int y = 0);
+	void print();
 	bool checkFullLine();
 	void moveLinesDown(int line);
 	//void moveBlockDownBoard(Block block, int speed);

@@ -104,7 +104,7 @@ bool Shape::moveShapeDown()
 	}
 }
 
-void Shape::moveShapeLeftRight(int key, int playerNum)
+void Shape::moveShapeLeftRight(int key)
 {
 	int offsetX, offsetY;
 	bool cantMove = false;
@@ -119,7 +119,7 @@ void Shape::moveShapeLeftRight(int key, int playerNum)
 	{
 		for (int i = 0; i < 4; i++)
 		{
-			blockArr[i].moveBlockLeftRight(key, playerNum);
+			blockArr[i].moveBlockLeftRight(key, board.playerNum);
 		}
 	}
 	

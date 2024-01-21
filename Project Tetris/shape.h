@@ -25,7 +25,7 @@ public:
 	void print();
 	void moveBy(int x, int y);
 	bool moveShapeDown();
-	void moveShapeLeftRight(int key, int playerNum);
+	void moveShapeLeftRight(int key);
 	void createCordsArr(int positions[8], int anchorX, int anchorY, int x1, int y1, int x2, int y2, int x3, int y3);
 	//void handleInput(int playerNum);
 	void speedUpShape(); //mightDeleteFunction

@@ -45,26 +45,26 @@ void Board::resetBoard()
 //	return *this;
 //}
 
-void Board::print()
-{
-	for (int col = this->X_START; col <= this->X_END; col++) //print ceiling and floor
-	{
-		gotoxy(col, this->Y_START);
-		cout << (char)220;
-
-		gotoxy(col, this->Y_END + 1);
-		cout << (char)223;
-	}
-
-	for (int row = this->Y_START + 1; row <= this->Y_END; row++) //print walls
-	{
-		gotoxy(this->X_START, row);
-		cout << (char)186;
-
-		gotoxy(this->X_END, row);
-		cout << (char)186;
-	}
-}
+//void Board::print()
+//{
+//	for (int col = this->X_START; col <= this->X_END; col++) //print ceiling and floor
+//	{
+//		gotoxy(col, this->Y_START);
+//		cout << (char)220;
+//
+//		gotoxy(col, this->Y_END + 1);
+//		cout << (char)223;
+//	}
+//
+//	for (int row = this->Y_START + 1; row <= this->Y_END; row++) //print walls
+//	{
+//		gotoxy(this->X_START, row);
+//		cout << (char)186;
+//
+//		gotoxy(this->X_END, row);
+//		cout << (char)186;
+//	}
+//} 
 
 bool Board::checkFreeSpaceCoordinates(int freeSpaceX, int freeSpaceY)
 {
@@ -111,12 +111,12 @@ void Board::moveLinesDown(int line)
 	}
 }
 
-void Board::printFreeSpace(int x, int y)
+void Board::print()
 {
 	//gotoxy(x, y);
 	for (int i = 0; i < HEIGHT + 2; i++)
 	{
-		gotoxy(x, y + i);
+		gotoxy(X_START, Y_START + i);
 		for (int j = 0; j < WIDTH + 2; j++)
 		{
 			cout << freeSpace[i][j];

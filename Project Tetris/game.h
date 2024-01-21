@@ -10,17 +10,17 @@ class Board;
 
 class Game
 {
-	Board &boardP1;
-	Shape &shapeP1;
+	Board &boardP1, &boardP2;
+	Shape &shapeP1, &shapeP2;
 	int speed; 
 	bool isGamePaused = false;
 
 public:
-	Game(Board& board1, Shape& shape1, int _speed = 200);
+	Game(Board& board1, Board& board2, Shape& shape1, Shape& shape2, int _speed = 200);
 	int printMenu();
 	void printInstructions();
 	void runGame();
-	int handleInput(int playerNum);
+	int handleInput();
 	void restartGame();
 	void handleMenuInput(char input);
 };

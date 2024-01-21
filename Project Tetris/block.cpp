@@ -87,9 +87,9 @@ bool Block::checkFreeSpaceOffset(int offsetX, int offsetY, Board& playerBoard)
 
 void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY)
 {
-	if (key == (char)GameConfig::Lkeys::LEFT)
+	if (key == (char)GameConfig::Lkeys::LEFT || key == (char)GameConfig::Rkeys::LEFT)
 		offsetX = -1; offsetY = 0;
-	if (key == (char)GameConfig::Lkeys::RIGHT)
+	if (key == (char)GameConfig::Lkeys::RIGHT || key == (char)GameConfig::Rkeys::RIGHT)
 		offsetX = 1; offsetY = 0;
 }
 
