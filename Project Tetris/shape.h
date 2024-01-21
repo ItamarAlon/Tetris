@@ -1,6 +1,7 @@
 #pragma once
 #include "Block.h"
 #include "Board.h"
+#include "game.h"
 
 //class Block;
 //class Board;
@@ -16,6 +17,7 @@ class Shape
 	Shapes shape;
 public:
 	Shape(Board& _board, char ch = -2);
+	//Shape& operator=(const Shape& newShape);
 	void setShape(char ch = -2);
 	void randomShape(int positions[8]);
 	void print();
@@ -23,8 +25,8 @@ public:
 	bool moveShapeDown();
 	void moveShapeLeftRight(int key, int playerNum);
 	void createCordsArr(int positions[8], int anchorX, int anchorY, int x1, int y1, int x2, int y2, int x3, int y3);
-	void handleInput(int playerNum);
-	void moveShapeToBottom();
+	//void handleInput(int playerNum);
+	void speedUpShape(); //mightDeleteFunction
 	void rotateShape(char key);
 	void changeShapePosition(int positions[8]);
 	int getNextOrientation(int key);

@@ -5,6 +5,13 @@ Shape::Shape(Board& _board, char ch) : board(_board)
 	setShape(ch);
 }
 
+//Shape& Shape::operator=(const Shape& newShape)
+//{
+//	this->board = newShape.board;
+//
+//	return *this;
+//}
+
 void Shape::setShape(char ch)
 {
 	int positions[8] = {};
@@ -18,11 +25,12 @@ void Shape::setShape(char ch)
 	}
 }
 
-void Shape::randomShape(int positions[8]) {
-	srand(time(nullptr));
+void Shape::randomShape(int positions[8]) 
+{
+	//srand(time(nullptr));
 	int anchorX = board.X_START + board.WIDTH / 2, anchorY = board.Y_START + 1;
-	//shape = (Shapes)(rand() % 7);
-	shape = (Shapes)(0);
+	shape = (Shapes)(rand() % 7);
+	//shape = (Shapes)(0);
 	switch (shape) 
 	{
 	case Shapes::I: 
@@ -77,7 +85,7 @@ void Shape::moveBy(int x, int y)
 bool Shape::moveShapeDown()
 {
 	bool cantMove = false;
-	handleInput(board.playerNum);
+	//handleInput(board.playerNum);
 	for (int i = 0; i < 4; i++)
 	{
 		if (blockArr[i].checkFreeSpaceOffset(0, 1, board) == true)
@@ -130,47 +138,50 @@ void Shape::createCordsArr(int positions[8], int anchorX, int anchorY, int x1, i
 	positions[7] = anchorY + y3;
 }
 
-void Shape::handleInput(int playerNum)
-{
-	if (_kbhit())
-	{
-		char key = _getch();
-		switch (key)
-		{
-		case (char)GameConfig::Lkeys::LEFT:
-		case (char)GameConfig::Lkeys::RIGHT:
-			moveShapeLeftRight(key, playerNum);
-			break;
-		case (char)GameConfig::Lkeys::ESC:
-			//Game::printMenu(true);
-			break;
-		case (char)GameConfig::Lkeys::DOWN:
-			moveShapeToBottom();
-			break;
-		case (char)GameConfig::Lkeys::CLOCKWISE:
-		case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
-			rotateShape(key);
-			break;
-		}
-	}
-}
+//void Shape::handleInput(int playerNum)
+//{
+//	if (_kbhit())
+//	{
+//		char key = _getch();
+//		switch (key)
+//		{
+//		case (char)GameConfig::Lkeys::LEFT:
+//		case (char)GameConfig::Lkeys::RIGHT:
+//			moveShapeLeftRight(key, playerNum);
+//			break;
+//		case (char)GameConfig::Lkeys::ESC:
+//			Game::printMenu(true);
+//			break;
+//		case (char)GameConfig::Lkeys::DOWN:
+//			moveShapeToBottom();
+//			break;
+//		case (char)GameConfig::Lkeys::CLOCKWISE:
+//		case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
+//			rotateShape(key);
+//			break;
+//		}
+//	}
+//}
 
-void Shape::moveShapeToBottom()
+void Shape::speedUpShape()
 {
-	int j, minDistance = board.HEIGHT + 10;
+	bool cantMove = false;
 	//int freeSpaceX, freeSpaceY;
 	for (int i = 0; i < 4; i++)
 	{
-		//blockArr[i].getFreeSpaceXY(board, freeSpaceX, freeSpaceY);
-		j = board.HEIGHT;
-		while (blockArr[i].checkFreeSpaceOffset(0, j, board) == false)
-			j--;
-		if (j < minDistance)
-			minDistance = j;
+		if (blockArr[i].checkFreeSpaceOffset(0, 2, board) == true)
+		{
+			cantMove = true;
+			break;
+		}
 	}
-	moveBy(0, minDistance);
-	print();
-}
+
+	if (!cantMove)
+	{
+		moveBy(0, 2);
+		print();
+	}
+} //Might delete function
 
 void Shape::rotateShape(char key)
 { 

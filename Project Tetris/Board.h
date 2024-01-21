@@ -30,7 +30,8 @@ public:
 	const int playerNum;
 
 	Board(int x = 30, int y = 0, int _playerNum = 1);
-	//void resetBoard();
+	//Board& operator=(const Board& newBoard);
+	void resetBoard();
 	void print();
 	bool checkFreeSpaceCoordinates(int freeSpaceX, int freeSpaceY);
 	void printFreeSpace(int x = 30, int y = 0);

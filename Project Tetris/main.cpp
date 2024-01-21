@@ -7,35 +7,16 @@
 
 void main()
 {
+	srand(time(nullptr));
 	Board board;
-	////board.printFreeSpace(0,0);
-	bool shapeP1 = true;
 	Shape s(board);
-	bool isDeleted=false;
 	Game game(board, s);
 
 
-	board.print();
-	board.printFreeSpace();
-	while (true)
-	{
-		shapeP1 = s.moveShapeDown();
-		Sleep(200);
-		if (shapeP1 == false)
-		{
-			//board.printFreeSpace(0, 0);
-			s.setShape(254);
-			isDeleted = board.checkFullLine();
-			//board.print();
-			if (isDeleted)
-			{
-				board.printFreeSpace();
-				isDeleted = false;
-			}
-		}
-	}
+	//game.runGame();
+
 	
-	//int menuInput = game.printMenu(false);
+	game.printMenu();
 	//switch (menuInput)
 	//{
 	//case 1:

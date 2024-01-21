@@ -1,17 +1,27 @@
 ﻿#include "Board.h"
 
-//void Board::resetBoard() {
-//	int i, j;
-//	for (i = 1; i < 11; i++) {
-//		for (j = 1; j < 21; j++) {
-//			this->freeSpace[i][j] = true;
-//
-//		}
-//	}
-//}
 Board::Board(int x, int y, int _playerNum) :X_START(x), Y_START(y), playerNum(_playerNum)
 {
-	for (int i = 1; i < HEIGHT+1; i++)
+	//for (int i = 1; i < HEIGHT+1; i++)
+	//{
+	//	freeSpace[i][0] = 186;
+	//	freeSpace[i][WIDTH + 1] = 186;
+	//	for (int j = 1; j < WIDTH + 1; j++)
+	//	{
+	//		this->freeSpace[i][j] = ' ';
+	//	}
+	//}
+	//for (int i = 0; i < WIDTH + 2; i++)
+	//{
+	//	this->freeSpace[0][i] = 220; 
+	//	this->freeSpace[HEIGHT + 1][i] = 223; 
+	//}
+	resetBoard();
+}
+
+void Board::resetBoard() 
+{
+	for (int i = 1; i < HEIGHT + 1; i++)
 	{
 		freeSpace[i][0] = 186;
 		freeSpace[i][WIDTH + 1] = 186;
@@ -22,18 +32,18 @@ Board::Board(int x, int y, int _playerNum) :X_START(x), Y_START(y), playerNum(_p
 	}
 	for (int i = 0; i < WIDTH + 2; i++)
 	{
-		this->freeSpace[0][i] = 220; 
-		this->freeSpace[HEIGHT + 1][i] = 223; 
+		this->freeSpace[0][i] = 220;
+		this->freeSpace[HEIGHT + 1][i] = 223;
 	}
-
-
-	//for (int i = 1; i < WIDTH; i++) {
-	//	for (int j = 1; j < HEIGHT + 1; j++) {
-	//		this->freeSpace[i][j] = true;
-
-	//	}
-	//}
 }
+
+//Board& Board::operator=(const Board& newBoard)
+//{
+//	this->X_START = newBoard.X_START;
+//	this->Y_START = newBoard.Y_START;
+//	this->playerNum = newBoard.playerNum;
+//	return *this;
+//}
 
 void Board::print()
 {
