@@ -249,7 +249,7 @@ void Shape::changeShapePosition(int positions[8])
 	bool cantMove = false;
 	for (int i = 1; i < 4; i++)
 	{
-		if (board.checkFreeSpaceCoordinates(positions[i * 2] - board.X_START, positions[i * 2 + 1] - board.Y_START) == true)
+		if (board.isSpaceTaken(positions[i * 2] - board.X_START, positions[i * 2 + 1] - board.Y_START) == true)
 			cantMove = true;
 		//if (blockArr[i].checkFreeSpaceOffset(positions[i * 2], positions[i * 2 + 1], board) == true)
 		//	cantMove = true;

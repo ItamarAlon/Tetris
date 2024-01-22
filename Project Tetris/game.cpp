@@ -68,6 +68,17 @@ void Game::runGame()
 		shapeP2.IsShapeInAir = shapeP2.moveShapeDown();
 		Sleep(speed);
 
+		boardP1.isFull();
+		boardP2.isFull();
+
+		if (boardP1.isBoardFull || boardP2.isBoardFull)
+			break;
+		//gotoxy(0, 0);
+		//if (boardP2.isFull())
+		//	cout << "taken";
+		//else
+		//	cout << "not taken";
+
 		if (shapeP1.IsShapeInAir == false)
 		{
 			shapeP1.setShape();
@@ -89,6 +100,13 @@ void Game::runGame()
 				boardP2.isLineDeleted = false;
 			}
 		}
+		
+	}
+
+
+	if (input != 9)
+	{
+		decideWinner();
 	}
 }
 
@@ -165,4 +183,30 @@ void Game::handleMenuInput(char input)
 		clrscr();
 		cout << "Thanks for Playing!" << endl;
 	}
+}
+
+void Game::decideWinner()
+{
+	int winner;
+	if (boardP1.isBoardFull && !boardP2.isBoardFull)
+		winner = boardP2.playerNum;
+	else if (!boardP1.isBoardFull && boardP2.isBoardFull)
+		winner = boardP1.playerNum;
+	else
+		winner = TIE;
+
+
+	Sleep(200);
+	clrscr();
+	if (winner != TIE)
+		cout << "Player #" << winner << " is the winner! Congratulations player #" << winner << "!" << endl;
+	else
+		cout << "The game ended in a tie. Wow!" << endl;
+	cout << "Good Game everyone! Hope to see you all in another game!" << endl << endl;
+	cout << "Press any key to return to the main menu";
+
+	Sleep(200);
+	while (!_kbhit()) {}
+	isGamePaused = false;
+	printMenu();
 }

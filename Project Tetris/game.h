@@ -5,6 +5,7 @@
 #include "Board.h"
 
 //class Block;
+#define TIE -1
 class Shape;
 class Board;
 
@@ -23,5 +24,6 @@ public:
 	int handleInput();
 	void restartGame();
 	void handleMenuInput(char input);
+	void decideWinner();
 };
 

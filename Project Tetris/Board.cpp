@@ -2,20 +2,6 @@
 
 Board::Board(int x, int y, int _playerNum) :X_START(x), Y_START(y), playerNum(_playerNum)
 {
-	//for (int i = 1; i < HEIGHT+1; i++)
-	//{
-	//	freeSpace[i][0] = 186;
-	//	freeSpace[i][WIDTH + 1] = 186;
-	//	for (int j = 1; j < WIDTH + 1; j++)
-	//	{
-	//		this->freeSpace[i][j] = ' ';
-	//	}
-	//}
-	//for (int i = 0; i < WIDTH + 2; i++)
-	//{
-	//	this->freeSpace[0][i] = 220; 
-	//	this->freeSpace[HEIGHT + 1][i] = 223; 
-	//}
 	resetBoard();
 }
 
@@ -66,7 +52,7 @@ void Board::resetBoard()
 //	}
 //} 
 
-bool Board::checkFreeSpaceCoordinates(int freeSpaceX, int freeSpaceY)
+bool Board::isSpaceTaken(int freeSpaceX, int freeSpaceY)
 {
 	if (freeSpace[freeSpaceY][freeSpaceX] != ' ')
 		return true;
@@ -109,6 +95,11 @@ void Board::moveLinesDown(int line)
 		} 
 	
 	}
+}
+
+void Board::isFull()
+{
+	isBoardFull = isSpaceTaken(WIDTH / 2, 1);
 }
 
 void Board::print()

@@ -27,14 +27,16 @@ public:
 
 	const int playerNum;
 	bool isLineDeleted = false;
+	bool isBoardFull = false;
 
 	Board(int x, int y, int _playerNum = 1);
 	//Board& operator=(const Board& newBoard);
 	void resetBoard();
 	//void print();
-	bool checkFreeSpaceCoordinates(int freeSpaceX, int freeSpaceY);
+	bool isSpaceTaken(int freeSpaceX, int freeSpaceY);
 	void print();
 	bool checkFullLine();
 	void moveLinesDown(int line);
+	void isFull();
 	//void moveBlockDownBoard(Block block, int speed);
 };
