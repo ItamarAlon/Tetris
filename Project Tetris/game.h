@@ -23,7 +23,7 @@ public:
 	void runGame();
 	int handleInput();
 	void restartGame();
-	void handleMenuInput(char input);
+	void handleMenuInput(int& input);
 	void decideWinner();
 };
 

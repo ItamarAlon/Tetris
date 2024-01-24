@@ -1,6 +1,9 @@
 #pragma once
 #include "Libraries.h"
 
+#define BOARD_WIDTH 12
+#define BOARD_HEIGHT 18
+
 class GameConfig
 {
 public:

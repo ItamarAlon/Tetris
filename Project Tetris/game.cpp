@@ -7,27 +7,29 @@ Game::Game(Board& board1, Board& board2, Shape& shape1, Shape& shape2, int _spee
 
 int Game::printMenu()
 {
-	clrscr();
-	cout << "Welcome to Tetris! Pick one of the options below:\n\n";
-	cout << "(1) Start a new Game" << endl;
-	if (isGamePaused)
-		cout << "(2) Continue a paused game" << endl;
-	cout << "(8) Present instructions and keys" << endl;
-	cout << "(9) EXIT" << endl;
-
-	int input;
-	cin >> input;
-
-	if ((input != 1 && input != 8 && input != 9 && input != 2) || (input == 2 && !isGamePaused))
+	//clrscr();
+	int input = -1;
+	while ((input != 1 && input != 8 && input != 9 && input != 2) || (input == 2 && !isGamePaused))
 	{
 		clrscr();
-		cout << "Invalid input. Try again";
-		Sleep(1100);
-		return printMenu();
-	}
+		cout << "Welcome to Tetris! Pick one of the options below:\n\n";
+		cout << "(1) Start a new Game" << endl;
+		if (isGamePaused)
+			cout << "(2) Continue a paused game" << endl;
+		cout << "(8) Present instructions and keys" << endl;
+		cout << "(9) EXIT" << endl;
 
-	clrscr();
-	handleMenuInput(input);
+		cin >> input;
+		if ((input != 1 && input != 8 && input != 9 && input != 2) || (input == 2 && !isGamePaused))
+		{
+			clrscr();
+			cout << "Invalid input. Try again";
+			Sleep(1100);
+		}
+		else
+			handleMenuInput(input);
+	}
+	//handleMenuInput(input);
 	return input;
 }
 
@@ -49,17 +51,19 @@ void Game::printInstructions()
 
 	cout << "\n\nPress any key to return to main menu.";
 
+	//cin >> new char();
 	while (!_kbhit()){}
-	printMenu();
 }
 
 void Game::runGame()
 {
-	int input;
+	//bool continueGame = true;
+	clrscr();
+	int input = -2;
 
 	boardP1.print();
 	boardP2.print();
-	while (true)
+	while (input == -2)
 	{
 		input = handleInput();
 		if (input == 9)
@@ -147,13 +151,14 @@ int Game::handleInput()
 
 		case (char)GameConfig::Lkeys::ESC:
 			isGamePaused = true;
-			menuInput = printMenu();
+			return 9;
+		//	menuInput = printMenu();
 			break;
 		default:
 			break;
 		}
 	}
-	return menuInput;
+	return -2;
 }
 
 void Game::restartGame()
@@ -165,19 +170,23 @@ void Game::restartGame()
 	shapeP2.setShape();
 }
 
-void Game::handleMenuInput(char input)
+void Game::handleMenuInput(int& input)
 {
 	switch (input)
 	{
 	case 1:
-		restartGame();
+		if (isGamePaused) //might delete later
+			restartGame();
 		runGame();
+		input = -1;
 		break;
 	case 2:
 		runGame();
+		input = -1;
 		break;
 	case 8:
 		printInstructions();
+		input = -1;
 		break;
 	case 9:
 		clrscr();
