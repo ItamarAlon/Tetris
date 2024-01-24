@@ -97,9 +97,9 @@ void Board::moveLinesDown(int line)
 	}
 }
 
-void Board::isFull()
+void Board::updateIsFull()
 {
-	isBoardFull = isSpaceTaken(WIDTH / 2, 1);
+	isFull = isSpaceTaken(WIDTH / 2, 1);
 }
 
 void Board::print()

@@ -3,3 +3,4 @@
 
 void gotoxy(int, int);
 void clrscr();
+void ShowConsoleCursor(bool showFlag);

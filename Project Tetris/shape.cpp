@@ -5,13 +5,6 @@ Shape::Shape(Board& _board, char ch) : board(_board)
 	setShape(ch);
 }
 
-//Shape& Shape::operator=(const Shape& newShape)
-//{
-//	this->board = newShape.board;
-//
-//	return *this;
-//}
-
 void Shape::setShape(char ch)
 {
 	int positions[8] = {};
@@ -136,31 +129,6 @@ void Shape::createCordsArr(int positions[8], int anchorX, int anchorY, int x1, i
 	positions[6] = anchorX + x3;
 	positions[7] = anchorY + y3;
 }
-
-//void Shape::handleInput(int playerNum)
-//{
-//	if (_kbhit())
-//	{
-//		char key = _getch();
-//		switch (key)
-//		{
-//		case (char)GameConfig::Lkeys::LEFT:
-//		case (char)GameConfig::Lkeys::RIGHT:
-//			moveShapeLeftRight(key, playerNum);
-//			break;
-//		case (char)GameConfig::Lkeys::ESC:
-//			Game::printMenu(true);
-//			break;
-//		case (char)GameConfig::Lkeys::DOWN:
-//			moveShapeToBottom();
-//			break;
-//		case (char)GameConfig::Lkeys::CLOCKWISE:
-//		case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
-//			rotateShape(key);
-//			break;
-//		}
-//	}
-//}
 
 void Shape::speedUpShape()
 {

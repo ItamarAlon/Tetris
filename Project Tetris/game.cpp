@@ -5,12 +5,14 @@ Game::Game(Board& board1, Board& board2, Shape& shape1, Shape& shape2, int _spee
 	
 }
 
-int Game::printMenu()
+void Game::printMenu()
 {
-	//clrscr();
-	int input = -1;
-	while ((input != 1 && input != 8 && input != 9 && input != 2) || (input == 2 && !isGamePaused))
+	int input;
+	bool continueLoop = true;
+
+	while (continueLoop)
 	{
+		ShowConsoleCursor(true);
 		clrscr();
 		cout << "Welcome to Tetris! Pick one of the options below:\n\n";
 		cout << "(1) Start a new Game" << endl;
@@ -27,10 +29,9 @@ int Game::printMenu()
 			Sleep(1100);
 		}
 		else
-			handleMenuInput(input);
+			continueLoop = handleMenuInput(input);
 	}
-	//handleMenuInput(input);
-	return input;
+
 }
 
 void Game::printInstructions()
@@ -45,43 +46,39 @@ void Game::printInstructions()
 	cout << "In Tetris, the primary objective is to manipulate falling geometric shapes, called tetrominoes, to\ncreate complete horizontal rows. The game continues until the stack of tetrominoes reaches the top of the screen.\n\n";
 
 	cout << "How to Play:" << endl;
-	cout << boldStart << "Shape Manipulation: " << boldEnd << "Use 'A' and 'D' keys to move the tetrominoes left or right. The 'X' key accelerates their descent.\n'S' and 'W' keys rotate the shapes clockwise or counterclockwise, respectively." << endl;
+	cout << boldStart << "Shape Manipulation: " << boldEnd << "Use the 'A' and 'D' keys to move the tetrominoes left or right. The 'X' key accelerates their descent.\n'S' and 'W' keys rotate the shapes clockwise or counterclockwise, respectively." << endl;
 	cout << boldStart << "Clearing Rows: " << boldEnd << "When a horizontal line is filled with blocks, it disappears, and all the lines above it go down" << endl;
 	cout << boldStart << "Game Over: " << boldEnd << "The game ends if the newly spawned tetromino cannot fit due to a lack of space at the top." << endl;
 
 	cout << "\n\nPress any key to return to main menu.";
 
-	//cin >> new char();
 	while (!_kbhit()){}
 }
 
 void Game::runGame()
 {
-	//bool continueGame = true;
-	clrscr();
-	int input = -2;
+	bool goToMenu = false;
+	ShowConsoleCursor(false);
 
+	clrscr();
 	boardP1.print();
 	boardP2.print();
-	while (input == -2)
+
+	while (true)
 	{
-		input = handleInput();
-		if (input == 9)
+		goToMenu = handleInput();
+		if (goToMenu)
 			break;
+
 		shapeP1.IsShapeInAir = shapeP1.moveShapeDown();
 		shapeP2.IsShapeInAir = shapeP2.moveShapeDown();
 		Sleep(speed);
 
-		boardP1.isFull();
-		boardP2.isFull();
+		boardP1.updateIsFull();
+		boardP2.updateIsFull();
 
-		if (boardP1.isBoardFull || boardP2.isBoardFull)
+		if (boardP1.isFull || boardP2.isFull)
 			break;
-		//gotoxy(0, 0);
-		//if (boardP2.isFull())
-		//	cout << "taken";
-		//else
-		//	cout << "not taken";
 
 		if (shapeP1.IsShapeInAir == false)
 		{
@@ -104,19 +101,18 @@ void Game::runGame()
 				boardP2.isLineDeleted = false;
 			}
 		}
+		goToMenu = handleInput();
+		if (goToMenu)
+			break;
 		
 	}
 
-
-	if (input != 9)
-	{
+	if (!goToMenu)
 		decideWinner();
-	}
 }
 
-int Game::handleInput()
+bool Game::handleInput()
 {
-	int menuInput = -394;
 	if (_kbhit())
 	{
 		char key = _getch();
@@ -128,7 +124,7 @@ int Game::handleInput()
 			shapeP1.moveShapeLeftRight(key);
 			break;
 		case (char)GameConfig::Lkeys::DOWN:
-			//shape.speedUpShape();
+			//shapeP1.speedUpShape();
 			shapeP1.moveShapeDown();
 			break;
 		case (char)GameConfig::Lkeys::CLOCKWISE:
@@ -141,7 +137,7 @@ int Game::handleInput()
 			shapeP2.moveShapeLeftRight(key);
 			break;
 		case (char)GameConfig::Rkeys::DOWN:
-			//shape.speedUpShape();
+			//shapeP2.speedUpShape();
 			shapeP2.moveShapeDown();
 			break;
 		case (char)GameConfig::Rkeys::CLOCKWISE:
@@ -151,14 +147,12 @@ int Game::handleInput()
 
 		case (char)GameConfig::Lkeys::ESC:
 			isGamePaused = true;
-			return 9;
-		//	menuInput = printMenu();
-			break;
+			return true;
 		default:
 			break;
 		}
 	}
-	return -2;
+	return false;
 }
 
 void Game::restartGame()
@@ -170,52 +164,53 @@ void Game::restartGame()
 	shapeP2.setShape();
 }
 
-void Game::handleMenuInput(int& input)
+bool Game::handleMenuInput(int input)
 {
 	switch (input)
 	{
 	case 1:
-		if (isGamePaused) //might delete later
+		if (isGamePaused)
 			restartGame();
 		runGame();
-		input = -1;
 		break;
 	case 2:
 		runGame();
-		input = -1;
 		break;
 	case 8:
 		printInstructions();
-		input = -1;
 		break;
 	case 9:
 		clrscr();
 		cout << "Thanks for Playing!" << endl;
 	}
+
+	if (input == 9)
+		return false;
+	return true;
 }
 
 void Game::decideWinner()
 {
 	int winner;
-	if (boardP1.isBoardFull && !boardP2.isBoardFull)
+	if (boardP1.isFull && !boardP2.isFull)
 		winner = boardP2.playerNum;
-	else if (!boardP1.isBoardFull && boardP2.isBoardFull)
+	else if (!boardP1.isFull && boardP2.isFull)
 		winner = boardP1.playerNum;
 	else
 		winner = TIE;
 
-
 	Sleep(200);
 	clrscr();
-	if (winner != TIE)
-		cout << "Player #" << winner << " is the winner! Congratulations player #" << winner << "!" << endl;
-	else
+	if (winner == TIE)
 		cout << "The game ended in a tie. Wow!" << endl;
+	else
+		cout << "Player #" << winner << " is the winner! Congratulations player #" << winner << "!" << endl;
 	cout << "Good Game everyone! Hope to see you all in another game!" << endl << endl;
 	cout << "Press any key to return to the main menu";
 
-	Sleep(200);
+	Sleep(500);
+	ShowConsoleCursor(true);
 	while (!_kbhit()) {}
 	isGamePaused = false;
-	printMenu();
+	restartGame();
 }
