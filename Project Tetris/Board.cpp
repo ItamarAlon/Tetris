@@ -7,99 +7,62 @@ Board::Board(int x, int y, int _playerNum) :X_START(x), Y_START(y), playerNum(_p
 
 void Board::resetBoard() 
 {
-	for (int i = 1; i < HEIGHT + 1; i++)
+	for (int row = 1; row < HEIGHT + 1; row++)
 	{
-		freeSpace[i][0] = 186;
-		freeSpace[i][WIDTH + 1] = 186;
-		for (int j = 1; j < WIDTH + 1; j++)
-		{
-			this->freeSpace[i][j] = ' ';
-		}
+		freeSpace[row][0] = 186;
+		freeSpace[row][WIDTH + 1] = 186; //For the walls of the border, a special char is set (186 in ascii)
+		for (int col = 1; col < WIDTH + 1; col++)
+			this->freeSpace[row][col] = ' '; //And for the rest of the row, ' ' is set (to represent an empty space)
 	}
-	for (int i = 0; i < WIDTH + 2; i++)
+	for (int col = 0; col < WIDTH + 2; col++) //For the roof and ceiling of the border, special chars are set (220 and 223)
 	{
-		this->freeSpace[0][i] = 220;
-		this->freeSpace[HEIGHT + 1][i] = 223;
+		this->freeSpace[0][col] = 220;
+		this->freeSpace[HEIGHT + 1][col] = 223;
 	}
 }
 
-//Board& Board::operator=(const Board& newBoard)
-//{
-//	this->X_START = newBoard.X_START;
-//	this->Y_START = newBoard.Y_START;
-//	this->playerNum = newBoard.playerNum;
-//	return *this;
-//}
-
-//void Board::print()
-//{
-//	for (int col = this->X_START; col <= this->X_END; col++) //print ceiling and floor
-//	{
-//		gotoxy(col, this->Y_START);
-//		cout << (char)220;
-//
-//		gotoxy(col, this->Y_END + 1);
-//		cout << (char)223;
-//	}
-//
-//	for (int row = this->Y_START + 1; row <= this->Y_END; row++) //print walls
-//	{
-//		gotoxy(this->X_START, row);
-//		cout << (char)186;
-//
-//		gotoxy(this->X_END, row);
-//		cout << (char)186;
-//	}
-//} 
-
 bool Board::isSpaceTaken(int freeSpaceX, int freeSpaceY)
 {
-	if (freeSpace[freeSpaceY][freeSpaceX] != ' ')
-		return true;
+	if (freeSpace[freeSpaceY][freeSpaceX] != ' ') 
+		return true; //if the value of freeSpace is ' ', then the space on board is taken. So true is returned
 	return false;
 }
 
 void Board::checkFullLine()
 {
 	bool fullLine, lineDeleted = false;
-	for (int i = HEIGHT; i > 0; i--)
+	for (int row = HEIGHT; row > 0; row--) //The loop starts from the end of the board, where it's most likely that a line will be full of blocks.
 	{
 		fullLine = true;
-		for (int j = 1; j < WIDTH + 1; j++)
+		for (int col = 1; col < WIDTH + 1; col++)
 		{
-			if (freeSpace[i][j] == ' ')
+			if (freeSpace[row][col] == ' ')
 			{
-				fullLine = false;
+				fullLine = false; //If there's a space in the line not taken, then the line if not full. So the for loop stops (as there's no need to check anymore)
 				break;
 			}
 
 		}
-		if (fullLine)
+		if (fullLine) 
 		{
 			lineDeleted = true;
-			moveLinesDown(i);
-			i++;
-
+			moveLinesDown(row); //If a line is full, another function is called to moves all the lines above it 1 place down.
+			row++;
 		}
 	}
-	this->isLineDeleted = lineDeleted;
+	this->isLineDeleted = lineDeleted; //At the end, the "isLineDeleted" boolean is updated
 }
 
 void Board::moveLinesDown(int line)
 {
-	for (int i = line; i > 1;i--) 
-	{
-		for (int j = 0; j < WIDTH+1; j++)
-		{
-			freeSpace[i][j] = freeSpace[i - 1][j];
-		} 
-	
-	}
+	for (int row = line; row > 1; row--)
+		for (int col = 0; col < WIDTH + 1; col++)
+			freeSpace[row][col] = freeSpace[row - 1][col]; //Every space in the freeSpace array is overwritten by the value "above" it
 }
 
 void Board::updateIsFull()
 {
-	isFull = isSpaceTaken(WIDTH / 2, 1);
+	isFull = isSpaceTaken(WIDTH / 2, 1); //The board is full if the space where the tetrominoes are supposed to spawn from, is taken.
 }
 
 bool Board::isBoardFull()
@@ -107,12 +70,12 @@ bool Board::isBoardFull()
 	return isFull;
 }
 
-char Board::getFreeSpaceItem(int x, int y)
+char Board::getFreeSpaceValue(int x, int y)
 {
 	return freeSpace[y][x];
 }
 
-void Board::setFreeSpaceItem(char value, int x, int y)
+void Board::setFreeSpaceValue(char value, int x, int y)
 {
 	freeSpace[y][x] = value;
 }
@@ -124,19 +87,11 @@ int Board::getPlayerNum()
 
 void Board::print()
 {
-	//gotoxy(x, y);
-	for (int i = 0; i < HEIGHT + 2; i++)
+	for (int row = 0; row < HEIGHT + 2; row++)
 	{
-		gotoxy(X_START, Y_START + i);
-		for (int j = 0; j < WIDTH + 2; j++)
-		{
-			cout << freeSpace[i][j];
-			//if (freeSpace[j][i] == true)
-			//	cout << "O";
-			//else
-			//	cout << "X";
-		}
-		//cout << endl;
+		gotoxy(X_START, Y_START + row); //The cursor moves to the coordinates where the board is supposed to start in (which are X_START and Y_START), but "row" spaces down 
+		for (int col = 0; col < WIDTH + 2; col++)
+			cout << freeSpace[row][col];
 	}
 }
 
@@ -160,18 +115,4 @@ int Board::getHeight()
 	return HEIGHT;
 }
 
-//void Board::moveBlockDownBoard(Block block, int speed)
-//{
-//	//block.setCords(X_START + WIDTH / 2, Y_START + 1);
-//	char key;
-//
-//	for (int i = 0; i < HEIGHT - 1; i++)
-//	{
-//		Game::moveBlockLeftRight(block, playerNum);
-//		block.print();
-//		Sleep(speed);
-//		block.moveBy(0, 1);
-//		block.print();
-//	}
-//}
 

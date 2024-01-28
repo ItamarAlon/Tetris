@@ -74,24 +74,24 @@ void Shape::moveBy(int x, int y)
 
 }
 
-bool Shape::moveShapeDown(int byWhat)
+bool Shape::moveShapeDown()
 {
 	bool cantMove = false;
 	for (int i = 0; i < 4; i++)
 	{
-		if (blockArr[i].checkFreeSpaceOffset(0, byWhat, board) == true)
+		if (blockArr[i].checkFreeSpaceOffset(0, 1, board) == true)
 			cantMove = true;
 	}
 	if (cantMove == false)
 	{
-		moveBy(0, byWhat);
+		moveBy(0, 1);
 		print();
 		return true;
 	}
 	else
 	{
 		for (int i = 0; i < 4; i++)
-			board.setFreeSpaceItem(blockArr[i].getChar(), blockArr[i].getX() - board.getXStart(), blockArr[i].getY() - board.getYStart());
+			board.setFreeSpaceValue(blockArr[i].getChar(), blockArr[i].getX() - board.getXStart(), blockArr[i].getY() - board.getYStart());
 			//board.freeSpace[blockArr[i].getY() - board.getYStart()][blockArr[i].getX() - board.getXStart()] = blockArr[i].getChar();
 		return false;
 	}
@@ -234,7 +234,7 @@ int Shape::getNextOrientation(int key)
 {
 	int nextOrientation;
 
-	if (key == (char)GameConfig::P1keys::CLOCKWISE)
+	if (key == (char)GameConfig::Lkeys::CLOCKWISE)
 		nextOrientation = (orientation + 1) % divider;
 	else
 		nextOrientation = orientation - 1;
