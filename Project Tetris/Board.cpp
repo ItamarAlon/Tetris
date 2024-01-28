@@ -59,7 +59,7 @@ bool Board::isSpaceTaken(int freeSpaceX, int freeSpaceY)
 	return false;
 }
 
-bool Board::checkFullLine()
+void Board::checkFullLine()
 {
 	bool fullLine, lineDeleted = false;
 	for (int i = HEIGHT; i > 0; i--)
@@ -82,7 +82,7 @@ bool Board::checkFullLine()
 
 		}
 	}
-	return lineDeleted;
+	this->isLineDeleted = lineDeleted;
 }
 
 void Board::moveLinesDown(int line)
@@ -102,6 +102,26 @@ void Board::updateIsFull()
 	isFull = isSpaceTaken(WIDTH / 2, 1);
 }
 
+bool Board::isBoardFull()
+{
+	return isFull;
+}
+
+char Board::getFreeSpaceItem(int x, int y)
+{
+	return freeSpace[y][x];
+}
+
+void Board::setFreeSpaceItem(char value, int x, int y)
+{
+	freeSpace[y][x] = value;
+}
+
+int Board::getPlayerNum()
+{
+	return playerNum;
+}
+
 void Board::print()
 {
 	//gotoxy(x, y);
@@ -118,6 +138,26 @@ void Board::print()
 		}
 		//cout << endl;
 	}
+}
+
+int Board::getXStart()
+{
+	return X_START;
+}
+
+int Board::getYStart()
+{
+	return Y_START;
+}
+
+int Board::getWidth()
+{
+	return WIDTH;
+}
+
+int Board::getHeight()
+{
+	return HEIGHT;
 }
 
 //void Board::moveBlockDownBoard(Block block, int speed)

@@ -84,13 +84,14 @@ void Game::runGame()
 		boardP1.updateIsFull();
 		boardP2.updateIsFull();
 
-		if (boardP1.isFull || boardP2.isFull)
+		if (boardP1.isBoardFull() || boardP2.isBoardFull())
 			break;
 
 		if (shapeP1.IsShapeInAir == false)
 		{
 			shapeP1.setShape();
-			boardP1.isLineDeleted = boardP1.checkFullLine();
+			boardP1.checkFullLine();
+			//boardP1.isLineDeleted = boardP1.checkFullLine();
 			if (boardP1.isLineDeleted)
 			{
 				boardP1.print();
@@ -101,7 +102,7 @@ void Game::runGame()
 		if (shapeP2.IsShapeInAir == false)
 		{
 			shapeP2.setShape();
-			boardP2.isLineDeleted = boardP2.checkFullLine();
+			boardP2.checkFullLine();
 			if (boardP2.isLineDeleted)
 			{
 				boardP2.print();
@@ -218,10 +219,10 @@ bool Game::handleMenuInput(int input)
 void Game::handleWinner()
 {
 	int winner;
-	if (boardP1.isFull && !boardP2.isFull)
-		winner = boardP2.playerNum;
-	else if (!boardP1.isFull && boardP2.isFull)
-		winner = boardP1.playerNum;
+	if (boardP1.isBoardFull() && !boardP2.isBoardFull())
+		winner = boardP2.getPlayerNum();
+	else if (!boardP1.isBoardFull() && boardP2.isBoardFull())
+		winner = boardP1.getPlayerNum();
 	else
 		winner = TIE;
 

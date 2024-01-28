@@ -130,7 +130,6 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="game.cpp" />
-    <ClCompile Include="gameConfig.cpp" />
     <ClCompile Include="General.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shape.cpp" />

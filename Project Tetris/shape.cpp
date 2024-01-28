@@ -20,7 +20,7 @@ void Shape::setShape(char ch)
 
 void Shape::randomShape(int positions[8]) 
 {
-	int anchorX = board.X_START + board.WIDTH / 2, anchorY = board.Y_START + 1;
+	int anchorX = board.getXStart() + board.getWidth() / 2, anchorY = board.getYStart() + 1;
 	shape = (Shapes)(rand() % 7);
 	//shape = (Shapes)(0);
 	switch (shape) 
@@ -60,7 +60,7 @@ void Shape::print()
 {
 	for (int i = 0; i < 4; i++)
 	{
-		if (blockArr[i].ch != ' ')
+		if (blockArr[i].getChar() != ' ')
 			blockArr[i].print();
 	}
 }
@@ -91,7 +91,8 @@ bool Shape::moveShapeDown(int byWhat)
 	else
 	{
 		for (int i = 0; i < 4; i++)
-			board.freeSpace[blockArr[i].y - board.Y_START][blockArr[i].x - board.X_START] = blockArr[i].ch;
+			board.setFreeSpaceItem(blockArr[i].getChar(), blockArr[i].getX() - board.getXStart(), blockArr[i].getY() - board.getYStart());
+			//board.freeSpace[blockArr[i].getY() - board.getYStart()][blockArr[i].getX() - board.getXStart()] = blockArr[i].getChar();
 		return false;
 	}
 }
@@ -150,7 +151,7 @@ void Shape::createCordsArr(int positions[8], int anchorX, int anchorY, int x1, i
 void Shape::rotateShape(char key)
 { 
 	int positions[8] = {};
-	int anchorX = blockArr[0].x, anchorY = blockArr[0].y;
+	int anchorX = blockArr[0].getX(), anchorY = blockArr[0].getY();
 	int nextOrientation = getNextOrientation(key);
 
 	switch (shape)
@@ -214,7 +215,7 @@ void Shape::changeShapePosition(int positions[8])
 	bool cantMove = false;
 	for (int i = 1; i < 4; i++)
 	{
-		if (board.isSpaceTaken(positions[i * 2] - board.X_START, positions[i * 2 + 1] - board.Y_START) == true)
+		if (board.isSpaceTaken(positions[i * 2] - board.getXStart(), positions[i * 2 + 1] - board.getYStart()) == true)
 			cantMove = true;
 		//if (blockArr[i].checkFreeSpaceOffset(positions[i * 2], positions[i * 2 + 1], board) == true)
 		//	cantMove = true;

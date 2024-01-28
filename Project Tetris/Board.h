@@ -5,33 +5,34 @@
 class GameConfig;
 class Block;
 
-//#define BOARD_WIDTH 10
-//#define BOARD_HEIGHT 20
-
 class Board
 {
-public:
-	const int X_START;
+    const int X_START;
 	const int Y_START;
 
 	const int WIDTH = GameConfig::BOARD_WIDTH;
 	const int HEIGHT = GameConfig::BOARD_HEIGHT;
 
-	const int X_END = X_START + WIDTH;
-	const int Y_END = Y_START + HEIGHT;
-
 	char freeSpace[GameConfig::BOARD_HEIGHT + 2][GameConfig::BOARD_WIDTH + 2];
 
 	const int playerNum;
-	bool isLineDeleted = false;
 	bool isFull = false;
+public:
+	bool isLineDeleted = false;
 
 	Board(int x, int y, int _playerNum = 1);
 	void resetBoard();
 	bool isSpaceTaken(int freeSpaceX, int freeSpaceY);
 	void print();
-	bool checkFullLine();
+	int getXStart();
+	int getYStart();
+	int getWidth();
+	int getHeight();
+	void checkFullLine();
 	void moveLinesDown(int line);
-	void updateIsFull();
-	//void moveBlockDownBoard(Block block, int speed);
+	void updateIsFull(); 
+	bool isBoardFull();
+	char getFreeSpaceItem(int x, int y);
+	void setFreeSpaceItem(char value, int x, int y);
+	int getPlayerNum();
 };

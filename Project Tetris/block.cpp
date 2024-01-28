@@ -27,9 +27,24 @@ void Block::setY(int y)
 	this->y = y;
 }
 
+int Block::getX()
+{
+	return x;
+}
+
+int Block::getY()
+{
+	return y;
+}
+
 void Block::setChar(char ch)
 {
 	this->ch = ch;
+}
+
+char Block::getChar()
+{
+	return ch;
 }
 
 //void Block::moveBlockDownBoard(Board board, int speed)
@@ -65,14 +80,14 @@ bool Block::checkFreeSpaceOffset(int offsetX, int offsetY, Board& playerBoard)
 	int freeSpaceX, freeSpaceY;
 	getFreeSpaceXY(playerBoard, freeSpaceX, freeSpaceY);
 
-	//if (playerBoard.checkFreeSpaceCoordinates(freeSpaceX + offsetX, freeSpaceY) || playerBoard.checkFreeSpaceCoordinates(freeSpaceX, freeSpaceY + offsetY))
+	if (playerBoard.isSpaceTaken(freeSpaceX + offsetX, freeSpaceY) || playerBoard.isSpaceTaken(freeSpaceX, freeSpaceY + offsetY))
+		return true;
+	return false;
+
+	//if (playerBoard.getFreeSpaceItem(freeSpaceX + offsetX, freeSpaceY) != ' ' || playerBoard.getFreeSpaceItem(freeSpaceX, freeSpaceY + offsetY) != ' ')
 	//	return true;
 	//return false;
 
-
-	if (playerBoard.freeSpace[freeSpaceY][freeSpaceX + offsetX] != ' ' || playerBoard.freeSpace[freeSpaceY + offsetY][freeSpaceX] != ' ')
-		return true;
-	return false;
 }
 
 void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY)
@@ -84,10 +99,10 @@ void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY)
 	offsetY = 0;
 }
 
-void Block::getFreeSpaceXY(const Board& playerBoard, int& x, int& y)
+void Block::getFreeSpaceXY(Board& playerBoard, int& x, int& y)
 {
-	x = this->x - playerBoard.X_START;
-	y = this->y - playerBoard.Y_START;
+	x = this->x - playerBoard.getXStart();
+	y = this->y - playerBoard.getYStart();
 }
 
 
