@@ -3,6 +3,6 @@
 #include <conio.h>
 #include <Windows.h>
 #include <process.h>
-#include "General.h"
+#include "general.h"
 #include "gameConfig.h"
 using namespace std;

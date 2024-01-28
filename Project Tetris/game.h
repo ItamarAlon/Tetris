@@ -2,10 +2,10 @@
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
-#include "General.h"
+#include "general.h"
 #include "gameConfig.h"
 #include "shape.h"
-#include "Board.h"
+#include "board.h"
 using namespace std;
 
 

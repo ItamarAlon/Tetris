@@ -1,4 +1,4 @@
-#include "General.h"
+#include "general.h"
 
 void gotoxy(int x, int y)
 {

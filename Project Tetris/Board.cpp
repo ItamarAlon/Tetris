@@ -1,4 +1,4 @@
-﻿#include "Board.h"
+﻿#include "board.h"
 
 Board::Board(int x, int y, int _playerNum) :X_START(x), Y_START(y), playerNum(_playerNum)
 {

@@ -1,6 +1,6 @@
 #pragma once
-#include "General.h"
-#include "Board.h"
+#include "general.h"
+#include "board.h"
 
 class Board;
 

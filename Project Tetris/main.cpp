@@ -1,7 +1,7 @@
 #include "shape.h"
 #include "game.h"
-#include "Block.h"
-#include "Board.h"
+#include "block.h"
+#include "board.h"
 
 void main()
 {
