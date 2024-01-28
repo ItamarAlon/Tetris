@@ -84,10 +84,10 @@ void Game::runGame()
 void Game::runGameForPlayer(Board& board, Shape& shape)
 {
 	//In every frame:
-	shape.IsShapeInAir = shape.moveShapeDown(); //The program moves the shape down the board, and updates whether or not the shape is still on the ground.
+	bool IsShapeInAir = shape.moveShapeDown(); //The program moves the shape down the board, and updates whether or not the shape is still on the ground.
 	board.updateIsFull(); //Function that updates whether the board of the player is full or not
 
-	if (shape.IsShapeInAir == false)
+	if (!IsShapeInAir)
 	{
 		if (board.checkFullLine()) //If the shape landed, the program checks if there are any full lines that were deleted.
 			board.print(); //If there were, it prints the board again (which was updated)

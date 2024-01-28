@@ -16,8 +16,6 @@ class Shape
 	enum class Shapes {I,O,T,S,Z,J,L}; //All the shapes that can appear in game
 	Shapes shape; //The current shape of the tetromino
 public:
-	bool IsShapeInAir = true; //Represents if the shape is yet to land
-
 	Shape(Board& _board, char ch = -2);
 	void setShape(char ch = -2); //Sets a new shape for game
 	void randomShape(int positions[8]); //Receives an array of 4 coordinates on-screen (8 integers), generates a random shape, and updates the array accordingly
