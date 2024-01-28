@@ -53,78 +53,67 @@ void Game::printInstructions()
 void Game::runGame()
 {
 	bool goToMenu = false;
-	ShowConsoleCursor(false);
+	ShowConsoleCursor(false); //During gameplay, we the cursor is turned off to make the game look better
 
 	clrscr();
 	boardP1.print();
 	boardP2.print();
 
-	while (true)
+	while (true) //The game keeps running, until a break happens (we'll see later)
 	{
-		goToMenu = handleInput();
+		goToMenu = handleInput(); //At every frame of the game, the program checks if an input was given (and acts accordingly) using a function. If an input was made to pause the game, the function returns true
 		if (goToMenu)
-			break;
+			break; //In case the player decided to go to the menu, the program exist the while loop
 
-		shapeP1.IsShapeInAir = shapeP1.moveShapeDown();
-		shapeP2.IsShapeInAir = shapeP2.moveShapeDown();
-		Sleep(speed);
+		runGameForPlayer(boardP1, shapeP1); //The program runs the game for each player using a function
+		runGameForPlayer(boardP2, shapeP2); 
+		Sleep(speed); //Sleep is used in every run of the loop to slow the game down
 
-		boardP1.updateIsFull();
-		boardP2.updateIsFull();
+		if (boardP1.isBoardFull() || boardP2.isBoardFull()) 
+			break; //If one of the blocks is full, we exit the loop (because the game ends)
 
-		if (boardP1.isBoardFull() || boardP2.isBoardFull())
-			break;
-
-		if (shapeP1.IsShapeInAir == false)
-		{
-			shapeP1.setShape();
-			boardP1.checkFullLine();
-			if (boardP1.isLineDeleted)
-			{
-				boardP1.print();
-				boardP1.isLineDeleted = false;
-			}
-		}
-
-		if (shapeP2.IsShapeInAir == false)
-		{
-			shapeP2.setShape();
-			boardP2.checkFullLine();
-			if (boardP2.isLineDeleted)
-			{
-				boardP2.print();
-				boardP2.isLineDeleted = false;
-			}
-		}
-		goToMenu = handleInput();
+		goToMenu = handleInput(); //Again the program handles the input after the Sleep to make the game smoother
 		if (goToMenu)
-			break;
-		
+			break;	
 	}
 
-	if (!goToMenu)
+	if (!goToMenu) //After exiting the loop, we check if the player wanted to go to the menu. If he didn't, it means the game ended so the winner is declared. Otherwise, the program exits the function (right back to the menu function)
 		handleWinner();
+}
+
+void Game::runGameForPlayer(Board& board, Shape& shape)
+{
+	//In every frame:
+	shape.IsShapeInAir = shape.moveShapeDown(); //The program moves the shape down the board, and updates whether or not the shape is still on the ground.
+	board.updateIsFull(); //Function that updates whether the board of the player is full or not
+
+	if (shape.IsShapeInAir == false)
+	{
+		if (board.checkFullLine()) //If the shape landed, the program checks if there are any full lines that were deleted.
+			board.print(); //If there were, it prints the board again (which was updated)
+		shape.setShape(); //Then a new Tetromino is set
+	}
 }
 
 bool Game::handleInput()
 {
 	if (_kbhit())
 	{
-		char key = _getch();
+		char key = _getch(); //If a key was pressed, we save it
 
 		switch (key)
 		{
 		case (char)GameConfig::Lkeys::LEFT:
 		case (char)GameConfig::Lkeys::RIGHT:
-			shapeP1.moveShapeLeftRight(key);
+			shapeP1.moveShapeLeftRight(key); //Using a function in case a shape needs to move Left/Right
 			break;
 		case (char)GameConfig::Lkeys::LEFT - 32:
-		case (char)GameConfig::Lkeys::RIGHT - 32:
-			shapeP1.moveShapeLeftRight(key + 32);
+		case (char)GameConfig::Lkeys::RIGHT - 32: 
+			shapeP1.moveShapeLeftRight(key + 32); //In case the uppercase version of the key was received..
 			break;
 		case (char)GameConfig::Lkeys::DOWN:
 		case (char)GameConfig::Lkeys::DOWN - 32:
-			shapeP1.moveShapeDown();
+			shapeP1.moveShapeDown(); //If DOWN was pressed, we need to increase the shape's speed. So we move it down by 1 to mimik the feeling of increased speed
 			break;
 		case (char)GameConfig::Lkeys::CLOCKWISE:
 		case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
@@ -160,13 +149,13 @@ bool Game::handleInput()
 
 
 		case (char)GameConfig::Lkeys::ESC:
-			isGamePaused = true;
-			return true;
+			isGamePaused = true; //If ESC was pressed, the game is paused...
+			return true; //...and true is retured to move out of the endless loop in runGame(), and into the menu function
 		default:
 			break;
 		}
 	}
-	return false;
+	return false; //Otherwise, false is returned so that the loop will continue.
 }
 
 void Game::restartGame()
@@ -180,45 +169,46 @@ void Game::restartGame()
 
 bool Game::handleMenuInput(int input)
 {
-	if ((input != 1 && input != 2 && input != 8 && input != 9) || (input == 2 && !isGamePaused)) //If the input is not valid, an appropriate message is printed, before the menu is printed again
+	if ((input != 1 && input != 2 && input != 8 && input != 9) || (input == 2 && !isGamePaused)) 
 	{
 		clrscr();
-		cout << "Invalid input. Try again";
+		cout << "Invalid input. Try again"; //If the input is not valid, an appropriate message is printed, before the menu is printed again
 		Sleep(1130);
 	}
 	else
-		switch (input)
+		switch (input) //If the input is valid:
 		{
 		case 1:
-			if (isGamePaused)
-				restartGame();
+			if (isGamePaused) 
+				restartGame(); //If 1 was pressed, we restart the game before running it again (only if the game is paused, otherwise there's no need to restart)
 			runGame();
 			break;
 		case 2:
-			runGame();
+			runGame(); //If 2 was pressed, we run the game again. The boards and shapes haven't changed, so the game will continue right where it left off
 			break;
 		case 8:
 			printInstructions();
 			break;
 		case 9:
 			clrscr();
-			cout << "Thanks for Playing!" << endl;
+			cout << "Thanks for Playing!" << endl; //If 9 was pressed, we print a small goodbye message
 		}
 
 	if (input == 9)
-		return false;
+		return false; //false is returned to indicate the program need to print the menu again
 	return true;
 }
 
 void Game::handleWinner()
 {
+	//The programs enter this function only if one of the boards are full.
 	int winner;
 	if (boardP1.isBoardFull() && !boardP2.isBoardFull())
-		winner = boardP2.getPlayerNum();
+		winner = boardP2.getPlayerNum(); 
 	else if (!boardP1.isBoardFull() && boardP2.isBoardFull())
 		winner = boardP1.getPlayerNum();
 	else
-		winner = TIE;
+		winner = TIE; //If both boards are full, the game ends in a tie
 
 	clrscr();
 	if (winner == TIE)
@@ -228,9 +218,9 @@ void Game::handleWinner()
 	cout << "Good Game everyone! Hope to see you all in another game!" << endl << endl;
 	cout << "Press any key to return to the main menu";
 
-	Sleep(800);
+	Sleep(800); //Sleep is used so that the end screen won't end unexpectedly because of a previous input from the game
 	ShowConsoleCursor(true);
 	while (!_kbhit()) {}
-	isGamePaused = false;
-	restartGame();
+	isGamePaused = false; //Now that the game ended, it is not paused anymore
+	restartGame(); //We restart to before starting a new game
 }

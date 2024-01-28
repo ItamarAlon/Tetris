@@ -22,6 +22,7 @@ public:
 	void openMenu();
 	void printInstructions();
 	void runGame(); //Function that runs the game itself, including moving the shapes down, checking for any input from the player, etc..
+	void runGameForPlayer(Board& board, Shape& shape); //Function that runs the game for a specific player (used in runGame() to handle both players)
 	bool handleInput(); //Handles all the input from the keyboard
 	void restartGame(); //Restarts the game that's currently running, in order to start a new game if needed.
 	bool handleMenuInput(int input); //Handles all the input in the menu.

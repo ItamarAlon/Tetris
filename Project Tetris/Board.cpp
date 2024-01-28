@@ -28,7 +28,7 @@ bool Board::isSpaceTaken(int freeSpaceX, int freeSpaceY)
 	return false;
 }
 
-void Board::checkFullLine()
+bool Board::checkFullLine()
 {
 	bool fullLine, lineDeleted = false;
 	for (int row = HEIGHT; row > 0; row--) //The loop starts from the end of the board, where it's most likely that a line will be full of blocks.
@@ -50,7 +50,7 @@ void Board::checkFullLine()
 			row++;
 		}
 	}
-	this->isLineDeleted = lineDeleted; //At the end, the "isLineDeleted" boolean is updated
+	return lineDeleted;
 }
 
 void Board::moveLinesDown(int line)

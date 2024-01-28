@@ -20,7 +20,6 @@ class Board
 	const int playerNum;
 	bool isFull = false; //Tells if the board is full or not.
 public:
-	bool isLineDeleted = false; //Tells if a line was deleted on-screen or not
 
 	Board(int x, int y, int _playerNum);
 	void resetBoard(); //Function that returns the board to it's default form at the start of the game.
@@ -30,7 +29,7 @@ public:
 	int getYStart();
 	int getWidth();
 	int getHeight();
-	void checkFullLine(); //Checks if there is a line full of blocks on the board, and deletes it if there is one, while moving all lines above it down.
+	bool checkFullLine(); //Checks if there is a line full of blocks on the board, and deletes it if there is one, while moving all lines above it down.
 	void moveLinesDown(int line); //Moves all lines down by 1.
 	void updateIsFull(); 
 	bool isBoardFull();

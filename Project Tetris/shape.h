@@ -27,7 +27,7 @@ public:
 	void moveShapeLeftRight(int key); //Moves the shape left/right if possible (according to the input given from the keyboard)
 	void createCordsArr(int positions[8], int anchorX, int anchorY, int x1, int y1, int x2, int y2, int x3, int y3); //Sets new values to an empty positions array
 	void rotateShape(char key); //Rotates the shape (if possible)
-	void changeShapePosition(int positions[8]); //Receives a positions array and moves the blocks of the tetromino to the positions in the given array
+	bool changeShapePosition(int positions[8]); //Receives a positions array and moves the blocks of the tetromino to the positions in the given array
 	int getNextOrientation(int key); //Returns the next orientation of the block (relative to the input from the keyboard)
 
 };

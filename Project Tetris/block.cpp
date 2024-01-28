@@ -65,7 +65,7 @@ void Block::moveBlockLeftRight(char key)
 		moveBy(1, 0);
 }
 
-bool Block::checkFreeSpaceOffset(int offsetX, int offsetY, Board& playerBoard) 
+bool Block::isSpaceTakenOffset(int offsetX, int offsetY, Board& playerBoard) 
 {
 	int freeSpaceX, freeSpaceY;
 	getFreeSpaceXY(playerBoard, freeSpaceX, freeSpaceY); //updates freeSpaceX and freeSpaceY to represnt the cords of the block in the freeSpace array.

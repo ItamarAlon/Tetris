@@ -22,7 +22,7 @@ public:
 	void setChar(char ch);
 	char getChar();
 	void moveBlockLeftRight(char key); //This function moves the block 1 place to the left/right (depending on the input from the keyboard)
-	bool checkFreeSpaceOffset(int offsetX, int offsetY, Board& playerBoard); //This function checks if the space on board, relative to the block's location, is free or not.
+	bool isSpaceTakenOffset(int offsetX, int offsetY, Board& playerBoard); //This function checks if the space on board, relative to the block's location, is free or not.
 	void getOffsetFromInput(char key, int& offsetX, int& offsetY); // This function returns the 2 offset value (relative to the block's location), according to the input taken from the keyboard.
 	void getFreeSpaceXY(Board& playerBoard, int& x, int& y); //This function returns the coordinates of the block in the freeSpace array (from the board class).
 };
