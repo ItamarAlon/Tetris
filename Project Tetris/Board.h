@@ -14,25 +14,20 @@ public:
 	const int X_START;
 	const int Y_START;
 
-	//const int WIDTH = GameConfig::BOARD_WIDTH;
-	//const int HEIGHT = GameConfig::BOARD_HEIGHT;
-
-	const int WIDTH = BOARD_WIDTH;
-	const int HEIGHT = BOARD_HEIGHT;
+	const int WIDTH = GameConfig::BOARD_WIDTH;
+	const int HEIGHT = GameConfig::BOARD_HEIGHT;
 
 	const int X_END = X_START + WIDTH;
 	const int Y_END = Y_START + HEIGHT;
 
-	char freeSpace[BOARD_HEIGHT + 2][BOARD_WIDTH + 2];
+	char freeSpace[GameConfig::BOARD_HEIGHT + 2][GameConfig::BOARD_WIDTH + 2];
 
 	const int playerNum;
 	bool isLineDeleted = false;
 	bool isFull = false;
 
 	Board(int x, int y, int _playerNum = 1);
-	//Board& operator=(const Board& newBoard);
 	void resetBoard();
-	//void print();
 	bool isSpaceTaken(int freeSpaceX, int freeSpaceY);
 	void print();
 	bool checkFullLine();

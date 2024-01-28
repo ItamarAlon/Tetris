@@ -18,7 +18,7 @@ public:
 	void setCords(int x, int y);
 	void setChar(char ch);
 	//void moveBlockDownBoard(Board board, int speed);
-	void moveBlockLeftRight(char key ,int playerNum);
+	void moveBlockLeftRight(char key);
 	bool checkFreeSpaceOffset(int x, int y, Board& playerBoard);
 	void getOffsetFromInput(char key, int& offsetX, int& offsetY);
 	void getFreeSpaceXY(const Board& playerBoard, int& x, int& y);

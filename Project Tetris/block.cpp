@@ -52,22 +52,12 @@ void Block::setCords(int x, int y)
 	setY(y);
 }
 
-void Block::moveBlockLeftRight(char key, int playerNum)
+void Block::moveBlockLeftRight(char key)
 {
-	if (playerNum == 1)
-	{
-		if (key == (char)GameConfig::Lkeys::LEFT)
-			moveBy(-1, 0);
-		else if (key == (char)GameConfig::Lkeys::RIGHT)
-			moveBy(1, 0);
-	}
-	else if (playerNum == 2)
-	{
-		if (key == (char)GameConfig::Rkeys::LEFT)
-			moveBy(-1, 0);
-		else if (key == (char)GameConfig::Rkeys::RIGHT)
-			moveBy(1, 0);
-	}
+	if (key == (char)GameConfig::P1keys::LEFT || key == (char)GameConfig::P2keys::LEFT)
+		moveBy(-1, 0);
+	else if (key == (char)GameConfig::P1keys::RIGHT || key == (char)GameConfig::P2keys::RIGHT)
+		moveBy(1, 0);
 }
 
 bool Block::checkFreeSpaceOffset(int offsetX, int offsetY, Board& playerBoard) 
@@ -87,10 +77,11 @@ bool Block::checkFreeSpaceOffset(int offsetX, int offsetY, Board& playerBoard)
 
 void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY)
 {
-	if (key == (char)GameConfig::Lkeys::LEFT || key == (char)GameConfig::Rkeys::LEFT)
-		offsetX = -1; offsetY = 0;
-	if (key == (char)GameConfig::Lkeys::RIGHT || key == (char)GameConfig::Rkeys::RIGHT)
-		offsetX = 1; offsetY = 0;
+	if (key == (char)GameConfig::P1keys::LEFT || key == (char)GameConfig::P2keys::LEFT)
+		offsetX = -1; 
+	if (key == (char)GameConfig::P1keys::RIGHT || key == (char)GameConfig::P2keys::RIGHT)
+		offsetX = 1; 
+	offsetY = 0;
 }
 
 void Block::getFreeSpaceXY(const Board& playerBoard, int& x, int& y)

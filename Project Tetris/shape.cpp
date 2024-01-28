@@ -74,18 +74,17 @@ void Shape::moveBy(int x, int y)
 
 }
 
-bool Shape::moveShapeDown()
+bool Shape::moveShapeDown(int byWhat)
 {
 	bool cantMove = false;
-	//handleInput(board.playerNum);
 	for (int i = 0; i < 4; i++)
 	{
-		if (blockArr[i].checkFreeSpaceOffset(0, 1, board) == true)
+		if (blockArr[i].checkFreeSpaceOffset(0, byWhat, board) == true)
 			cantMove = true;
 	}
 	if (cantMove == false)
 	{
-		moveBy(0, 1);
+		moveBy(0, byWhat);
 		print();
 		return true;
 	}
@@ -108,12 +107,11 @@ void Shape::moveShapeLeftRight(int key)
 		if (blockArr[i].checkFreeSpaceOffset(offsetX, offsetY, board) == true)
 			cantMove = true;
 	}
-	if (cantMove == false)
+	if (!cantMove)
 	{
 		for (int i = 0; i < 4; i++)
-		{
-			blockArr[i].moveBlockLeftRight(key, board.playerNum);
-		}
+			blockArr[i].moveBlockLeftRight(key);
+		print();
 	}
 	
 }
@@ -130,25 +128,24 @@ void Shape::createCordsArr(int positions[8], int anchorX, int anchorY, int x1, i
 	positions[7] = anchorY + y3;
 }
 
-void Shape::speedUpShape()
-{
-	bool cantMove = false;
-	//int freeSpaceX, freeSpaceY;
-	for (int i = 0; i < 4; i++)
-	{
-		if (blockArr[i].checkFreeSpaceOffset(0, 2, board) == true)
-		{
-			cantMove = true;
-			break;
-		}
-	}
-
-	if (!cantMove)
-	{
-		moveBy(0, 2);
-		print();
-	}
-} //Might delete function
+//void Shape::speedUpShape()
+//{
+//	bool cantMove = false;
+//	for (int i = 0; i < 4; i++)
+//	{
+//		if (blockArr[i].checkFreeSpaceOffset(0, 2, board) == true)
+//		{
+//			cantMove = true;
+//			break;
+//		}
+//	}
+//
+//	if (!cantMove)
+//	{
+//		moveBy(0, 2);
+//		print();
+//	}
+//} //Might delete function
 
 void Shape::rotateShape(char key)
 { 
@@ -236,7 +233,7 @@ int Shape::getNextOrientation(int key)
 {
 	int nextOrientation;
 
-	if (key == (char)GameConfig::Lkeys::CLOCKWISE)
+	if (key == (char)GameConfig::P1keys::CLOCKWISE)
 		nextOrientation = (orientation + 1) % divider;
 	else
 		nextOrientation = orientation - 1;

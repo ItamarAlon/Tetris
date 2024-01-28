@@ -26,3 +26,10 @@ void ShowConsoleCursor(bool showFlag)
 	cursorInfo.bVisible = showFlag; 
 	SetConsoleCursorInfo(out, &cursorInfo);
 }
+
+char getCapital(char ch)
+{
+	if (ch >= 'a' && ch <= 'z')
+		return ch - 32;
+	return ch;
+}

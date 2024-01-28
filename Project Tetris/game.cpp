@@ -5,7 +5,7 @@ Game::Game(Board& board1, Board& board2, Shape& shape1, Shape& shape2, int _spee
 	
 }
 
-void Game::printMenu()
+void Game::openMenu()
 {
 	int input;
 	bool continueLoop = true;
@@ -46,9 +46,16 @@ void Game::printInstructions()
 	cout << "In Tetris, the primary objective is to manipulate falling geometric shapes, called tetrominoes, to\ncreate complete horizontal rows. The game continues until the stack of tetrominoes reaches the top of the screen.\n\n";
 
 	cout << "How to Play:" << endl;
-	cout << boldStart << "Shape Manipulation: " << boldEnd << "Use the 'A' and 'D' keys to move the tetrominoes left or right. The 'X' key accelerates their descent.\n'S' and 'W' keys rotate the shapes clockwise or counterclockwise, respectively." << endl;
-	cout << boldStart << "Clearing Rows: " << boldEnd << "When a horizontal line is filled with blocks, it disappears, and all the lines above it go down" << endl;
-	cout << boldStart << "Game Over: " << boldEnd << "The game ends if the newly spawned tetromino cannot fit due to a lack of space at the top." << endl;
+	cout << boldStart << "Shape Manipulation: " << boldEnd << "The players can move their shape Left/Right, rotate it, and accelerate it's descent.\nSee the Controls section for move info." << endl;
+	cout << boldStart << "Clearing Rows: " << boldEnd << "When a horizontal line is filled with blocks, it disappears, and all the lines above it go down." << endl;
+	cout << boldStart << "Game Over: " << boldEnd << "The game ends when for one of the players, the newly spawned tetromino cannot fit due to a lack of space at the top.\nThe player who achieves that first, loses the game. If both players lose at the same time, the game ends in a tie." << endl << endl;
+	cout << boldStart << "Controls:" << boldEnd << endl;
+	cout << "Move left: '"<< getCapital((char)GameConfig::P1keys::LEFT) <<"' (for Left Player) Or '" << getCapital((char)GameConfig::P2keys::LEFT) << "' (for Right Player)" << endl;
+	cout << "Move right: '" << getCapital((char)GameConfig::P1keys::RIGHT) << "' (for Left Player) Or '" << getCapital((char)GameConfig::P2keys::RIGHT) << "' (for Right Player)" << endl;
+	cout << "Rotate clockwise: '" << getCapital((char)GameConfig::P1keys::CLOCKWISE) << "' (for Left Player) Or '" << getCapital((char)GameConfig::P2keys::CLOCKWISE) << "' (for Right Player)" << endl;
+	cout << "Rotate counterclockwise: '" << getCapital((char)GameConfig::P1keys::COUNTER_CLOCKWISE) << "' (for Left Player) Or '" << getCapital((char)GameConfig::P2keys::COUNTER_CLOCKWISE) << "' (for Right Player)" << endl;
+	cout << "Accelerate shape: '" << getCapital((char)GameConfig::P1keys::DOWN) << "' (for Left Player) Or '" << getCapital((char)GameConfig::P2keys::DOWN) << "' (for Right Player)" << endl;
+	cout << "*Both lowercase and uppercase letters should work" << endl;
 
 	cout << "\n\nPress any key to return to main menu.";
 
@@ -108,7 +115,7 @@ void Game::runGame()
 	}
 
 	if (!goToMenu)
-		decideWinner();
+		handleWinner();
 }
 
 bool Game::handleInput()
@@ -119,33 +126,52 @@ bool Game::handleInput()
 
 		switch (key)
 		{
-		case (char)GameConfig::Lkeys::LEFT:
-		case (char)GameConfig::Lkeys::RIGHT:
+		case (char)GameConfig::P1keys::LEFT:
+		case (char)GameConfig::P1keys::RIGHT:
 			shapeP1.moveShapeLeftRight(key);
 			break;
-		case (char)GameConfig::Lkeys::DOWN:
-			//shapeP1.speedUpShape();
+		case (char)GameConfig::P1keys::LEFT - 32:
+		case (char)GameConfig::P1keys::RIGHT - 32:
+			shapeP1.moveShapeLeftRight(key + 32);
+			break;
+		case (char)GameConfig::P1keys::DOWN:
+		case (char)GameConfig::P1keys::DOWN - 32:
 			shapeP1.moveShapeDown();
 			break;
-		case (char)GameConfig::Lkeys::CLOCKWISE:
-		case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
+		case (char)GameConfig::P1keys::CLOCKWISE:
+		case (char)GameConfig::P1keys::COUNTER_CLOCKWISE:
 			shapeP1.rotateShape(key);
 			break;
+		case (char)GameConfig::P1keys::CLOCKWISE - 32:
+		case (char)GameConfig::P1keys::COUNTER_CLOCKWISE - 32:
+			shapeP1.rotateShape(key + 32);
+			break;
 
-		case (char)GameConfig::Rkeys::LEFT:
-		case (char)GameConfig::Rkeys::RIGHT:
+
+
+		case (char)GameConfig::P2keys::LEFT:
+		case (char)GameConfig::P2keys::RIGHT:
 			shapeP2.moveShapeLeftRight(key);
 			break;
-		case (char)GameConfig::Rkeys::DOWN:
-			//shapeP2.speedUpShape();
+		case (char)GameConfig::P2keys::LEFT - 32:
+		case (char)GameConfig::P2keys::RIGHT - 32:
+			shapeP2.moveShapeLeftRight(key + 32);
+			break;
+		case (char)GameConfig::P2keys::DOWN:
+		case (char)GameConfig::P2keys::DOWN - 32:
 			shapeP2.moveShapeDown();
 			break;
-		case (char)GameConfig::Rkeys::CLOCKWISE:
-		case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE:
+		case (char)GameConfig::P2keys::CLOCKWISE:
+		case (char)GameConfig::P2keys::COUNTER_CLOCKWISE:
 			shapeP2.rotateShape(key);
 			break;
+		case (char)GameConfig::P2keys::CLOCKWISE - 32:
+		case (char)GameConfig::P2keys::COUNTER_CLOCKWISE - 32:
+			shapeP2.rotateShape(key + 32);
+			break;
 
-		case (char)GameConfig::Lkeys::ESC:
+
+		case (char)GameConfig::P1keys::ESC:
 			isGamePaused = true;
 			return true;
 		default:
@@ -189,7 +215,7 @@ bool Game::handleMenuInput(int input)
 	return true;
 }
 
-void Game::decideWinner()
+void Game::handleWinner()
 {
 	int winner;
 	if (boardP1.isFull && !boardP2.isFull)
@@ -199,7 +225,6 @@ void Game::decideWinner()
 	else
 		winner = TIE;
 
-	Sleep(200);
 	clrscr();
 	if (winner == TIE)
 		cout << "The game ended in a tie. Wow!" << endl;
@@ -208,7 +233,7 @@ void Game::decideWinner()
 	cout << "Good Game everyone! Hope to see you all in another game!" << endl << endl;
 	cout << "Press any key to return to the main menu";
 
-	Sleep(500);
+	Sleep(800);
 	ShowConsoleCursor(true);
 	while (!_kbhit()) {}
 	isGamePaused = false;

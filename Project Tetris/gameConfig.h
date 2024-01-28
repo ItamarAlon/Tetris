@@ -1,15 +1,13 @@
 #pragma once
 #include "Libraries.h"
 
-#define BOARD_WIDTH 12
-#define BOARD_HEIGHT 18
 
 class GameConfig
 {
 public:
-	enum class Lkeys { LEFT = 'a', RIGHT = 'd', CLOCKWISE = 's', COUNTER_CLOCKWISE = 'w', ESC = 27, DOWN = 'x' };
-	enum class Rkeys { LEFT = 'j', RIGHT = 'l', CLOCKWISE = 'k', COUNTER_CLOCKWISE = 'i', ESC = 27, DOWN = 'm' };
-	//static constexpr int BOARD_WIDTH = 11;
-	//static constexpr int BOARD_HEIGHT = 20; //Change dimentions later
+	enum class P1keys { LEFT = 'a', RIGHT = 'd', CLOCKWISE = 's', COUNTER_CLOCKWISE = 'w', ESC = 27, DOWN = 'x'};
+	enum class P2keys { LEFT = 'j', RIGHT = 'l', CLOCKWISE = 'k', COUNTER_CLOCKWISE = 'i', DOWN = 'm' };
+	static constexpr int BOARD_WIDTH = 12;
+	static constexpr int BOARD_HEIGHT = 18; 
 };
 

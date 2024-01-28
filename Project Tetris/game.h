@@ -18,12 +18,12 @@ class Game
 
 public:
 	Game(Board& board1, Board& board2, Shape& shape1, Shape& shape2, int _speed = 200);
-	void printMenu();
+	void openMenu();
 	void printInstructions();
 	void runGame();
 	bool handleInput();
 	void restartGame();
 	bool handleMenuInput(int input);
-	void decideWinner();
+	void handleWinner();
 };
 
