@@ -1,5 +1,9 @@
 #pragma once
-#include "Libraries.h"
+#include <iostream>
+#include <conio.h>
+#include <Windows.h>
+#include <process.h>
+using namespace std;
 
 void gotoxy(int, int); //Function that moves the cursor to specific coordinates on-screen
 void clrscr(); //Clears the entire screen.

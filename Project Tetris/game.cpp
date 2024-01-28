@@ -47,7 +47,7 @@ void Game::printInstructions()
 
 	cout << "\n\nPress any key to return to main menu.";
 
-	while (!_kbhit()){} //The program waits until a key is pressed, before exiting the function
+	_getch(); //The program waits until a key is pressed, before exiting the function
 }
 
 void Game::runGame()
@@ -218,9 +218,9 @@ void Game::handleWinner()
 	cout << "Good Game everyone! Hope to see you all in another game!" << endl << endl;
 	cout << "Press any key to return to the main menu";
 
-	Sleep(800); //Sleep is used so that the end screen won't end unexpectedly because of a previous input from the game
+	Sleep(850); //Sleep is used so that the end screen won't end unexpectedly because of a previous input from the game
 	ShowConsoleCursor(true);
-	while (!_kbhit()) {}
+	_getch();
 	isGamePaused = false; //Now that the game ended, it is not paused anymore
 	restartGame(); //We restart to before starting a new game
 }

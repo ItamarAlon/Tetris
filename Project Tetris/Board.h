@@ -1,5 +1,5 @@
 #pragma once
-#include "Libraries.h"
+#include "General.h"
 #include "gameConfig.h"
 
 class GameConfig;

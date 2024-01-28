@@ -1,8 +1,13 @@
 #pragma once
-#include "Libraries.h"
-
+#include <iostream>
+#include <conio.h>
+#include <Windows.h>
+#include "General.h"
+#include "gameConfig.h"
 #include "shape.h"
 #include "Board.h"
+using namespace std;
+
 
 //class Block;
 #define TIE -1

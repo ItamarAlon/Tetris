@@ -1,5 +1,9 @@
 #pragma once
-#include "Libraries.h"
+#include <iostream>
+#include <conio.h>
+#include <Windows.h>
+#include <process.h>
+#include "General.h"
 
 //All the game configurations
 class GameConfig

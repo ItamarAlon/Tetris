@@ -3,8 +3,6 @@
 #include "Board.h"
 #include "game.h"
 
-//class Block;
-//class Board;
 
 //Class that handles the shapes (tetromino) of the game.
 class Shape
@@ -16,7 +14,7 @@ class Shape
 	enum class Shapes {I,O,T,S,Z,J,L}; //All the shapes that can appear in game
 	Shapes shape; //The current shape of the tetromino
 public:
-	Shape(Board& _board, char ch = -2);
+	Shape(Board& _board, char ch = -2); 
 	void setShape(char ch = -2); //Sets a new shape for game
 	void randomShape(int positions[8]); //Receives an array of 4 coordinates on-screen (8 integers), generates a random shape, and updates the array accordingly
 	void print();
