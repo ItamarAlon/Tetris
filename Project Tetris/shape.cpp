@@ -32,42 +32,45 @@ void Shape::setShape()
 
 void Shape::randomShape(int positions[8]) 
 {
-	//coordinates (on-screen) of the "anchor" block, which is the main block of the shape (all the other block's coordinates are determined by the coordinates of the anchor block)
-	int anchorX = board.getXStart() + board.getWidth() / 2; //the anchor block will always by in the middle of the board (on the X axis)
-	int	anchorY = board.getYStart() + 1;
+	////coordinates (on-screen) of the "anchor" block, which is the main block of the shape (all the other block's coordinates are determined by the coordinates of the anchor block)
+	//int anchorX = board.getXStart() + board.getWidth() / 2; //the anchor block will always by in the middle of the board (on the X axis)
+	//int	anchorY = board.getYStart() + 1;
+	//
+	//shape = (Shapes)(rand() % 7); //generate a random number from 0-6, each represents a different tetromino shape
+	//switch (shape) //the empty positions array given to the function is set by the shape that was generated
+	//{
+	//case Shapes::I: 
+	//	divider = 2;//Another function is used to fill the positions array. The anchor cords will be set in the beginning, and the rest of the integers are offset cords (relative to the anchor itself)
+	//	createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, 2, 0); //For example here, The function receives the anchor cords, and the 3 non-anchor blocks are placed on the left of anchor, the right of anchor, and 2 places to the right of anchor. That creates an I shape.
+	//	break;
+	//case Shapes::O: 
+	//	divider = 1;
+	//	createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, 1, 1);
+	//	break;
+	//case Shapes::T: 
+	//	divider = 4;
+	//	createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 0); 
+	//	break;
+	//case Shapes::S: 
+	//	divider = 2;
+	//	createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 1);
+	//	break;
+	//case Shapes::Z: 
+	//	divider = 2;
+	//	createCordsArr(positions, anchorX, anchorY, -1, 0, 0, 1, 1, 1);
+	//	break;
+	//case Shapes::J: 
+	//	divider = 4;
+	//	createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, 1, 1);
+	//	break;
+	//case Shapes::L: 
+	//	divider = 4;
+	//	createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, -1, 1);
+	//	break;
+	//}
 
 	shape = (Shapes)(rand() % 7); //generate a random number from 0-6, each represents a different tetromino shape
-	switch (shape) //the empty positions array given to the function is set by the shape that was generated
-	{
-	case Shapes::I: 
-		divider = 2;//Another function is used to fill the positions array. The anchor cords will be set in the beginning, and the rest of the integers are offset cords (relative to the anchor itself)
-		createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, 2, 0); //For example here, The function receives the anchor cords, and the 3 non-anchor blocks are placed on the left of anchor, the right of anchor, and 2 places to the right of anchor. That creates an I shape.
-		break;
-	case Shapes::O: 
-		divider = 1;
-		createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, 1, 1);
-		break;
-	case Shapes::T: 
-		divider = 4;
-		createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 0); 
-		break;
-	case Shapes::S: 
-		divider = 2;
-		createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 1);
-		break;
-	case Shapes::Z: 
-		divider = 2;
-		createCordsArr(positions, anchorX, anchorY, -1, 0, 0, 1, 1, 1);
-		break;
-	case Shapes::J: 
-		divider = 4;
-		createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, 1, 1);
-		break;
-	case Shapes::L: 
-		divider = 4;
-		createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, -1, 1);
-		break;
-	}
+	getSpawnCords(positions);
 }
 
 void Shape::print()
@@ -231,7 +234,10 @@ void Shape::rotateShape(char input)
 	}
 
 	if (changeShapePosition(positions)) //A function is used to change the position of all the block according to the positions array. If it succeeds in doing so, it returns true
+	{
+		print();
 		orientation = nextOrientation; //If the Tetromino was rotated, orientation is updated
+	}
 }
 
 bool Shape::changeShapePosition(int positions[8])
@@ -244,10 +250,9 @@ bool Shape::changeShapePosition(int positions[8])
 	}
 	if (!cantMove)
 	{
-		for (int i = 1; i < 4; i++)
+		for (int i = 0; i < 4; i++)
 			blockArr[i].moveTo(positions[i * 2], positions[i * 2 + 1]); //If the shape can move, than we move all blocks to their positions (from the positions array)
-		print();
-		return true; //Because the shape rotated, true is returned
+		return true; //Because the shape changed it's position, true is returned
 	}
 	return false;
 }
@@ -316,6 +321,44 @@ int Shape::getOrientation() const
 int Shape::getDivider() const
 {
 	return divider;
+}
+
+void Shape::getSpawnCords(int positions[8])
+{
+	int anchorX = board.getXStart() + board.getWidth() / 2; //the anchor block will always by in the middle of the board (on the X axis)
+	int	anchorY = board.getYStart() + 1;
+
+	switch (shape) //the empty positions array given to the function is set by the shape that was generated
+	{
+	case Shapes::I:
+		divider = 2;//Another function is used to fill the positions array. The anchor cords will be set in the beginning, and the rest of the integers are offset cords (relative to the anchor itself)
+		createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, 2, 0); //For example here, The function receives the anchor cords, and the 3 non-anchor blocks are placed on the left of anchor, the right of anchor, and 2 places to the right of anchor. That creates an I shape.
+		break;
+	case Shapes::O:
+		divider = 1;
+		createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, 1, 1);
+		break;
+	case Shapes::T:
+		divider = 4;
+		createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 0);
+		break;
+	case Shapes::S:
+		divider = 2;
+		createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 1);
+		break;
+	case Shapes::Z:
+		divider = 2;
+		createCordsArr(positions, anchorX, anchorY, -1, 0, 0, 1, 1, 1);
+		break;
+	case Shapes::J:
+		divider = 4;
+		createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, 1, 1);
+		break;
+	case Shapes::L:
+		divider = 4;
+		createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, -1, 1);
+		break;
+	}
 }
 
 

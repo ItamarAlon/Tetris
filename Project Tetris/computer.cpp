@@ -10,35 +10,44 @@ Computer::Computer(Board& _board, char ch) : Shape(_board, ch)
 
 void Computer::findBestPosition(Position& bestPosition)
 {
-	int score;
-	while (canShapeMove(-1, 0))
+	int score, divider = getDivider();
+	bool canMoveRight = true;
+	int spawnCords[8] = {};
+	for (int i = 0; i < divider; i++)
 	{
-		moveBy(-1, 0);
-		Sleep(300); //temp
-	}
-
-	bool keepScanning = true;
-	while (keepScanning)
-	{
-		teleportToFloor();
-		score = getPositionScore();
-		updatePosition(bestPosition, score);
-
-		Sleep(300); //temp
-		while (!canShapeMove(1, 0)) //What happens when it's blocked
+		while (canShapeMove(-1, 0))
 		{
-			if (getAnchorY() > board.getYStart() + 1)
-				moveBy(0, -1);
-			else
-			{
-				keepScanning = false;
-				break;
-			}
+			moveBy(-1, 0);
 			Sleep(300); //temp
 		}
-		if (keepScanning)
-			moveBy(1, 0);
-		Sleep(300); //temp
+
+		while (canMoveRight)
+		{
+			teleportToFloor();
+			score = getPositionScore();
+			updatePosition(bestPosition, score);
+
+			Sleep(300); //temp
+			while (!canShapeMove(1, 0)) //What happens when it's blocked
+			{
+				if (canShapeMove(0, -1)) //Might need to change later, because can be problematic for certain situations
+					moveBy(0, -1);
+				else
+				{
+					getSpawnCords(spawnCords);
+					changeShapePosition(spawnCords);
+					print(); //temp
+					canMoveRight = false;
+					break;
+				}
+				Sleep(300); //temp
+			}
+			if (canMoveRight)
+				moveBy(1, 0);
+		}
+		moveBy(0, 1);
+		rotateShape((char)GameConfig::Lkeys::CLOCKWISE); //need to work for player 2 later...
+		canMoveRight = true;
 	}
 }
 
@@ -51,7 +60,7 @@ void Computer::updatePosition(Position& bestPosition, int score)
 {
 	if (score > bestPosition.score)
 	{
-		getAnchorXY(bestPosition.anchorX, bestPosition.anchorY);
+		getAnchorXY(bestPosition.anchorX, bestPosition.anchorY); //Might change to FreeSpace cords instead
 		bestPosition.score = score;
 		bestPosition.orientation = getOrientation();
 	}

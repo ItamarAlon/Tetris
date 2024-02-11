@@ -11,6 +11,7 @@ public:
     void findBestPosition(Position& bestPosition);
     int getPositionScore() const;
     void updatePosition(Position& bestPosition, int score);
+   // void moveToStart();
 };
 
 

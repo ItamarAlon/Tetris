@@ -13,6 +13,7 @@ void main()
 	//
 	//game.openMenu();
 
+
 	srand(time(nullptr));
 	Board board(10, 0, 1);
 	Computer AI(board);
@@ -23,5 +24,7 @@ void main()
 	board.print();
 	Position pos;
 	AI.findBestPosition(pos);
+
+	gotoxy(0, board.getHeight() + 2);
 
 }

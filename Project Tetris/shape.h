@@ -7,7 +7,7 @@
 //Class that handles the shapes (tetromino) of the game.
 class Shape
 {
-	Block blockArr[4] = {}; //Each shape is made of 4 blocks. This array represents the blocks that make the tetrominoe.
+	//Block blockArr[4] = {}; //Each shape is made of 4 blocks. This array represents the blocks that make the tetrominoe.
 	//Board &board; //The board where the shape is placed
 	int orientation; //The current orientation of the tetromino (because a shape can rotate during gameplay)
 	int divider; //Number of orientations a shape has
@@ -36,10 +36,12 @@ public:
 	void glueShape();
 
 protected:
+	Block blockArr[4] = {}; //Each shape is made of 4 blocks. This array represents the blocks that make the tetrominoe.
 	Board& board; //The board where the shape is placed
 	void teleportToFloor();
 	int getOrientation() const;
 	int getDivider() const;
+	void getSpawnCords(int positions[8]);
 	//int getShapeType() const;
 
 };
