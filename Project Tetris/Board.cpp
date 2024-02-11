@@ -21,7 +21,7 @@ void Board::resetBoard()
 	}
 }
 
-bool Board::isSpaceTaken(int freeSpaceX, int freeSpaceY)
+bool Board::isSpaceTaken(int freeSpaceX, int freeSpaceY) const
 {
 	if (freeSpace[freeSpaceY][freeSpaceX] != ' ') 
 		return true; //if the value of freeSpace is ' ', then the space on board is taken. So true is returned
@@ -65,12 +65,12 @@ void Board::updateIsFull()
 	isFull = isSpaceTaken(WIDTH / 2, 1); //The board is full if the space where the tetrominoes are supposed to spawn from, is taken.
 }
 
-bool Board::isBoardFull()
+bool Board::isBoardFull() const
 {
 	return isFull;
 }
 
-char Board::getFreeSpaceValue(int x, int y)
+char Board::getFreeSpaceValue(int x, int y) const
 {
 	return freeSpace[y][x];
 }
@@ -80,12 +80,12 @@ void Board::setFreeSpaceValue(char value, int x, int y)
 	freeSpace[y][x] = value;
 }
 
-int Board::getPlayerNum()
+int Board::getPlayerNum() const
 {
 	return playerNum;
 }
 
-void Board::print()
+void Board::print() const
 {
 	for (int row = 0; row < HEIGHT + 2; row++)
 	{
@@ -95,24 +95,30 @@ void Board::print()
 	}
 }
 
-int Board::getXStart()
+int Board::getXStart() const
 {
 	return X_START;
 }
 
-int Board::getYStart()
+int Board::getYStart() const
 {
 	return Y_START;
 }
 
-int Board::getWidth()
+int Board::getWidth() const
 {
 	return WIDTH;
 }
 
-int Board::getHeight()
+int Board::getHeight() const
 {
 	return HEIGHT;
+}
+
+void Board::convertXYToFreeSpaceXY(int x, int y, int& freeSpaceX, int& freeSpaceY)
+{
+	freeSpaceX = x - X_START; //The cords of a block in the freeSpace array is calculated by taking the cords of the block on-screen, and removing the Boards' cords on-screen.
+	freeSpaceY = y - Y_START;
 }
 
 

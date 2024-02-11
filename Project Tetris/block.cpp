@@ -30,12 +30,12 @@ void Block::setY(int y)
 	this->y = y;
 }
 
-int Block::getX()
+int Block::getX() const
 {
 	return x;
 }
 
-int Block::getY()
+int Block::getY() const
 {
 	return y;
 }
@@ -83,10 +83,11 @@ void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY)
 	offsetY = 0; //Either way, the block doesn't change it's height.
 }
 
-void Block::getFreeSpaceXY(Board& playerBoard, int& x, int& y)
+void Block::getFreeSpaceXY(Board& playerBoard, int& freeSpaceX, int& freeSpaceY)
 {
-	x = this->x - playerBoard.getXStart(); //The cords of a block in the freeSpace array is calculated by taking the cords of the block on-screen, and removing the Boards' cords on-screen.
-	y = this->y - playerBoard.getYStart();
+	playerBoard.convertXYToFreeSpaceXY(this->x, this->y, freeSpaceX, freeSpaceY);
+	//x = this->x - playerBoard.getXStart(); //The cords of a block in the freeSpace array is calculated by taking the cords of the block on-screen, and removing the Boards' cords on-screen.
+	//y = this->y - playerBoard.getYStart();
 }
 
 

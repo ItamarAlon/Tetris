@@ -14,11 +14,11 @@ void Game::openMenu()
 		ShowConsoleCursor(true); //In the menu the cursor should appear (as input is received from the player)
 		clrscr();
 		cout << "Welcome to Tetris! Pick one of the options below:\n\n";
-		cout << "(1) Start a new Game" << endl;
+		cout << "("<< (int)GameConfig::menu::HUMANvHUMAN <<") Start a new Game" << endl;
 		if (isGamePaused) 
-			cout << "(2) Continue a paused game" << endl; //This option appears only if the game was paused by the players
-		cout << "(8) Present instructions and keys" << endl;
-		cout << "(9) EXIT" << endl;
+			cout << "(" << (int)GameConfig::menu::PAUSED_GAME << ") Continue a paused game" << endl; //This option appears only if the game was paused by the players
+		cout << "(" << (int)GameConfig::menu::INSTRUCTIONS << ") Present instructions and keys" << endl;
+		cout << "(" << (int)GameConfig::menu::EXIT << ") EXIT" << endl;
 
 		cin >> input;
 		continueLoop = handleMenuInput(input); //A separate function is used to handle the input. The function also returns whether the menu should be printed again or not
@@ -169,7 +169,7 @@ void Game::restartGame()
 
 bool Game::handleMenuInput(int input)
 {
-	if ((input != 1 && input != 2 && input != 8 && input != 9) || (input == 2 && !isGamePaused)) 
+	if ((input != (int)GameConfig::menu::HUMANvHUMAN && input != (int)GameConfig::menu::PAUSED_GAME && input != (int)GameConfig::menu::INSTRUCTIONS && input != (int)GameConfig::menu::EXIT) || (input == (int)GameConfig::menu::PAUSED_GAME && !isGamePaused))
 	{
 		clrscr();
 		cout << "Invalid input. Try again"; //If the input is not valid, an appropriate message is printed, before the menu is printed again
@@ -178,23 +178,23 @@ bool Game::handleMenuInput(int input)
 	else
 		switch (input) //If the input is valid:
 		{
-		case 1:
+		case (int)GameConfig::menu::HUMANvHUMAN:
 			if (isGamePaused) 
 				restartGame(); //If 1 was pressed, we restart the game before running it again (only if the game is paused, otherwise there's no need to restart)
 			runGame();
 			break;
-		case 2:
+		case (int)GameConfig::menu::PAUSED_GAME:
 			runGame(); //If 2 was pressed, we run the game again. The boards and shapes haven't changed, so the game will continue right where it left off
 			break;
-		case 8:
+		case (int)GameConfig::menu::INSTRUCTIONS:
 			printInstructions();
 			break;
-		case 9:
+		case (int)GameConfig::menu::EXIT:
 			clrscr();
 			cout << "Thanks for Playing!" << endl; //If 9 was pressed, we print a small goodbye message
 		}
 
-	if (input == 9)
+	if (input == (int)GameConfig::menu::EXIT)
 		return false; //false is returned to indicate the program need to print the menu again
 	return true;
 }
@@ -218,7 +218,7 @@ void Game::handleWinner()
 	cout << "Good Game everyone! Hope to see you all in another game!" << endl << endl;
 	cout << "Press any key to return to the main menu";
 
-	Sleep(850); //Sleep is used so that the end screen won't end unexpectedly because of a previous input from the game
+	Sleep(2000); //Sleep is used so that the end screen won't end unexpectedly because of a previous input from the game
 	ShowConsoleCursor(true);
 	_getch();
 	isGamePaused = false; //Now that the game ended, it is not paused anymore

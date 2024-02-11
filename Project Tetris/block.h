@@ -16,8 +16,8 @@ public:
 	void print();
 	void setX(int x);
 	void setY(int y);
-	int getX();
-	int getY();
+	int getX() const;
+	int getY() const;
 	void setCords(int x, int y);
 	void setChar(char ch);
 	char getChar();

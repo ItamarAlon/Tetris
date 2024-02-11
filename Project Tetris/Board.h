@@ -23,17 +23,18 @@ public:
 
 	Board(int x, int y, int _playerNum);
 	void resetBoard(); //Function that returns the board to it's default form at the start of the game.
-	bool isSpaceTaken(int freeSpaceX, int freeSpaceY); //Checks if certain cords (in the freeSpace array) are taken.
-	void print();
-	int getXStart();
-	int getYStart();
-	int getWidth();
-	int getHeight();
+	bool isSpaceTaken(int freeSpaceX, int freeSpaceY) const; //Checks if certain cords (in the freeSpace array) are taken.
+	void print() const;
+	int getXStart() const;
+	int getYStart() const;
+	int getWidth() const;
+	int getHeight() const;
 	bool checkFullLine(); //Checks if there is a line full of blocks on the board, and deletes it if there is one, while moving all lines above it down.
 	void moveLinesDown(int line); //Moves all lines down by 1.
 	void updateIsFull(); 
-	bool isBoardFull();
-	char getFreeSpaceValue(int x, int y); //Returns the value of a certain item in the freeSpace array
+	bool isBoardFull() const;
+	char getFreeSpaceValue(int x, int y) const; //Returns the value of a certain item in the freeSpace array
 	void setFreeSpaceValue(char value, int x, int y); //Sets the value of a certain item in the freeSpace array
-	int getPlayerNum();
+	int getPlayerNum() const;
+	void convertXYToFreeSpaceXY(int x, int y, int& freeSpaceX, int& freeSpaceY);
 };
