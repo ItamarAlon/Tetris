@@ -30,6 +30,7 @@ public:
 	int getWidth() const;
 	int getHeight() const;
 	bool checkFullLine(); //Checks if there is a line full of blocks on the board, and deletes it if there is one, while moving all lines above it down.
+	bool isLineFull(int line);
 	void moveLinesDown(int line); //Moves all lines down by 1.
 	void updateIsFull(); 
 	bool isBoardFull() const;

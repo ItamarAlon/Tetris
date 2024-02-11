@@ -307,6 +307,17 @@ void Shape::glueShape()
 	}
 }
 
+void Shape::unGlueShape()
+{
+	int freeSpaceX, freeSpaceY;
+
+	for (int i = 0; i < 4; i++)
+	{
+		blockArr[i].getFreeSpaceXY(board, freeSpaceX, freeSpaceY); //We get the cords (in freeSpace) of the block in the array
+		board.setFreeSpaceValue(' ', freeSpaceX, freeSpaceY); //...and update freeSpace accordingly
+	}
+}
+
 void Shape::teleportToFloor()
 {
 	while (canShapeMove(0, 1))

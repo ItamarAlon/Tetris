@@ -4,6 +4,7 @@
 //{
 //}
 
+
 Computer::Computer(Board& _board, char ch) : Shape(_board, ch)
 {
 }
@@ -51,9 +52,19 @@ void Computer::findBestPosition(Position& bestPosition)
 	}
 }
 
-int Computer::getPositionScore() const
+int Computer::getPositionScore()
 {
-	return 0;
+	glueShape();
+	int holeCount, bumpiness, fullLinesCount;
+	int holeWeight, bumpinessWeight, fullLinesWeight;
+	holeWeight = bumpinessWeight = fullLinesWeight = 1; //For now...
+
+	holeCount = getHoleCount();
+	bumpiness = getBumpinessLevel();
+	fullLinesCount = getFullLinesCount();
+
+	unGlueShape();
+	return (fullLinesCount * fullLinesWeight) - (bumpiness * bumpinessWeight) - (holeCount * holeWeight);
 }
 
 void Computer::updatePosition(Position& bestPosition, int score)
@@ -64,4 +75,25 @@ void Computer::updatePosition(Position& bestPosition, int score)
 		bestPosition.score = score;
 		bestPosition.orientation = getOrientation();
 	}
+}
+
+int Computer::getHoleCount()
+{
+	return 0;
+}
+
+int Computer::getBumpinessLevel()
+{
+	return 0;
+}
+
+int Computer::getFullLinesCount()
+{
+	int fullLineCounter = 0;
+
+	for (int row = board.getHeight(); row > 0; row--)
+		if (board.isLineFull(row))
+			fullLineCounter++;
+
+	return fullLineCounter;
 }

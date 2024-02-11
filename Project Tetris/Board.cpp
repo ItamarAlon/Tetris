@@ -30,20 +30,10 @@ bool Board::isSpaceTaken(int freeSpaceX, int freeSpaceY) const
 
 bool Board::checkFullLine()
 {
-	bool fullLine, lineDeleted = false;
+	bool lineDeleted = false;
 	for (int row = HEIGHT; row > 0; row--) //The loop starts from the end of the board, where it's most likely that a line will be full of blocks.
 	{
-		fullLine = true;
-		for (int col = 1; col < WIDTH + 1; col++)
-		{
-			if (freeSpace[row][col] == ' ')
-			{
-				fullLine = false; //If there's a space in the line not taken, then the line if not full. So the for loop stops (as there's no need to check anymore)
-				break;
-			}
-
-		}
-		if (fullLine) 
+		if (isLineFull(row))
 		{
 			lineDeleted = true;
 			moveLinesDown(row); //If a line is full, another function is called to moves all the lines above it 1 place down.
@@ -51,6 +41,17 @@ bool Board::checkFullLine()
 		}
 	}
 	return lineDeleted;
+}
+
+bool Board::isLineFull(int row)
+{
+	if (row < 1 || row > HEIGHT)
+		row = HEIGHT;
+
+	for (int col = 1; col < WIDTH + 1; col++)
+		if (freeSpace[row][col] == ' ')
+			return false; //If there's a space in the line not taken, then the line if not full. So the for loop stops (as there's no need to check anymore)
+	return true;
 }
 
 void Board::moveLinesDown(int line)

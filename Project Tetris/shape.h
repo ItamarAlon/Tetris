@@ -34,6 +34,7 @@ public:
 	int getAnchorY() const;
 	void getAnchorXY(int& anchorX, int& anchorY) const;
 	void glueShape();
+	void unGlueShape();
 
 protected:
 	Block blockArr[4] = {}; //Each shape is made of 4 blocks. This array represents the blocks that make the tetrominoe.
