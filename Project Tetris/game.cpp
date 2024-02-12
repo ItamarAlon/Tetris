@@ -1,6 +1,7 @@
 #include "game.h"
+#include "computer.h"
 
-Game::Game(Board& board1, Board& board2, Shape& shape1, Shape& shape2, int _speed) : boardP1(board1), boardP2(board2), shapeP1(shape1), shapeP2(shape2), speed(_speed)
+Game::Game(Board& board1, Board& board2, Computer& shape1, Computer& shape2, int _speed) : boardP1(board1), boardP2(board2), shapeP1(shape1), shapeP2(shape2), speed(_speed)
 {
 }
 

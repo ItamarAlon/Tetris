@@ -17,7 +17,7 @@ class Shape
 public:
 	Shape(Board& _board, char ch = -2);  
 	Shape(const Shape& oldShape);
-	//Shape& operator=(const Shape& oldShape);
+	Shape& operator=(const Shape& oldShape);
 	void setShape(); //Sets a new shape for game
 	void randomShape(int positions[8]); //Receives an array of 4 coordinates on-screen (8 integers), generates a random shape, and updates the array accordingly
 	void print();

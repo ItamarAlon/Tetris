@@ -25,20 +25,17 @@ void Computer::moveToPosition(const Position& bestPosition) //for testing
 
 void Computer::findBestPosition(Position& bestPosition)
 {
-	int time = 250; //temp
+	int time = 0; //temp
 	float score;
 	int divider = getDivider();
 	int spawnCords[8] = {};
 	getSpawnCords(spawnCords);
 	print();//tmp
-	//Sleep(800);//tmp
 
 	for (int i = 0; i < divider; i++)
 	{
 		while (canShapeMove(-1, 0))
-		{
 			moveBy(-1, 0);
-		}
 
 		while (true)
 		{
@@ -63,8 +60,8 @@ void Computer::findBestPosition(Position& bestPosition)
 			}
 		}
 		moveBy(0, 1);
-		print(); //tmp
 		rotateShape((char)GameConfig::Lkeys::CLOCKWISE); //need to work for player 2 later...
+		print(); //tmp
 	}
 }
 
@@ -77,16 +74,17 @@ float Computer::getPositionScore()
 	float bumpiness;
 	int holeWeight, bumpinessWeight, fullLinesWeight;
 
-	holeWeight = 5;
-	bumpinessWeight = 2;
+	holeWeight = 25;
+	bumpinessWeight = 10;
 
 	fullLinesCount = getFullLinesCount();
 	board.checkFullLine();
 	holeCount = getHoleCount();
 	bumpiness = getBumpinessLevel(fullLinesWeight);
 
+	fullLinesWeight *= 100;
 	board = temp;
-	return (float)(fullLinesCount * fullLinesWeight * 30) - (bumpiness * (float)bumpinessWeight) - (float)(holeCount * holeWeight);
+	return (float)(fullLinesCount * fullLinesWeight) - (bumpiness * (float)bumpinessWeight) - (float)(holeCount * holeWeight);
 }
 
 void Computer::updateBestPosition(Position& bestPosition, float score)
@@ -108,13 +106,13 @@ int Computer::getHoleCount()
 	for (int col = 1; col <= WIDTH; col++)
 	{
 		row = 1;
-		while (board.getFreeSpaceValue(col, row) == ' ')
+		while (!board.isSpaceTaken(col, row))
 			row++;
 
 		while (row < HEIGHT)
 		{
 			row++;
-			if (board.getFreeSpaceValue(col, row) == ' ') //Should work
+			if (!board.isSpaceTaken(col, row)) //Should work
 				holeCounter++;
 		}
 	}
@@ -122,7 +120,7 @@ int Computer::getHoleCount()
 	return holeCounter;
 }
 
-double Computer::getBumpinessLevel(int& maxHeight)
+float Computer::getBumpinessLevel(int& maxHeight)
 {
 	int heights[GameConfig::BOARD_WIDTH] = {};
 	maxHeight = fillHeightsArr(heights);

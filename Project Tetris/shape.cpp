@@ -7,6 +7,8 @@ Shape::Shape(Board& _board, char _ch) : board(_board), ch(_ch)
 
 Shape::Shape(const Shape& oldShape) : board(oldShape.board), ch(oldShape.ch)
 {
+	//board = oldShape.board;
+	//ch = oldShape.ch;
 	shape = oldShape.shape;
 	orientation = oldShape.orientation;
 	divider = oldShape.divider;
@@ -16,6 +18,25 @@ Shape::Shape(const Shape& oldShape) : board(oldShape.board), ch(oldShape.ch)
 		blockArr[i].setChar(oldShape.ch);
 		blockArr[i].setCords(oldShape.blockArr[i].getX(), oldShape.blockArr[i].getY()); //Set the cords of every block in the array, from the positions array
 	}
+}
+
+Shape& Shape::operator=(const Shape& oldShape)
+{
+	if (&oldShape != this)
+	{
+		board = oldShape.board;
+		ch = oldShape.ch;
+		shape = oldShape.shape;
+		orientation = oldShape.orientation;
+		divider = oldShape.divider;
+
+		for (int i = 0; i < 4; i++)
+		{
+			blockArr[i].setChar(oldShape.ch);
+			blockArr[i].setCords(oldShape.blockArr[i].getX(), oldShape.blockArr[i].getY()); //Set the cords of every block in the array, from the positions array
+		}
+	}
+	return *this;
 }
 
 void Shape::setShape()
