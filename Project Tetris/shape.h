@@ -40,6 +40,7 @@ protected:
 	Block blockArr[4] = {}; //Each shape is made of 4 blocks. This array represents the blocks that make the tetrominoe.
 	Board& board; //The board where the shape is placed
 	void teleportToFloor();
+	void teleportToCeiling();
 	int getOrientation() const;
 	int getDivider() const;
 	void getSpawnCords(int positions[8]);

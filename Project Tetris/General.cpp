@@ -34,3 +34,24 @@ char getCapital(char ch)
 		return ch - 32;
 	return ch;
 }
+
+float calcAverage(int arr[], int size)
+{
+	int sum = 0;
+	for (int i = 0; i < size; i++)
+		sum += arr[i];
+
+	return (float)sum / (float)size;
+}
+
+float standardDeviation(int arr[], int size)
+{
+	float average = calcAverage(arr, size);
+	float variance = 0;
+
+	for (int i = 0; i < size; i++)
+		variance += pow(arr[i] - average, 2);
+	variance /= size;
+
+	return sqrt(variance);
+}

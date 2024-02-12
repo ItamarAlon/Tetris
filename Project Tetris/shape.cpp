@@ -324,6 +324,17 @@ void Shape::teleportToFloor()
 		moveBy(0, 1);
 }
 
+void Shape::teleportToCeiling()
+{
+	int lowestY = blockArr[0].getY();
+
+	for (int i = 1; i < 4; i++)
+		if (blockArr[i].getY() < lowestY)
+			lowestY = blockArr[i].getY();
+
+	moveBy(0, board.getYStart() - lowestY + 1);
+}
+
 int Shape::getOrientation() const
 {
 	return orientation;
