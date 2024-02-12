@@ -22,13 +22,13 @@ void main()
 	//board.setFreeSpaceValue(-2, 5, 18);
 	board.print();
 	Position best;
-
+	ShowConsoleCursor(false);
 	while (true)
 	{
 		best.score = -999999;
 		AI.findBestPosition(best);
 		AI.moveToPosition(best);
-		Sleep(0);
+		Sleep(10);
 		AI.setShape();
 	}
 

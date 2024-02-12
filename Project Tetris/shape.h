@@ -15,7 +15,7 @@ class Shape
 	Shapes shape; //The current shape of the tetromino
 	char ch;
 public:
-	Shape(Board& _board, char ch = -2); 
+	Shape(Board& _board, char ch = -2);  
 	Shape(const Shape& oldShape);
 	//Shape& operator=(const Shape& oldShape);
 	void setShape(); //Sets a new shape for game

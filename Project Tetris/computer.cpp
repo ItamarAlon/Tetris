@@ -25,18 +25,19 @@ void Computer::moveToPosition(const Position& bestPosition) //for testing
 
 void Computer::findBestPosition(Position& bestPosition)
 {
-	int time = 3; //temp
+	int time = 250; //temp
 	float score;
 	int divider = getDivider();
 	int spawnCords[8] = {};
 	getSpawnCords(spawnCords);
+	print();//tmp
+	//Sleep(800);//tmp
 
 	for (int i = 0; i < divider; i++)
 	{
 		while (canShapeMove(-1, 0))
 		{
 			moveBy(-1, 0);
-			Sleep(time); //temp
 		}
 
 		while (true)
@@ -45,38 +46,47 @@ void Computer::findBestPosition(Position& bestPosition)
 			score = getPositionScore();
 			updateBestPosition(bestPosition, score);
 
-			Sleep(time); //temp
+			print(); //tmp
+			Sleep(time); //tmp
 			teleportToCeiling();
-			Sleep(time); //temp
 
 			if (canShapeMove(1, 0))
+			{
 				moveBy(1, 0);
+				print(); //tmp
+			}
 			else
 			{
 				changeShapePosition(spawnCords);
-				print(); //temp
+				print(); //tmp
 				break;
 			}
 		}
 		moveBy(0, 1);
+		print(); //tmp
 		rotateShape((char)GameConfig::Lkeys::CLOCKWISE); //need to work for player 2 later...
 	}
 }
 
 float Computer::getPositionScore()
 {
+	const Board temp = board;
 	glueShape();
+
 	int holeCount, fullLinesCount;
 	float bumpiness;
 	int holeWeight, bumpinessWeight, fullLinesWeight;
-	holeWeight = bumpinessWeight = fullLinesWeight = 1; //For now...
+
+	holeWeight = 5;
+	bumpinessWeight = 2;
 
 	fullLinesCount = getFullLinesCount();
+	board.checkFullLine();
 	holeCount = getHoleCount();
-	bumpiness = getBumpinessLevel();
+	bumpiness = getBumpinessLevel(fullLinesWeight);
 
-	unGlueShape();
-	return (float)(fullLinesCount * fullLinesWeight) - (bumpiness * (float)bumpinessWeight) - (float)(holeCount * holeWeight);
+	board = temp;
+	return (float)(fullLinesCount * fullLinesWeight * 30) - (bumpiness * (float)bumpinessWeight) - (float)(holeCount * holeWeight);
 }
 
 void Computer::updateBestPosition(Position& bestPosition, float score)
@@ -112,12 +122,10 @@ int Computer::getHoleCount()
 	return holeCounter;
 }
 
-double Computer::getBumpinessLevel()
+double Computer::getBumpinessLevel(int& maxHeight)
 {
 	int heights[GameConfig::BOARD_WIDTH] = {};
-
-	for (int col = 1; col <= GameConfig::BOARD_WIDTH; col++)
-		heights[col - 1] = board.getColHeight(col);
+	maxHeight = fillHeightsArr(heights);
 
 	return standardDeviation(heights, GameConfig::BOARD_WIDTH);
 }
@@ -131,4 +139,17 @@ int Computer::getFullLinesCount()
 			fullLineCounter++;
 
 	return fullLineCounter;
+}
+
+int Computer::fillHeightsArr(int heights[])
+{
+	int maxHeight = heights[0] = board.getColHeight(1);
+
+	for (int i = 1; i < GameConfig::BOARD_WIDTH; i++)
+	{
+		heights[i] = board.getColHeight(i + 1);
+		if (heights[i] > maxHeight)
+			maxHeight = heights[i];
+	}
+	return maxHeight;
 }

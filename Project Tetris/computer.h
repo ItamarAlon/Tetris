@@ -6,11 +6,12 @@
 class Computer : public Shape
 {
     int getHoleCount();
-    double getBumpinessLevel();
+    double getBumpinessLevel(int& maxHeight);
     int getFullLinesCount();
+    int fillHeightsArr(int heights[]);
 public:
     //Computer(int x, int y, int _playerNum, const Shape& _shape);
-    Computer(Board& _board, char ch = -2);
+    Computer(Board& _board, char ch = -2); 
     void moveToPosition(const Position& bestPosition);
     void findBestPosition(Position& bestPosition);
     float getPositionScore();

@@ -5,6 +5,22 @@ Board::Board(int x, int y, int _playerNum) :X_START(x), Y_START(y), playerNum(_p
 	resetBoard();
 }
 
+Board::Board(const Board& oldBoard) : X_START(oldBoard.X_START), Y_START(oldBoard.Y_START), playerNum(oldBoard.playerNum)
+{
+	for (int row = 0; row < HEIGHT + 1; row++)
+		for (int col = 0; col < WIDTH + 2; col++)
+			freeSpace[row][col] = oldBoard.freeSpace[row][col];
+}
+
+Board& Board::operator=(const Board& oldBoard)
+{
+	if (&oldBoard != this)
+		for (int row = 0; row < HEIGHT + 1; row++)
+			for (int col = 0; col < WIDTH + 2; col++)
+				freeSpace[row][col] = oldBoard.freeSpace[row][col];
+	return *this;
+}
+
 void Board::resetBoard() 
 {
 	for (int row = 1; row < HEIGHT + 1; row++)

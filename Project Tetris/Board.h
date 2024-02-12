@@ -20,8 +20,9 @@ class Board
 	const int playerNum;
 	bool isFull = false; //Tells if the board is full or not.
 public:
-
 	Board(int x, int y, int _playerNum);
+	Board(const Board& newBoard);
+	Board& operator=(const Board& from);
 	void resetBoard(); //Function that returns the board to it's default form at the start of the game.
 	bool isSpaceTaken(int freeSpaceX, int freeSpaceY) const; //Checks if certain cords (in the freeSpace array) are taken.
 	void print() const;

@@ -32,7 +32,7 @@ void Shape::setShape()
 
 void Shape::randomShape(int positions[8]) 
 {
-	//shape = (Shapes)6; //for testing
+	//shape = (Shapes)0; //for testing
 	shape = (Shapes)(rand() % 7); //generate a random number from 0-6, each represents a different tetromino shape
 	getSpawnCords(positions);
 }
@@ -50,7 +50,7 @@ void Shape::moveBy(int x, int y)
 {
 	for (int i = 0; i < 4; i++)
 		blockArr[i].moveBy(x, y); //moves every block in the shape by x and y values
-	print(); //temp
+	//print(); //temp
 }
 
 bool Shape::moveShapeDown()
