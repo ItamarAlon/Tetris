@@ -32,43 +32,7 @@ void Shape::setShape()
 
 void Shape::randomShape(int positions[8]) 
 {
-	////coordinates (on-screen) of the "anchor" block, which is the main block of the shape (all the other block's coordinates are determined by the coordinates of the anchor block)
-	//int anchorX = board.getXStart() + board.getWidth() / 2; //the anchor block will always by in the middle of the board (on the X axis)
-	//int	anchorY = board.getYStart() + 1;
-	//
-	//shape = (Shapes)(rand() % 7); //generate a random number from 0-6, each represents a different tetromino shape
-	//switch (shape) //the empty positions array given to the function is set by the shape that was generated
-	//{
-	//case Shapes::I: 
-	//	divider = 2;//Another function is used to fill the positions array. The anchor cords will be set in the beginning, and the rest of the integers are offset cords (relative to the anchor itself)
-	//	createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, 2, 0); //For example here, The function receives the anchor cords, and the 3 non-anchor blocks are placed on the left of anchor, the right of anchor, and 2 places to the right of anchor. That creates an I shape.
-	//	break;
-	//case Shapes::O: 
-	//	divider = 1;
-	//	createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, 1, 1);
-	//	break;
-	//case Shapes::T: 
-	//	divider = 4;
-	//	createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 0); 
-	//	break;
-	//case Shapes::S: 
-	//	divider = 2;
-	//	createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 1);
-	//	break;
-	//case Shapes::Z: 
-	//	divider = 2;
-	//	createCordsArr(positions, anchorX, anchorY, -1, 0, 0, 1, 1, 1);
-	//	break;
-	//case Shapes::J: 
-	//	divider = 4;
-	//	createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, 1, 1);
-	//	break;
-	//case Shapes::L: 
-	//	divider = 4;
-	//	createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, -1, 1);
-	//	break;
-	//}
-
+	//shape = (Shapes)6; //for testing
 	shape = (Shapes)(rand() % 7); //generate a random number from 0-6, each represents a different tetromino shape
 	getSpawnCords(positions);
 }
@@ -347,6 +311,7 @@ int Shape::getDivider() const
 
 void Shape::getSpawnCords(int positions[8])
 {
+	//coordinates (on-screen) of the "anchor" block, which is the main block of the shape (all the other block's coordinates are determined by the coordinates of the anchor block)
 	int anchorX = board.getXStart() + board.getWidth() / 2; //the anchor block will always by in the middle of the board (on the X axis)
 	int	anchorY = board.getYStart() + 1;
 

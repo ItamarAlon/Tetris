@@ -18,11 +18,19 @@ void main()
 	Computer AI(board);
 	//Game game(board1, board2, shape1, shape2);
 
-	board.setFreeSpaceValue(-2, 5, 17);
-	board.setFreeSpaceValue(-2, 5, 18);
+	//board.setFreeSpaceValue(-2, 5, 17);
+	//board.setFreeSpaceValue(-2, 5, 18);
 	board.print();
-	Position pos;
-	AI.findBestPosition(pos);
+	Position best;
+
+	while (true)
+	{
+		best.score = -999999;
+		AI.findBestPosition(best);
+		AI.moveToPosition(best);
+		Sleep(0);
+		AI.setShape();
+	}
 
 	gotoxy(0, board.getHeight() + 2);
 

@@ -9,10 +9,25 @@ Computer::Computer(Board& _board, char ch) : Shape(_board, ch)
 {
 }
 
+void Computer::moveToPosition(const Position& bestPosition) //for testing
+{
+	moveBy(0, 1);
+	while (getOrientation() != bestPosition.orientation)
+		rotateShape((char)GameConfig::Lkeys::CLOCKWISE);
+	int xBy = bestPosition.anchorX - getAnchorX();
+	moveBy(xBy, 0);
+	teleportToFloor();
+	glueShape();
+	if (board.checkFullLine()) //If the shape landed, the program checks if there are any full lines that were deleted.
+		board.print(); //If there were, it prints the board again (which was updated)
+	print();
+}
+
 void Computer::findBestPosition(Position& bestPosition)
 {
-	int score, divider = getDivider();
-	bool canMoveRight = true;
+	int time = 3; //temp
+	float score;
+	int divider = getDivider();
 	int spawnCords[8] = {};
 	getSpawnCords(spawnCords);
 
@@ -21,18 +36,18 @@ void Computer::findBestPosition(Position& bestPosition)
 		while (canShapeMove(-1, 0))
 		{
 			moveBy(-1, 0);
-			Sleep(300); //temp
+			Sleep(time); //temp
 		}
 
-		while (canMoveRight)
+		while (true)
 		{
 			teleportToFloor();
 			score = getPositionScore();
 			updateBestPosition(bestPosition, score);
 
-			Sleep(300); //temp
+			Sleep(time); //temp
 			teleportToCeiling();
-			Sleep(300); //temp
+			Sleep(time); //temp
 
 			if (canShapeMove(1, 0))
 				moveBy(1, 0);
@@ -40,13 +55,11 @@ void Computer::findBestPosition(Position& bestPosition)
 			{
 				changeShapePosition(spawnCords);
 				print(); //temp
-				canMoveRight = false;
 				break;
 			}
 		}
 		moveBy(0, 1);
 		rotateShape((char)GameConfig::Lkeys::CLOCKWISE); //need to work for player 2 later...
-		canMoveRight = true;
 	}
 }
 
@@ -58,15 +71,15 @@ float Computer::getPositionScore()
 	int holeWeight, bumpinessWeight, fullLinesWeight;
 	holeWeight = bumpinessWeight = fullLinesWeight = 1; //For now...
 
+	fullLinesCount = getFullLinesCount();
 	holeCount = getHoleCount();
 	bumpiness = getBumpinessLevel();
-	fullLinesCount = getFullLinesCount();
 
 	unGlueShape();
-	return (fullLinesCount * fullLinesWeight) - (bumpiness * bumpinessWeight) - (holeCount * holeWeight);
+	return (float)(fullLinesCount * fullLinesWeight) - (bumpiness * (float)bumpinessWeight) - (float)(holeCount * holeWeight);
 }
 
-void Computer::updateBestPosition(Position& bestPosition, int score)
+void Computer::updateBestPosition(Position& bestPosition, float score)
 {
 	if (score > bestPosition.score)
 	{

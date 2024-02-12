@@ -11,9 +11,10 @@ class Computer : public Shape
 public:
     //Computer(int x, int y, int _playerNum, const Shape& _shape);
     Computer(Board& _board, char ch = -2);
+    void moveToPosition(const Position& bestPosition);
     void findBestPosition(Position& bestPosition);
     float getPositionScore();
-    void updateBestPosition(Position& bestPosition, int score);
+    void updateBestPosition(Position& bestPosition, float score);
 };
 
 
