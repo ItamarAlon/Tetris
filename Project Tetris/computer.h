@@ -2,6 +2,7 @@
 //#include "board.h"
 #include "shape.h"
 #include "position.h"
+#include <cmath>
 
 //Shape that plays itself
 class Computer : public Shape

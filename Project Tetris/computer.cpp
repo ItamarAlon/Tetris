@@ -31,6 +31,7 @@ void Computer::findBestPosition(Position& bestPosition)
 	int spawnCords[8] = {};
 	getSpawnCords(spawnCords);
 	print();//tmp
+	Sleep(1200);
 
 	for (int i = 0; i < divider; i++)
 	{
@@ -43,8 +44,6 @@ void Computer::findBestPosition(Position& bestPosition)
 			score = getPositionScore();
 			updateBestPosition(bestPosition, score);
 
-			print(); //tmp
-			Sleep(time); //tmp
 			teleportToCeiling();
 
 			if (canShapeMove(1, 0))
@@ -62,6 +61,7 @@ void Computer::findBestPosition(Position& bestPosition)
 		moveBy(0, 1);
 		rotateShape((char)GameConfig::Lkeys::CLOCKWISE); //need to work for player 2 later...
 		print(); //tmp
+		
 	}
 }
 
@@ -74,15 +74,18 @@ float Computer::getPositionScore()
 	float bumpiness;
 	int holeWeight, bumpinessWeight, fullLinesWeight;
 
-	holeWeight = 25;
-	bumpinessWeight = 10;
+	holeWeight = 6;
+	bumpinessWeight = 3;
 
 	fullLinesCount = getFullLinesCount();
 	board.checkFullLine();
 	holeCount = getHoleCount();
 	bumpiness = getBumpinessLevel(fullLinesWeight);
+	print(); //tmp
+	board.print();
+	Sleep(130); //tmp
 
-	fullLinesWeight *= 100;
+	fullLinesWeight = pow(4, fullLinesWeight);
 	board = temp;
 	return (float)(fullLinesCount * fullLinesWeight) - (bumpiness * (float)bumpinessWeight) - (float)(holeCount * holeWeight);
 }

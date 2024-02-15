@@ -54,28 +54,32 @@ void Game::printInstructions()
 void Game::runGame()
 {
 	bool goToMenu = false;
+	char key;
 	ShowConsoleCursor(false); //During gameplay, we the cursor is turned off to make the game look better
 
 	clrscr();
 	boardP1.print();
 	boardP2.print();
 
-	while (true) //The game keeps running, until a break happens (we'll see later)
+	while (!goToMenu) //The game keeps running, until a break happens (we'll see later)
 	{
-		goToMenu = handleInput(); //At every frame of the game, the program checks if an input was given (and acts accordingly) using a function. If an input was made to pause the game, the function returns true
-		if (goToMenu)
-			break; //In case the player decided to go to the menu, the program exist the while loop
+		//goToMenu = handleInput(); //At every frame of the game, the program checks if an input was given (and acts accordingly) using a function. If an input was made to pause the game, the function returns true
+		//if (goToMenu)
+		//	break; //In case the player decided to go to the menu, the program exist the while loop
 
 		runGameForPlayer(boardP1, shapeP1); //The program runs the game for each player using a function
-		runGameForPlayer(boardP2, shapeP2); 
-		Sleep(speed); //Sleep is used in every run of the loop to slow the game down
+		//runGameForPlayer(boardP2, shapeP2); 
+
+		for (int i = 0; i < 20; i++)
+		{
+			Sleep(speed/20); //Sleep is used in every run of the loop to slow the game down
+			goToMenu = handleInput(); //At every frame of the game, the program checks if an input was given (and acts accordingly) using a function. If an input was made to pause the game, the function returns true
+			if (goToMenu)
+				break; //In case the player decided to go to the menu, the program exist the while loop
+		}
 
 		if (boardP1.isBoardFull() || boardP2.isBoardFull()) 
 			break; //If one of the blocks is full, we exit the loop (because the game ends)
-
-		goToMenu = handleInput(); //Again the program handles the input after the Sleep to make the game smoother
-		if (goToMenu)
-			break;	
 	}
 
 	if (!goToMenu) //After exiting the loop, we check if the player wanted to go to the menu. If he didn't, it means the game ended so the winner is declared. Otherwise, the program exits the function (right back to the menu function)
@@ -109,7 +113,7 @@ bool Game::handleInput()
 			shapeP1.moveShapeLeftRight(key); //Using a function in case a shape needs to move Left/Right
 			break;
 		case (char)GameConfig::Lkeys::LEFT - 32:
-		case (char)GameConfig::Lkeys::RIGHT - 32: 
+		case (char)GameConfig::Lkeys::RIGHT - 32:
 			shapeP1.moveShapeLeftRight(key + 32); //In case the uppercase version of the key was received..
 			break;
 		case (char)GameConfig::Lkeys::DOWN:

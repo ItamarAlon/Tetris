@@ -53,6 +53,7 @@ void Shape::setShape()
 
 void Shape::randomShape(int positions[8]) 
 {
+	//shape = (Shapes)(rand() % 3); //for testing
 	//shape = (Shapes)0; //for testing
 	shape = (Shapes)(rand() % 7); //generate a random number from 0-6, each represents a different tetromino shape
 	getSpawnCords(positions);

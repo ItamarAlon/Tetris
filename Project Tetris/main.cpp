@@ -13,6 +13,8 @@ void main()
 	
 	game.openMenu();
 
+
+
 	//srand(time(nullptr));
 	//Board board(10, 0, 1);
 	//Computer AI(board);
