@@ -6,11 +6,10 @@
 #include "gameConfig.h"
 #include "shape.h"
 #include "board.h"
-//#include "computer.h"
 using namespace std;
 
 #define TIE -1
-class Computer;
+class Bot;
 class Shape;
 class Board;
 
@@ -18,12 +17,12 @@ class Board;
 class Game
 {
 	Board &boardP1, &boardP2; //The 2 boards used during the game (1 for each player)
-	Computer &shapeP1, &shapeP2; //The shapes that are gonna appear in each board.
+	Bot &shapeP1, &shapeP2; //The shapes that are gonna appear in each board.
 	int speed; //The speed of the game
 	bool isGamePaused = false; //Tells if the game is in paused mode or not (used for the menu)
 
 public:
-	Game(Board& board1, Board& board2, Computer& shape1, Computer& shape2, int _speed = 200);
+	Game(Board& board1, Board& board2, Bot& shape1, Bot& shape2, int _speed = 200);
 	void openMenu();
 	void printInstructions();
 	void runGame(); //Function that runs the game itself, including moving the shapes down, checking for any input from the player, etc..

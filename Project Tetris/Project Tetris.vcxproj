@@ -129,20 +129,24 @@
   <ItemGroup>
     <ClCompile Include="block.cpp" />
     <ClCompile Include="board.cpp" />
-    <ClCompile Include="computer.cpp" />
+    <ClCompile Include="bot.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="general.cpp" />
+    <ClCompile Include="human.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="position.cpp" />
     <ClCompile Include="shape.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="board.h" />
-    <ClInclude Include="computer.h" />
+    <ClInclude Include="bot.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameConfig.h" />
     <ClInclude Include="general.h" />
+    <ClInclude Include="human.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="position.h" />
     <ClInclude Include="shape.h" />
   </ItemGroup>

@@ -2,18 +2,16 @@
 #include "game.h"
 #include "block.h"
 #include "board.h"
-#include "computer.h"
+#include "bot.h"
 
 void main()
 {
 	srand(time(nullptr));
 	Board board1(10, 0, 1), board2(40, 0, 2);
-	Computer shape1(board1), shape2(board2);
+	Bot shape1(board1), shape2(board2);
 	Game game(board1, board2, shape1, shape2);
 	
 	game.openMenu();
-
-
 
 	//srand(time(nullptr));
 	//Board board(10, 0, 1);

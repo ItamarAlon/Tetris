@@ -1,15 +1,10 @@
-#include "computer.h"
+#include "bot.h"
 
-//Computer::Computer(int x, int y, int _playerNum, const Shape& _shape) : Board(x, y, _playerNum), shape(_shape)
-//{
-//}
-
-
-Computer::Computer(Board& _board, char ch) : Shape(_board, ch)
+Bot::Bot(Board& _board, char ch) : Shape(_board, ch)
 {
 }
 
-void Computer::moveToPosition(const Position& bestPosition) //for testing
+void Bot::moveToPosition(const Position& bestPosition) //for testing
 {
 	moveBy(0, 1);
 	while (getOrientation() != bestPosition.orientation)
@@ -23,7 +18,7 @@ void Computer::moveToPosition(const Position& bestPosition) //for testing
 	print();
 }
 
-void Computer::findBestPosition(Position& bestPosition)
+void Bot::findBestPosition(Position& bestPosition)
 {
 	int time = 0; //temp
 	float score;
@@ -31,11 +26,11 @@ void Computer::findBestPosition(Position& bestPosition)
 	int spawnCords[8] = {};
 	getSpawnCords(spawnCords);
 	print();//tmp
-	Sleep(1200);
+	Sleep(1200);//tmp
 
 	for (int i = 0; i < divider; i++)
 	{
-		while (canShapeMove(-1, 0))
+		while (canShapeMoveOffset(-1, 0))
 			moveBy(-1, 0);
 
 		while (true)
@@ -46,7 +41,7 @@ void Computer::findBestPosition(Position& bestPosition)
 
 			teleportToCeiling();
 
-			if (canShapeMove(1, 0))
+			if (canShapeMoveOffset(1, 0))
 			{
 				moveBy(1, 0);
 				print(); //tmp
@@ -65,7 +60,7 @@ void Computer::findBestPosition(Position& bestPosition)
 	}
 }
 
-float Computer::getPositionScore()
+float Bot::getPositionScore()
 {
 	const Board temp = board;
 	glueShape();
@@ -90,7 +85,7 @@ float Computer::getPositionScore()
 	return (float)(fullLinesCount * fullLinesWeight) - (bumpiness * (float)bumpinessWeight) - (float)(holeCount * holeWeight);
 }
 
-void Computer::updateBestPosition(Position& bestPosition, float score)
+void Bot::updateBestPosition(Position& bestPosition, float score)
 {
 	if (score > bestPosition.score)
 	{
@@ -100,7 +95,7 @@ void Computer::updateBestPosition(Position& bestPosition, float score)
 	}
 }
 
-int Computer::getHoleCount()
+int Bot::getHoleCount()
 {
 	int holeCounter = 0, row;
 	const int HEIGHT = board.getHeight();
@@ -123,7 +118,7 @@ int Computer::getHoleCount()
 	return holeCounter;
 }
 
-float Computer::getBumpinessLevel(int& maxHeight)
+float Bot::getBumpinessLevel(int& maxHeight)
 {
 	int heights[GameConfig::BOARD_WIDTH] = {};
 	maxHeight = fillHeightsArr(heights);
@@ -131,7 +126,7 @@ float Computer::getBumpinessLevel(int& maxHeight)
 	return standardDeviation(heights, GameConfig::BOARD_WIDTH);
 }
 
-int Computer::getFullLinesCount()
+int Bot::getFullLinesCount()
 {
 	int fullLineCounter = 0;
 
@@ -142,7 +137,7 @@ int Computer::getFullLinesCount()
 	return fullLineCounter;
 }
 
-int Computer::fillHeightsArr(int heights[])
+int Bot::fillHeightsArr(int heights[])
 {
 	int maxHeight = heights[0] = board.getColHeight(1);
 

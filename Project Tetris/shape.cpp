@@ -72,39 +72,11 @@ void Shape::moveBy(int x, int y)
 {
 	for (int i = 0; i < 4; i++)
 		blockArr[i].moveBy(x, y); //moves every block in the shape by x and y values
-	//print(); //temp
 }
 
 bool Shape::moveShapeDown()
 {
-	//bool cantMove = false;
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	if (blockArr[i].isSpaceTakenOffset(0, 1, board)) //checks for every block, if the space under it is free or not
-	//	{
-	//		cantMove = true; //If the space is taken, then the shape can't move
-	//		break;
-	//	}
-	//}
-	//if (!cantMove) //If the shape can move down...
-	//{
-	//	moveBy(0, 1); //... then it moves down by 1 block
-	//	print();
-	//	return true; //The function returns true because the shape was still in the air (because the space under it is free)
-	//}
-	//else //If the shape can't move, then it's on the ground. So we update freeSpace so the program will remember that there are blocks there
-	//{
-	//	int freeSpaceX, freeSpaceY;
-	//
-	//	for (int i = 0; i < 4; i++) 
-	//	{
-	//		blockArr[i].getFreeSpaceXY(board, freeSpaceX, freeSpaceY); //We get the cords (in freeSpace) of the block in the array
-	//		board.setFreeSpaceValue(ch, freeSpaceX, freeSpaceY); //...and update freeSpace accordingly
-	//	}
-	//	return false; //because the shape can't move, then it's on the ground. So the function returns false (is used in the game class later)
-	//}
-
-	if (canShapeMove(0, 1)) //If the shape can move down...
+	if (canShapeMoveOffset(0, 1)) //If the shape can move down...
 	{
 		moveBy(0, 1); //... then it moves down by 1 block
 		print();
@@ -119,44 +91,16 @@ bool Shape::moveShapeDown()
 
 bool Shape::moveShapeLeftRight(int input)
 {
-	//int offsetX, offsetY;
-	//bool cantMove = false;
-	//blockArr[0].getOffsetFromInput(input, offsetX, offsetY); //Function returns the offset of x and y for all block in the Tetromino, which depends on the input given by the player
-	//
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	if (blockArr[i].isSpaceTakenOffset(offsetX, offsetY, board))
-	//		cantMove = true; //If the place that one of the blocks are set to move to is taken, than the Tetromino can't move
-	//}
-	//if (!cantMove)
-	//{
-	//	for (int i = 0; i < 4; i++)
-	//		blockArr[i].moveBlockLeftRight(input); //If the shape can move, we move all the blocks (depending on the input) 
-	//	print();
-	//}
-
 	int offsetX, offsetY;
 	blockArr[0].getOffsetFromInput(input, offsetX, offsetY); //Function returns the offset of x and y for all block in the Tetromino, which depends on the input given by the player
 
-	if (!canShapeMove(offsetX, offsetY))
+	if (!canShapeMoveOffset(offsetX, offsetY))
 		return false;
 
 	for (int i = 0; i < 4; i++)
 		blockArr[i].moveBlockLeftRight(input); //If the shape can move, we move all the blocks (depending on the input) 
 	print();
 	return true;
-}
-
-void Shape::createCordsArr(int positions[8], int anchorX, int anchorY, int x1, int y1, int x2, int y2, int x3, int y3)
-{
-	positions[0] = anchorX; //At first, anchorX and Y are set
-	positions[1] = anchorY;
-	positions[2] = anchorX + x1;//Then, the offsets are set (in relative to the anchor)
-	positions[3] = anchorY + y1;
-	positions[4] = anchorX + x2;
-	positions[5] = anchorY + y2;
-	positions[6] = anchorX + x3;
-	positions[7] = anchorY + y3;
 }
 
 void Shape::rotateShape(char input)
@@ -226,15 +170,21 @@ void Shape::rotateShape(char input)
 	}
 }
 
+void Shape::createCordsArr(int positions[8], int anchorX, int anchorY, int x1, int y1, int x2, int y2, int x3, int y3)
+{
+	positions[0] = anchorX; //At first, anchorX and Y are set
+	positions[1] = anchorY;
+	positions[2] = anchorX + x1;//Then, the offsets are set (in relative to the anchor)
+	positions[3] = anchorY + y1;
+	positions[4] = anchorX + x2;
+	positions[5] = anchorY + y2;
+	positions[6] = anchorX + x3;
+	positions[7] = anchorY + y3;
+}
+
 bool Shape::changeShapePosition(int positions[8])
 {
-	bool cantMove = false;
-	for (int i = 1; i < 4; i++)
-	{
-		if (board.isSpaceTaken(positions[i * 2] - board.getXStart(), positions[i * 2 + 1] - board.getYStart())) //If the position that the block wants to move to is take...
-			cantMove = true; //... cantMove is updated accordingly
-	}
-	if (!cantMove)
+	if (canShapeMoveToPosition(positions))
 	{
 		for (int i = 0; i < 4; i++)
 			blockArr[i].moveTo(positions[i * 2], positions[i * 2 + 1]); //If the shape can move, than we move all blocks to their positions (from the positions array)
@@ -258,12 +208,26 @@ int Shape::getNextOrientation(int key)
 	return nextOrientation;
 }
 
-bool Shape::canShapeMove(int offsetX, int offsetY)
+bool Shape::canShapeMoveOffset(int offsetX, int offsetY)
 {
 	for (int i = 0; i < 4; i++)
 		if (blockArr[i].isSpaceTakenOffset(offsetX, offsetY, board)) //checks for every block, if the space under it is free or not
 			return false; //If the space is taken, then the shape can't move
 	return true;
+}
+
+bool Shape::canShapeMoveToPosition(int positions[8]) const
+{
+	int freeSpaceX, freeSpaceY;
+
+	for (int i = 1; i < 4; i++)
+	{
+		board.convertXYToFreeSpaceXY(positions[i * 2], positions[i * 2 + 1], freeSpaceX, freeSpaceY);
+
+		if (board.isSpaceTaken(freeSpaceX, freeSpaceY)) //If the position that the block wants to move to is taken...
+			return false; //...false is returned
+	}
+	return true; //Else (if the Shape can move to the position), true is returned
 }
 
 int Shape::getAnchorX() const
@@ -306,7 +270,7 @@ void Shape::unGlueShape()
 
 void Shape::teleportToFloor()
 {
-	while (canShapeMove(0, 1))
+	while (canShapeMoveOffset(0, 1))
 		moveBy(0, 1);
 }
 

@@ -5,7 +5,7 @@
 #include <cmath>
 
 //Shape that plays itself
-class Computer : public Shape
+class Bot : public Shape
 {
     int getHoleCount();
     float getBumpinessLevel(int& maxHeight);
@@ -13,7 +13,7 @@ class Computer : public Shape
     int fillHeightsArr(int heights[]);
     void updateBestPosition(Position& bestPosition, float score);
 public:
-    Computer(Board& _board, char ch = -2); 
+    Bot(Board& _board, char ch = -2); 
     void moveToPosition(const Position& bestPosition);
     void findBestPosition(Position& bestPosition);
     float getPositionScore();
