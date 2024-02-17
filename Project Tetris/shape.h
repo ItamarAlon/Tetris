@@ -11,28 +11,29 @@ class Shape
 	//Board &board; //The board where the shape is placed
 	int orientation; //The current orientation of the tetromino (because a shape can rotate during gameplay)
 	int divider; //Number of orientations a shape has
+	char ch;
 	enum class Shapes {I,O,T,S,Z,J,L}; //All the shapes that can appear in game
 	Shapes shape; //The current shape of the tetromino
-	char ch;
 
 public:
 	Shape(Board& _board, char ch = -2);  
 	Shape(const Shape& oldShape);
 	Shape& operator=(const Shape& oldShape);
 
-	void setShape(); //Sets a new shape for game
+	virtual void setShape(); //Sets a new shape for game
 	void print();
 	void moveBy(int x, int y); //Moves the shape by a certain value (according to it's current value on-screen)
 	bool moveShapeDown(); //Moves the shape 1 place down (if possible)
 	bool moveShapeLeftRight(int key); //Moves the shape left/right if possible (according to the input given from the keyboard), and returns whether or not the shape moved.
 	void rotateShape(char key); //Rotates the shape (if possible)
-	virtual void takeAction() = 0;
+	virtual void takeAction(char input) = 0;
 
 	bool canShapeMoveOffset(int offsetX, int offsetY);
 	bool canShapeMoveToPosition(int positions[8]) const;
 	int getAnchorX() const;
 	int getAnchorY() const;
 	void getAnchorXY(int& anchorX, int& anchorY) const;
+	virtual bool botOrHuman() = 0;
 
 private:
 	void randomShape(int positions[8]); //Receives an array of 4 coordinates on-screen (8 integers), generates a random shape, and updates the array accordingly
@@ -43,6 +44,7 @@ private:
 protected:
 	Block blockArr[4] = {}; //Each shape is made of 4 blocks. This array represents the blocks that make the tetrominoe.
 	Board& board; //The board where the shape is placed
+	enum class Type { HUMAN = true, BOT = false };
 	void teleportToFloor();
 	void teleportToCeiling();
 	int getOrientation() const;

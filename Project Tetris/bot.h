@@ -9,7 +9,8 @@
 //#define RIGHT 'r'
 class Bot : public Shape
 {
-    Position bestPosition;
+    Position tmp;
+    Position& bestPosition = tmp;
     enum class Action {LEFT, RIGHT, CLOCKWISE, COUNTER_CLOCKWISE};
     const int playerNum = board.getPlayerNum();
 
@@ -25,8 +26,10 @@ public:
     void moveToPosition(const Position& bestPosition);
     void findBestPosition();
     float getPositionScore();
-    void takeAction();
-    int getOffsetForLeftRight(char input);
+    void takeAction(char input) override;
+    int getOffsetForLeftRight(char input) override;
+    bool botOrHuman() override;
+    void setShape();
 
 };
 

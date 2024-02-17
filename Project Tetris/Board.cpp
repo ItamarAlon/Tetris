@@ -79,7 +79,7 @@ void Board::moveLinesDown(int line)
 
 void Board::updateIsFull()
 {
-	isFull = isSpaceTaken(WIDTH / 2, 1); //The board is full if the space where the tetrominoes are supposed to spawn from, is taken.
+	isFull = isSpaceTaken(WIDTH / 2, 2); //The board is full if the space where the tetrominoes are supposed to spawn from, is taken.
 }
 
 bool Board::isBoardFull() const

@@ -4,67 +4,64 @@ Human::Human(Board& _board, char ch) : Shape(_board, ch)
 {
 }
 
-void Human::takeAction()
+void Human::takeAction(char input)
 {
-	if (_kbhit())
+	if (playerNum == 1)
 	{
-		char key = _getch(); //If a key was pressed, we save it
-
-		if (playerNum == 1)
+		switch (input)
 		{
-			switch (key)
-			{
-			case (char)GameConfig::Lkeys::LEFT:
-			case (char)GameConfig::Lkeys::RIGHT:
-				moveShapeLeftRight(key); //Using a function in case a shape needs to move Left/Right
-				break;
-			case (char)GameConfig::Lkeys::LEFT - 32:
-			case (char)GameConfig::Lkeys::RIGHT - 32:
-				moveShapeLeftRight(key + 32); //In case the uppercase version of the key was received..
-				break;
-			case (char)GameConfig::Lkeys::DOWN:
-			case (char)GameConfig::Lkeys::DOWN - 32:
-				moveShapeDown(); //If DOWN was pressed, we need to increase the shape's speed. So we move it down by 1 to mimik the feeling of increased speed
-				break;
-			case (char)GameConfig::Lkeys::CLOCKWISE:
-			case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
-				rotateShape(key);
-				break;
-			case (char)GameConfig::Lkeys::CLOCKWISE - 32:
-			case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE - 32:
-				rotateShape(key + 32);
-				break;
-			default:
-				break;
-			}
+		case (char)GameConfig::Lkeys::LEFT:
+		case (char)GameConfig::Lkeys::RIGHT:
+			moveShapeLeftRight(input); //Using a function in case a shape needs to move Left/Right
+			break;
+		case (char)GameConfig::Lkeys::LEFT - 32:
+		case (char)GameConfig::Lkeys::RIGHT - 32:
+			moveShapeLeftRight(input + 32); //In case the uppercase version of the key was received..
+			break;
+		case (char)GameConfig::Lkeys::DOWN:
+		case (char)GameConfig::Lkeys::DOWN - 32:
+			moveShapeDown(); //If DOWN was pressed, we need to increase the shape's speed. So we move it down by 1 to mimik the feeling of increased speed
+			break;
+		case (char)GameConfig::Lkeys::CLOCKWISE:
+		case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
+			rotateShape(input);
+			print();
+			break;
+		case (char)GameConfig::Lkeys::CLOCKWISE - 32:
+		case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE - 32:
+			rotateShape(input + 32);
+			print();
+			break;
+		default:
+			break;
 		}
-		else
+	}
+	else
+	{
+		switch (input)
 		{
-			switch (key)
-			{
-			case (char)GameConfig::Rkeys::LEFT:
-			case (char)GameConfig::Rkeys::RIGHT:
-				moveShapeLeftRight(key); //Using a function in case a shape needs to move Left/Right
-				break;
-			case (char)GameConfig::Rkeys::LEFT - 32:
-			case (char)GameConfig::Rkeys::RIGHT - 32:
-				moveShapeLeftRight(key + 32); //In case the uppercase version of the key was received..
-				break;
-			case (char)GameConfig::Rkeys::DOWN:
-			case (char)GameConfig::Rkeys::DOWN - 32:
-				moveShapeDown(); //If DOWN was pressed, we need to increase the shape's speed. So we move it down by 1 to mimik the feeling of increased speed
-				break;
-			case (char)GameConfig::Rkeys::CLOCKWISE:
-			case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE:
-				rotateShape(key);
-				break;
-			case (char)GameConfig::Rkeys::CLOCKWISE - 32:
-			case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE - 32:
-				rotateShape(key + 32);
-				break;
-			default:
-				break;
-			}
+		case (char)GameConfig::Rkeys::LEFT:
+		case (char)GameConfig::Rkeys::RIGHT:
+			moveShapeLeftRight(input); //Using a function in case a shape needs to move Left/Right
+			break;
+		case (char)GameConfig::Rkeys::LEFT - 32:
+		case (char)GameConfig::Rkeys::RIGHT - 32:
+			moveShapeLeftRight(input + 32); //In case the uppercase version of the key was received..
+			break;
+		case (char)GameConfig::Rkeys::DOWN:
+		case (char)GameConfig::Rkeys::DOWN - 32:
+			moveShapeDown(); //If DOWN was pressed, we need to increase the shape's speed. So we move it down by 1 to mimik the feeling of increased speed
+			break;
+		case (char)GameConfig::Rkeys::CLOCKWISE:
+		case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE:
+			rotateShape(input);
+			break;
+		case (char)GameConfig::Rkeys::CLOCKWISE - 32:
+		case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE - 32:
+			rotateShape(input + 32);
+			break;
+		default:
+			break;
 		}
 	}
 }
@@ -109,5 +106,10 @@ int Human::getOffsetForLeftRight(char input)
 	if (input == right)
 		return 1; //Else, the shape moves 1 place to the right
 	return 0;
+}
+
+bool Human::botOrHuman()
+{
+	return (bool)Type::HUMAN;
 }
 

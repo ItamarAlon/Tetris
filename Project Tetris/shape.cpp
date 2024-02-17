@@ -54,7 +54,7 @@ void Shape::setShape()
 void Shape::randomShape(int positions[8]) 
 {
 	//shape = (Shapes)(rand() % 3); //for testing
-	//shape = (Shapes)0; //for testing
+	//shape = (Shapes)1; //for testing
 	shape = (Shapes)(rand() % 7); //generate a random number from 0-6, each represents a different tetromino shape
 	getSpawnCords(positions);
 }
@@ -85,6 +85,7 @@ bool Shape::moveShapeDown()
 	else //If the shape can't move, then it's on the ground. So we update freeSpace so the program will remember that there are blocks there
 	{
 		glueShape();
+		print();
 		return false; //because the shape can't move, then it's on the ground. So the function returns false (is used in the game class later)
 	}
 }
@@ -174,7 +175,7 @@ void Shape::rotateShape(char input)
 
 	if (changeShapePosition(positions)) //A function is used to change the position of all the block according to the positions array. If it succeeds in doing so, it returns true
 	{
-		print();
+		//print(); //Makes problems for bot
 		orientation = nextOrientation; //If the Tetromino was rotated, orientation is updated
 	}
 }

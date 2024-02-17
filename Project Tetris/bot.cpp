@@ -2,6 +2,7 @@
 
 Bot::Bot(Board& _board, char ch) : Shape(_board, ch)
 {
+	findBestPosition();
 }
 
 void Bot::moveToPosition(const Position& bestPosition) //for testing
@@ -20,13 +21,15 @@ void Bot::moveToPosition(const Position& bestPosition) //for testing
 
 void Bot::findBestPosition()
 {
-	int time = 0; //temp
+	ShowConsoleCursor(false);
+	//int time = 0; //temp
+	bestPosition.score = -9999999;
 	float score;
 	int divider = getDivider();
 	int spawnCords[8] = {};
 	getSpawnCords(spawnCords);
-	print();//tmp
-	Sleep(1200);//tmp
+	//print();//tmp
+	//Sleep(1200);//tmp
 
 	for (int i = 0; i < divider; i++)
 	{
@@ -44,18 +47,19 @@ void Bot::findBestPosition()
 			if (canShapeMoveOffset(1, 0))
 			{
 				moveBy(1, 0);
-				print(); //tmp
+				//print(); //tmp
 			}
 			else
 			{
 				changeShapePosition(spawnCords);
-				print(); //tmp
+				//print(); //tmp
 				break;
 			}
 		}
 		moveBy(0, 1);
 		rotateShape((char)GameConfig::Lkeys::CLOCKWISE); //need to work for player 2 later...
-		print(); //tmp
+		//print(); //tmp
+		//ShowConsoleCursor(true);
 	}
 }
 
@@ -75,21 +79,22 @@ float Bot::getPositionScore()
 	board.checkFullLine();
 	holeCount = getHoleCount();
 	bumpiness = getBumpinessLevel(fullLinesWeight);
-	print(); //tmp
-	board.print();
-	Sleep(130); //tmp
+	//print(); //tmp
+	//board.print();
+	//Sleep(130); //tmp
 
 	fullLinesWeight = pow(4, fullLinesWeight);
 	board = temp;
 	return (float)(fullLinesCount * fullLinesWeight) - (bumpiness * (float)bumpinessWeight) - (float)(holeCount * holeWeight);
 }
 
-void Bot::takeAction()
+void Bot::takeAction(char input)
 { 
-	char actionKey{};
-
 	if (getOrientation() != bestPosition.orientation)
+	{
 		rotateShape(' ');
+		print();
+	}
 	else if (getAnchorX() != bestPosition.anchorX)
 		moveShapeLeftRight(' ');
 	else
@@ -103,6 +108,17 @@ int Bot::getOffsetForLeftRight(char input)
 	else if (getAnchorX() > bestPosition.anchorX)
 		return -1;
 	return 0;
+}
+
+bool Bot::botOrHuman()
+{
+	return (bool)Type::BOT;
+}
+
+void Bot::setShape()
+{
+	Shape::setShape();
+	findBestPosition();
 }
 
 void Bot::updateBestPosition(float newScore)
