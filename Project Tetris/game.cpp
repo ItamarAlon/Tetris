@@ -15,7 +15,9 @@ void Game::openMenu()
 		ShowConsoleCursor(true); //In the menu the cursor should appear (as input is received from the player)
 		clrscr();
 		cout << "Welcome to Tetris! Pick one of the options below:\n\n";
-		cout << "("<< (int)GameConfig::menu::HUMANvHUMAN <<") Start a new Game" << endl;
+		cout << "("<< (int)GameConfig::menu::HUMANvHUMAN <<") Start a new Game - Human vs Human" << endl;
+		cout << "(" << (int)GameConfig::menu::HUMANvCOMPUTER << ") Start a new Game - Human vs Computer" << endl;
+		cout << "(" << (int)GameConfig::menu::COMPUTERvCOMPUTER << ") Start a new Game - Computer vs Computer" << endl;
 		if (isGamePaused) 
 			cout << "(" << (int)GameConfig::menu::PAUSED_GAME << ") Continue a paused game" << endl; //This option appears only if the game was paused by the players
 		cout << "(" << (int)GameConfig::menu::INSTRUCTIONS << ") Present instructions and keys" << endl;
@@ -53,6 +55,34 @@ void Game::printInstructions()
 
 void Game::runGame()
 {
+	//bool goToMenu = false;
+	//char key;
+	//ShowConsoleCursor(false); //During gameplay, we the cursor is turned off to make the game look better
+	//
+	//clrscr();
+	//boardP1.print();
+	//boardP2.print();
+	//
+	//while (!goToMenu) //The game keeps running, until a break happens (we'll see later)
+	//{
+	//	runGameForPlayer(boardP1, shapeP1); //The program runs the game for each player using a function
+	//	runGameForPlayer(boardP2, shapeP2); 
+	//
+	//	for (int i = 0; i < 20; i++)
+	//	{
+	//		Sleep(speed/20); //Sleep is used in every run of the loop to slow the game down
+	//		goToMenu = handleInput(); //At every frame of the game, the program checks if an input was given (and acts accordingly) using a function. If an input was made to pause the game, the function returns true
+	//		if (goToMenu)
+	//			break; //In case the player decided to go to the menu, the program exist the while loop
+	//	}
+	//
+	//	if (boardP1.isBoardFull() || boardP2.isBoardFull()) 
+	//		break; //If one of the blocks is full, we exit the loop (because the game ends)
+	//}
+	//
+	//if (!goToMenu) //After exiting the loop, we check if the player wanted to go to the menu. If he didn't, it means the game ended so the winner is declared. Otherwise, the program exits the function (right back to the menu function)
+	//	handleWinner();
+
 	bool goToMenu = false;
 	char key;
 	ShowConsoleCursor(false); //During gameplay, we the cursor is turned off to make the game look better
@@ -63,22 +93,21 @@ void Game::runGame()
 
 	while (!goToMenu) //The game keeps running, until a break happens (we'll see later)
 	{
-		//goToMenu = handleInput(); //At every frame of the game, the program checks if an input was given (and acts accordingly) using a function. If an input was made to pause the game, the function returns true
-		//if (goToMenu)
-		//	break; //In case the player decided to go to the menu, the program exist the while loop
-
 		runGameForPlayer(boardP1, shapeP1); //The program runs the game for each player using a function
-		//runGameForPlayer(boardP2, shapeP2); 
+		runGameForPlayer(boardP2, shapeP2);
 
 		for (int i = 0; i < 20; i++)
 		{
-			Sleep(speed/20); //Sleep is used in every run of the loop to slow the game down
-			goToMenu = handleInput(); //At every frame of the game, the program checks if an input was given (and acts accordingly) using a function. If an input was made to pause the game, the function returns true
+			Sleep(speed / 20); //Sleep is used in every run of the loop to slow the game down
+			goToMenu = wasEscPressed(); //At every frame of the game, the program checks if the ESC key was pressed. If it did, the function returns true, and the program exits the loop
 			if (goToMenu)
-				break; //In case the player decided to go to the menu, the program exist the while loop
+				break; //In case the player decided to go to the menu, the program exits the while loop
+
+			shapeP1.takeAction();
+			shapeP2.takeAction();
 		}
 
-		if (boardP1.isBoardFull() || boardP2.isBoardFull()) 
+		if (boardP1.isBoardFull() || boardP2.isBoardFull())
 			break; //If one of the blocks is full, we exit the loop (because the game ends)
 	}
 
@@ -102,6 +131,64 @@ void Game::runGameForPlayer(Board& board, Human& shape)
 
 bool Game::handleInput()
 {
+	//if (_kbhit())
+	//{
+	//	char key = _getch(); //If a key was pressed, we save it
+	//
+	//	switch (key)
+	//	{
+	//	case (char)GameConfig::Lkeys::LEFT:
+	//	case (char)GameConfig::Lkeys::RIGHT:
+	//		shapeP1.moveShapeLeftRight(key); //Using a function in case a shape needs to move Left/Right
+	//		break;
+	//	case (char)GameConfig::Lkeys::LEFT - 32:
+	//	case (char)GameConfig::Lkeys::RIGHT - 32:
+	//		shapeP1.moveShapeLeftRight(key + 32); //In case the uppercase version of the key was received..
+	//		break;
+	//	case (char)GameConfig::Lkeys::DOWN:
+	//	case (char)GameConfig::Lkeys::DOWN - 32:
+	//		shapeP1.moveShapeDown(); //If DOWN was pressed, we need to increase the shape's speed. So we move it down by 1 to mimik the feeling of increased speed
+	//		break;
+	//	case (char)GameConfig::Lkeys::CLOCKWISE:
+	//	case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
+	//		shapeP1.rotateShape(key);
+	//		break;
+	//	case (char)GameConfig::Lkeys::CLOCKWISE - 32:
+	//	case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE - 32:
+	//		shapeP1.rotateShape(key + 32);
+	//		break;
+	//
+	//	case (char)GameConfig::Rkeys::LEFT:
+	//	case (char)GameConfig::Rkeys::RIGHT:
+	//		shapeP2.moveShapeLeftRight(key);
+	//		break;
+	//	case (char)GameConfig::Rkeys::LEFT - 32:
+	//	case (char)GameConfig::Rkeys::RIGHT - 32:
+	//		shapeP2.moveShapeLeftRight(key + 32);
+	//		break;
+	//	case (char)GameConfig::Rkeys::DOWN:
+	//	case (char)GameConfig::Rkeys::DOWN - 32:
+	//		shapeP2.moveShapeDown();
+	//		break;
+	//	case (char)GameConfig::Rkeys::CLOCKWISE:
+	//	case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE:
+	//		shapeP2.rotateShape(key);
+	//		break;
+	//	case (char)GameConfig::Rkeys::CLOCKWISE - 32:
+	//	case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE - 32:
+	//		shapeP2.rotateShape(key + 32);
+	//		break;
+	//
+	//
+	//	case (char)GameConfig::Lkeys::ESC:
+	//		isGamePaused = true; //If ESC was pressed, the game is paused...
+	//		return true; //...and true is retured to move out of the endless loop in runGame(), and into the menu function
+	//	default:
+	//		break;
+	//	}
+	//}
+	//return false; //Otherwise, false is returned so that the loop will continue.
+
 	if (_kbhit())
 	{
 		char key = _getch(); //If a key was pressed, we save it
@@ -110,26 +197,16 @@ bool Game::handleInput()
 		{
 		case (char)GameConfig::Lkeys::LEFT:
 		case (char)GameConfig::Lkeys::RIGHT:
-			shapeP1.moveShapeLeftRight(key); //Using a function in case a shape needs to move Left/Right
-			break;
 		case (char)GameConfig::Lkeys::LEFT - 32:
 		case (char)GameConfig::Lkeys::RIGHT - 32:
-			shapeP1.moveShapeLeftRight(key + 32); //In case the uppercase version of the key was received..
-			break;
 		case (char)GameConfig::Lkeys::DOWN:
 		case (char)GameConfig::Lkeys::DOWN - 32:
-			shapeP1.moveShapeDown(); //If DOWN was pressed, we need to increase the shape's speed. So we move it down by 1 to mimik the feeling of increased speed
-			break;
 		case (char)GameConfig::Lkeys::CLOCKWISE:
 		case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
-			shapeP1.rotateShape(key);
-			break;
 		case (char)GameConfig::Lkeys::CLOCKWISE - 32:
 		case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE - 32:
-			shapeP1.rotateShape(key + 32);
+			shapeP1.takeAction();
 			break;
-
-
 
 		case (char)GameConfig::Rkeys::LEFT:
 		case (char)GameConfig::Rkeys::RIGHT:
@@ -151,16 +228,22 @@ bool Game::handleInput()
 		case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE - 32:
 			shapeP2.rotateShape(key + 32);
 			break;
-
-
-		case (char)GameConfig::Lkeys::ESC:
-			isGamePaused = true; //If ESC was pressed, the game is paused...
-			return true; //...and true is retured to move out of the endless loop in runGame(), and into the menu function
 		default:
 			break;
 		}
 	}
 	return false; //Otherwise, false is returned so that the loop will continue.
+}
+
+bool Game::wasEscPressed()
+{
+	if (_kbhit())
+		if (_getch() == (char)GameConfig::Lkeys::ESC)
+		{
+			isGamePaused = true; //If ESC was pressed, the game is paused...
+			return true;
+		}
+	return false;
 }
 
 void Game::restartGame()
@@ -174,7 +257,7 @@ void Game::restartGame()
 
 bool Game::handleMenuInput(int input)
 {
-	if ((input != (int)GameConfig::menu::HUMANvHUMAN && input != (int)GameConfig::menu::PAUSED_GAME && input != (int)GameConfig::menu::INSTRUCTIONS && input != (int)GameConfig::menu::EXIT) || (input == (int)GameConfig::menu::PAUSED_GAME && !isGamePaused))
+	if (!isMenuInputValid(input))
 	{
 		clrscr();
 		cout << "Invalid input. Try again"; //If the input is not valid, an appropriate message is printed, before the menu is printed again
@@ -188,6 +271,11 @@ bool Game::handleMenuInput(int input)
 				restartGame(); //If 1 was pressed, we restart the game before running it again (only if the game is paused, otherwise there's no need to restart)
 			runGame();
 			break;
+
+
+
+
+
 		case (int)GameConfig::menu::PAUSED_GAME:
 			runGame(); //If 2 was pressed, we run the game again. The boards and shapes haven't changed, so the game will continue right where it left off
 			break;
@@ -202,6 +290,24 @@ bool Game::handleMenuInput(int input)
 	if (input == (int)GameConfig::menu::EXIT)
 		return false; //false is returned to indicate the program need to print the menu again
 	return true;
+}
+
+bool Game::isMenuInputValid(int input)
+{
+	if (input == (int)GameConfig::menu::PAUSED_GAME && isGamePaused)
+		return true;
+
+	switch (input)
+	{
+	case (int)GameConfig::menu::HUMANvHUMAN:
+	case (int)GameConfig::menu::HUMANvCOMPUTER:
+	case (int)GameConfig::menu::COMPUTERvCOMPUTER:
+	case (int)GameConfig::menu::INSTRUCTIONS:
+	case (int)GameConfig::menu::EXIT:
+		return true;
+	}
+
+	return false;
 }
 
 void Game::handleWinner()
