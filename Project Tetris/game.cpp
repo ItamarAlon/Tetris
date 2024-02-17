@@ -1,7 +1,7 @@
 #include "game.h"
-#include "bot.h"
+#include "human.h"
 
-Game::Game(Board& board1, Board& board2, Bot& shape1, Bot& shape2, int _speed) : boardP1(board1), boardP2(board2), shapeP1(shape1), shapeP2(shape2), speed(_speed)
+Game::Game(Board& board1, Board& board2, Human& shape1, Human& shape2, int _speed) : boardP1(board1), boardP2(board2), shapeP1(shape1), shapeP2(shape2), speed(_speed)
 {
 }
 
@@ -86,7 +86,7 @@ void Game::runGame()
 		handleWinner();
 }
 
-void Game::runGameForPlayer(Board& board, Shape& shape)
+void Game::runGameForPlayer(Board& board, Human& shape)
 {
 	//In every frame:
 	bool IsShapeInAir = shape.moveShapeDown(); //The program moves the shape down the board, and updates whether or not the shape is still on the ground.

@@ -91,14 +91,23 @@ bool Shape::moveShapeDown()
 
 bool Shape::moveShapeLeftRight(int input)
 {
-	int offsetX, offsetY;
-	blockArr[0].getOffsetFromInput(input, offsetX, offsetY); //Function returns the offset of x and y for all block in the Tetromino, which depends on the input given by the player
+	//int offsetX, offsetY;
+	//blockArr[0].getOffsetFromInput(input, offsetX, offsetY); //Function returns the offset of x and y for all block in the Tetromino, which depends on the input given by the player
+	//
+	//if (!canShapeMoveOffset(offsetX, offsetY))
+	//	return false;
+	//
+	//for (int i = 0; i < 4; i++)
+	//	blockArr[i].moveBlockLeftRight(input); //If the shape can move, we move all the blocks (depending on the input) 
+	//print();
+	//return true;
+	int offsetX;
+	offsetX = getOffsetForLeftRight(input); //Function returns the offset of x for the Tetromino, which depends on the input given by the player
 
-	if (!canShapeMoveOffset(offsetX, offsetY))
+	if (!canShapeMoveOffset(offsetX, 0))
 		return false;
 
-	for (int i = 0; i < 4; i++)
-		blockArr[i].moveBlockLeftRight(input); //If the shape can move, we move all the blocks (depending on the input) 
+	moveBy(offsetX, 0);//If the shape can move, we move it (depending on offsetX and offsetY)
 	print();
 	return true;
 }
@@ -182,6 +191,26 @@ void Shape::createCordsArr(int positions[8], int anchorX, int anchorY, int x1, i
 	positions[7] = anchorY + y3;
 }
 
+//int Shape::getOffsetForLeftRight(char input)
+//{
+//	char left, right;
+//	if (board.getPlayerNum() == 1)
+//	{
+//		left = (char)GameConfig::Lkeys::LEFT;
+//		right = (char)GameConfig::Lkeys::RIGHT;
+//	}
+//	else
+//	{
+//		left = (char)GameConfig::Rkeys::LEFT;
+//		right = (char)GameConfig::Rkeys::RIGHT;
+//	}
+//
+//	if (input == left)
+//		return -1;  //If the input from the keyboard is left, than the shape moves 1 place to the left (or, the x cord of the block goes down by 1)
+//	if (input == right)
+//		return 1; //Else, the shape moves 1 place to the right
+//}
+
 bool Shape::changeShapePosition(int positions[8])
 {
 	if (canShapeMoveToPosition(positions))
@@ -193,20 +222,20 @@ bool Shape::changeShapePosition(int positions[8])
 	return false;
 }
 
-int Shape::getNextOrientation(int key)
-{
-	int nextOrientation;
-
-	if (key == (char)GameConfig::Lkeys::CLOCKWISE)
-		nextOrientation = (orientation + 1) % divider; //If rotating clockwise was chosen, we go to the nextOrientation (which returns to 0 after going through all orientations, which is why module is used
-	else
-		nextOrientation = orientation - 1; //Otherwise, orientation goes down by 1, which can cause it to turn -1 (which is illegal).
-
-	if (nextOrientation == -1) //so if the orientation is -1, we change it to the last orientation
-		nextOrientation = divider - 1;
-
-	return nextOrientation;
-}
+//int Shape::getNextOrientation(int key)
+//{
+//	int nextOrientation;
+//
+//	if (key == (char)GameConfig::Lkeys::CLOCKWISE)
+//		nextOrientation = (orientation + 1) % divider; //If rotating clockwise was chosen, we go to the nextOrientation (which returns to 0 after going through all orientations, which is why module is used
+//	else
+//		nextOrientation = orientation - 1; //Otherwise, orientation goes down by 1, which can cause it to turn -1 (which is illegal).
+//
+//	if (nextOrientation == -1) //so if the orientation is -1, we change it to the last orientation
+//		nextOrientation = divider - 1;
+//
+//	return nextOrientation;
+//}
 
 bool Shape::canShapeMoveOffset(int offsetX, int offsetY)
 {

@@ -18,7 +18,7 @@ void Bot::moveToPosition(const Position& bestPosition) //for testing
 	print();
 }
 
-void Bot::findBestPosition(Position& bestPosition)
+void Bot::findBestPosition()
 {
 	int time = 0; //temp
 	float score;
@@ -37,7 +37,7 @@ void Bot::findBestPosition(Position& bestPosition)
 		{
 			teleportToFloor();
 			score = getPositionScore();
-			updateBestPosition(bestPosition, score);
+			updateBestPosition(score);
 
 			teleportToCeiling();
 
@@ -56,7 +56,6 @@ void Bot::findBestPosition(Position& bestPosition)
 		moveBy(0, 1);
 		rotateShape((char)GameConfig::Lkeys::CLOCKWISE); //need to work for player 2 later...
 		print(); //tmp
-		
 	}
 }
 
@@ -85,14 +84,72 @@ float Bot::getPositionScore()
 	return (float)(fullLinesCount * fullLinesWeight) - (bumpiness * (float)bumpinessWeight) - (float)(holeCount * holeWeight);
 }
 
-void Bot::updateBestPosition(Position& bestPosition, float score)
+void Bot::takeAction()
+{ 
+	char actionKey{};
+
+	if (getOrientation() != bestPosition.orientation)
+		rotateShape(' ');
+	else if (getAnchorX() != bestPosition.anchorX)
+		moveShapeLeftRight(' ');
+	else
+		moveShapeDown(); //Might delete
+}
+
+int Bot::getOffsetForLeftRight(char input)
 {
-	if (score > bestPosition.score)
+	if (getAnchorX() < bestPosition.anchorX)
+		return 1;
+	else if (getAnchorX() > bestPosition.anchorX)
+		return -1;
+	return 0;
+}
+
+void Bot::updateBestPosition(float newScore)
+{
+	if (newScore > bestPosition.score)
 	{
-		getAnchorXY(bestPosition.anchorX, bestPosition.anchorY); //Might change to FreeSpace cords instead
-		bestPosition.score = score;
+		getAnchorXY(bestPosition.anchorX, bestPosition.anchorY); 
+		bestPosition.score = newScore;
 		bestPosition.orientation = getOrientation();
 	}
+}
+
+char Bot::getInputForAction(Action action)
+{
+	if (action == Action::LEFT)
+	{
+		if (playerNum == 1)
+			return (char)GameConfig::Lkeys::LEFT;
+		else
+			return (char)GameConfig::Rkeys::LEFT;
+	}
+	else if (action == Action::RIGHT)
+	{
+		if (playerNum == 1)
+			return (char)GameConfig::Lkeys::RIGHT;
+		else
+			return (char)GameConfig::Rkeys::RIGHT;
+	}
+	else if (action == Action::CLOCKWISE)
+	{
+		if (playerNum == 1)
+			return (char)GameConfig::Lkeys::CLOCKWISE;
+		else
+			return (char)GameConfig::Rkeys::CLOCKWISE;
+	}
+	else if (action == Action::COUNTER_CLOCKWISE)
+	{
+		if (playerNum == 1)
+			return (char)GameConfig::Lkeys::COUNTER_CLOCKWISE;
+		else
+			return (char)GameConfig::Rkeys::COUNTER_CLOCKWISE;
+	}
+}
+
+int Bot::getNextOrientation(int key)
+{
+	return (getOrientation() + 1) % getDivider(); //Might make it smarted later
 }
 
 int Bot::getHoleCount()

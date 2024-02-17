@@ -56,7 +56,7 @@ void Block::setCords(int x, int y)
 	setY(y);
 }
 
-void Block::moveBlockLeftRight(char key)
+void Block::moveBlockLeftRight(char key) //Currently not used. Might use for bomb later
 {
 	if (key == (char)GameConfig::Lkeys::LEFT || key == (char)GameConfig::Rkeys::LEFT)
 		moveBy(-1, 0);
@@ -74,7 +74,7 @@ bool Block::isSpaceTakenOffset(int offsetX, int offsetY, Board& playerBoard)
 	return false;
 }
 
-void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY)
+void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY) //Currently not used. Might use for bomb later
 {
 	if (key == (char)GameConfig::Lkeys::LEFT || key == (char)GameConfig::Rkeys::LEFT)
 		offsetX = -1;  //If the input from the keyboard is left, than the block moves 1 place to the left (or, the x cord of the block goes down by 1)

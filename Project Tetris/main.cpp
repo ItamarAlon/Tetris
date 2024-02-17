@@ -3,12 +3,13 @@
 #include "block.h"
 #include "board.h"
 #include "bot.h"
+#include "human.h"
 
 void main()
 {
 	srand(time(nullptr));
 	Board board1(10, 0, 1), board2(40, 0, 2);
-	Bot shape1(board1), shape2(board2);
+	Human shape1(board1), shape2(board2);
 	Game game(board1, board2, shape1, shape2);
 	
 	game.openMenu();
