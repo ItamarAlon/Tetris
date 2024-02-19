@@ -132,7 +132,7 @@ int Board::getHeight() const
 	return HEIGHT;
 }
 
-int Board::getColHeight(int col) const
+int Board::getColumnHeight(int col) const
 {
 	if (col < 1 || col > WIDTH)
 		return -1;
@@ -144,7 +144,7 @@ int Board::getColHeight(int col) const
 	return HEIGHT - row + 1;
 }
 
-void Board::convertXYToFreeSpaceXY(int x, int y, int& freeSpaceX, int& freeSpaceY)
+void Board::convertXYToFreeSpaceXY(int x, int y, int& freeSpaceX, int& freeSpaceY) const
 {
 	freeSpaceX = x - X_START; //The cords of a block in the freeSpace array is calculated by taking the cords of the block on-screen, and removing the Boards' cords on-screen.
 	freeSpaceY = y - Y_START;

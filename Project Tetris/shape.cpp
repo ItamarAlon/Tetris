@@ -92,16 +92,6 @@ bool Shape::moveShapeDown()
 
 bool Shape::moveShapeLeftRight(int input)
 {
-	//int offsetX, offsetY;
-	//blockArr[0].getOffsetFromInput(input, offsetX, offsetY); //Function returns the offset of x and y for all block in the Tetromino, which depends on the input given by the player
-	//
-	//if (!canShapeMoveOffset(offsetX, offsetY))
-	//	return false;
-	//
-	//for (int i = 0; i < 4; i++)
-	//	blockArr[i].moveBlockLeftRight(input); //If the shape can move, we move all the blocks (depending on the input) 
-	//print();
-	//return true;
 	int offsetX;
 	offsetX = getOffsetForLeftRight(input); //Function returns the offset of x for the Tetromino, which depends on the input given by the player
 

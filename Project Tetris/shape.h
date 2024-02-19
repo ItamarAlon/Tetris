@@ -32,6 +32,8 @@ public:
 	bool canShapeMoveToPosition(int positions[8]) const;
 	int getAnchorX() const;
 	int getAnchorY() const;
+	int getOrientation() const;
+	int getDivider() const;
 	void getAnchorXY(int& anchorX, int& anchorY) const;
 	virtual bool botOrHuman() = 0;
 
@@ -47,12 +49,9 @@ protected:
 	enum class Type { HUMAN = true, BOT = false };
 	void teleportToFloor();
 	void teleportToCeiling();
-	int getOrientation() const;
-	int getDivider() const;
 	void getSpawnCords(int positions[8]);
 	bool changeShapePosition(int positions[8]); //Receives a positions array and moves the blocks of the tetromino to the positions in the given array
 	void glueShape();
 	void unGlueShape();
-	//int getShapeType() const;
 };
 

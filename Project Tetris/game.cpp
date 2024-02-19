@@ -62,33 +62,6 @@ void Game::printInstructions()
 
 void Game::runGame()
 {
-	//bool goToMenu = false;
-	//char key;
-	//ShowConsoleCursor(false); //During gameplay, we the cursor is turned off to make the game look better
-	//
-	//clrscr();
-	//boardP1.print();
-	//boardP2.print();
-	//
-	//while (!goToMenu) //The game keeps running, until a break happens (we'll see later)
-	//{
-	//	runGameForPlayer(boardP1, shapeP1); //The program runs the game for each player using a function
-	//	runGameForPlayer(boardP2, shapeP2); 
-	//
-	//	for (int i = 0; i < 20; i++)
-	//	{
-	//		Sleep(speed/20); //Sleep is used in every run of the loop to slow the game down
-	//		goToMenu = handleInput(); //At every frame of the game, the program checks if an input was given (and acts accordingly) using a function. If an input was made to pause the game, the function returns true
-	//		if (goToMenu)
-	//			break; //In case the player decided to go to the menu, the program exist the while loop
-	//	}
-	//
-	//	if (boardP1.isBoardFull() || boardP2.isBoardFull()) 
-	//		break; //If one of the blocks is full, we exit the loop (because the game ends)
-	//}
-	//
-	//if (!goToMenu) //After exiting the loop, we check if the player wanted to go to the menu. If he didn't, it means the game ended so the winner is declared. Otherwise, the program exits the function (right back to the menu function)
-	//	handleWinner();
 	bool goToMenu = false;
 	ShowConsoleCursor(false); //During gameplay, we the cursor is turned off to make the game look better
 
@@ -101,9 +74,9 @@ void Game::runGame()
 		runGameForPlayer(boardP1, shapeP1); //The program runs the game for each player using a function
 		runGameForPlayer(boardP2, shapeP2);
 
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 10; i++)
 		{
-			Sleep(speed / 20); //Sleep is used in every run of the loop to slow the game down
+			Sleep(speed / 10); //Sleep is used in every run of the loop to slow the game down
 			goToMenu = handleInput(); //At every frame of the game, the program checks if the ESC key was pressed. If it did, the function returns true, and the program exits the loop
 			if (goToMenu)
 				break; //In case the player decided to go to the menu, the program exits the while loop
@@ -133,64 +106,6 @@ void Game::runGameForPlayer(Board& board, Shape* shape)
 
 bool Game::handleInput()
 {
-	//if (_kbhit())
-	//{
-	//	char key = _getch(); //If a key was pressed, we save it
-	//
-	//	switch (key)
-	//	{
-	//	case (char)GameConfig::Lkeys::LEFT:
-	//	case (char)GameConfig::Lkeys::RIGHT:
-	//		shapeP1.moveShapeLeftRight(key); //Using a function in case a shape needs to move Left/Right
-	//		break;
-	//	case (char)GameConfig::Lkeys::LEFT - 32:
-	//	case (char)GameConfig::Lkeys::RIGHT - 32:
-	//		shapeP1.moveShapeLeftRight(key + 32); //In case the uppercase version of the key was received..
-	//		break;
-	//	case (char)GameConfig::Lkeys::DOWN:
-	//	case (char)GameConfig::Lkeys::DOWN - 32:
-	//		shapeP1.moveShapeDown(); //If DOWN was pressed, we need to increase the shape's speed. So we move it down by 1 to mimik the feeling of increased speed
-	//		break;
-	//	case (char)GameConfig::Lkeys::CLOCKWISE:
-	//	case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
-	//		shapeP1.rotateShape(key);
-	//		break;
-	//	case (char)GameConfig::Lkeys::CLOCKWISE - 32:
-	//	case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE - 32:
-	//		shapeP1.rotateShape(key + 32);
-	//		break;
-	//
-	//	case (char)GameConfig::Rkeys::LEFT:
-	//	case (char)GameConfig::Rkeys::RIGHT:
-	//		shapeP2.moveShapeLeftRight(key);
-	//		break;
-	//	case (char)GameConfig::Rkeys::LEFT - 32:
-	//	case (char)GameConfig::Rkeys::RIGHT - 32:
-	//		shapeP2.moveShapeLeftRight(key + 32);
-	//		break;
-	//	case (char)GameConfig::Rkeys::DOWN:
-	//	case (char)GameConfig::Rkeys::DOWN - 32:
-	//		shapeP2.moveShapeDown();
-	//		break;
-	//	case (char)GameConfig::Rkeys::CLOCKWISE:
-	//	case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE:
-	//		shapeP2.rotateShape(key);
-	//		break;
-	//	case (char)GameConfig::Rkeys::CLOCKWISE - 32:
-	//	case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE - 32:
-	//		shapeP2.rotateShape(key + 32);
-	//		break;
-	//
-	//
-	//	case (char)GameConfig::Lkeys::ESC:
-	//		isGamePaused = true; //If ESC was pressed, the game is paused...
-	//		return true; //...and true is retured to move out of the endless loop in runGame(), and into the menu function
-	//	default:
-	//		break;
-	//	}
-	//}
-	//return false; //Otherwise, false is returned so that the loop will continue.
-
 	char input = ' ';
 	if (_kbhit())
 		input = _getch(); //If a key was pressed, we save it
@@ -236,7 +151,7 @@ bool Game::handleMenuInput(int input)
 		default:
 			break;
 		}
-		switch (input) //If the input is valid:
+		switch (input)
 		{
 		case (int)GameConfig::menu::HUMANvHUMAN:
 		case (int)GameConfig::menu::HUMANvCOMPUTER:

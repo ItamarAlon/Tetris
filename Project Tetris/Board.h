@@ -30,14 +30,15 @@ public:
 	int getYStart() const;
 	int getWidth() const;
 	int getHeight() const;
-	int getColHeight(int col) const;
+	int getColumnHeight(int col) const;
 	bool checkFullLine(); //Checks if there is a line full of blocks on the board, and deletes it if there is one, while moving all lines above it down.
 	bool isLineFull(int line);
-	void moveLinesDown(int line); //Moves all lines down by 1.
 	void updateIsFull(); 
 	bool isBoardFull() const;
 	char getFreeSpaceValue(int x, int y) const; //Returns the value of a certain item in the freeSpace array
 	void setFreeSpaceValue(char value, int x, int y); //Sets the value of a certain item in the freeSpace array
 	int getPlayerNum() const;
-	void convertXYToFreeSpaceXY(int x, int y, int& freeSpaceX, int& freeSpaceY);
+	void convertXYToFreeSpaceXY(int x, int y, int& freeSpaceX, int& freeSpaceY) const;
+private:
+	void moveLinesDown(int line); //Moves all lines down by 1.
 };

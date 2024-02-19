@@ -14,7 +14,7 @@ void Block::moveBy(int x, int y)
 {
 	moveTo(this->x + x, this->y + y);
 }
-void Block::print()
+void Block::print() const
 {
 	gotoxy(x, y);
 	cout << ch;
@@ -45,7 +45,7 @@ void Block::setChar(char ch)
 	this->ch = ch;
 }
 
-char Block::getChar()
+char Block::getChar() const
 {
 	return ch;
 }
@@ -64,7 +64,7 @@ void Block::moveBlockLeftRight(char key) //Currently not used. Might use for bom
 		moveBy(1, 0);
 }
 
-bool Block::isSpaceTakenOffset(int offsetX, int offsetY, Board& playerBoard) 
+bool Block::isSpaceTakenOffset(int offsetX, int offsetY, const Board& playerBoard) const 
 {
 	int freeSpaceX, freeSpaceY;
 	getFreeSpaceXY(playerBoard, freeSpaceX, freeSpaceY); //updates freeSpaceX and freeSpaceY to represnt the cords of the block in the freeSpace array.
@@ -74,7 +74,7 @@ bool Block::isSpaceTakenOffset(int offsetX, int offsetY, Board& playerBoard)
 	return false;
 }
 
-void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY) //Currently not used. Might use for bomb later
+void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY) const //Currently not used. Might use for bomb later
 {
 	if (key == (char)GameConfig::Lkeys::LEFT || key == (char)GameConfig::Rkeys::LEFT)
 		offsetX = -1;  //If the input from the keyboard is left, than the block moves 1 place to the left (or, the x cord of the block goes down by 1)
@@ -83,7 +83,7 @@ void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY) //Currently
 	offsetY = 0; //Either way, the block doesn't change it's height.
 }
 
-void Block::getFreeSpaceXY(Board& playerBoard, int& freeSpaceX, int& freeSpaceY)
+void Block::getFreeSpaceXY(const Board& playerBoard, int& freeSpaceX, int& freeSpaceY) const
 {
 	playerBoard.convertXYToFreeSpaceXY(this->x, this->y, freeSpaceX, freeSpaceY);
 	//x = this->x - playerBoard.getXStart(); //The cords of a block in the freeSpace array is calculated by taking the cords of the block on-screen, and removing the Boards' cords on-screen.

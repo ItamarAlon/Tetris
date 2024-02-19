@@ -57,7 +57,7 @@ void Bot::findBestPosition()
 			}
 		}
 		moveBy(0, 1);
-		rotateShape((char)GameConfig::Lkeys::CLOCKWISE); //need to work for player 2 later...
+		rotateShape(' ');
 		//print(); //tmp
 		//ShowConsoleCursor(true);
 	}
@@ -73,7 +73,7 @@ float Bot::getPositionScore()
 	int holeWeight, bumpinessWeight, fullLinesWeight;
 
 	holeWeight = 6;
-	bumpinessWeight = 3;
+	bumpinessWeight = 5;
 
 	fullLinesCount = getFullLinesCount();
 	board.checkFullLine();
@@ -212,11 +212,11 @@ int Bot::getFullLinesCount()
 
 int Bot::fillHeightsArr(int heights[])
 {
-	int maxHeight = heights[0] = board.getColHeight(1);
+	int maxHeight = heights[0] = board.getColumnHeight(1);
 
 	for (int i = 1; i < GameConfig::BOARD_WIDTH; i++)
 	{
-		heights[i] = board.getColHeight(i + 1);
+		heights[i] = board.getColumnHeight(i + 1);
 		if (heights[i] > maxHeight)
 			maxHeight = heights[i];
 	}
