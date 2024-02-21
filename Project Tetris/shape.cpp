@@ -68,13 +68,13 @@ void Shape::print()
 	}
 }
 
-void Shape::moveBy(int x, int y)
+void Shape::moveBy(int x, int y) //rewrite
 {
 	for (int i = 0; i < 4; i++)
 		blockArr[i].moveBy(x, y); //moves every block in the shape by x and y values
 }
 
-bool Shape::moveShapeDown()
+bool Shape::moveShapeDown() //board
 {
 	if (canShapeMoveOffset(0, 1)) //If the shape can move down...
 	{
@@ -89,8 +89,8 @@ bool Shape::moveShapeDown()
 		return false; //because the shape can't move, then it's on the ground. So the function returns false (is used in the game class later)
 	}
 }
-
-bool Shape::moveShapeLeftRight(int input)
+//board
+bool Shape::moveShapeLeftRight(int input)//board
 {
 	int offsetX;
 	offsetX = getOffsetForLeftRight(input); //Function returns the offset of x for the Tetromino, which depends on the input given by the player
@@ -102,8 +102,8 @@ bool Shape::moveShapeLeftRight(int input)
 	print();
 	return true;
 }
-
-void Shape::rotateShape(char input)
+//board
+void Shape::rotateShape(char input)//board
 { 
 	int positions[8] = {};
 	int anchorX = blockArr[0].getX(), anchorY = blockArr[0].getY(); 
@@ -202,6 +202,7 @@ void Shape::createCordsArr(int positions[8], int anchorX, int anchorY, int x1, i
 //		return 1; //Else, the shape moves 1 place to the right
 //}
 
+//board
 bool Shape::changeShapePosition(int positions[8])
 {
 	if (canShapeMoveToPosition(positions))
@@ -228,7 +229,8 @@ bool Shape::changeShapePosition(int positions[8])
 //	return nextOrientation;
 //}
 
-bool Shape::canShapeMoveOffset(int offsetX, int offsetY)
+//board
+bool Shape::canShapeMoveOffset(int offsetX, int offsetY) //rewrite
 {
 	for (int i = 0; i < 4; i++)
 		if (blockArr[i].isSpaceTakenOffset(offsetX, offsetY, board)) //checks for every block, if the space under it is free or not
@@ -236,6 +238,7 @@ bool Shape::canShapeMoveOffset(int offsetX, int offsetY)
 	return true;
 }
 
+//board
 bool Shape::canShapeMoveToPosition(int positions[8]) const
 {
 	int freeSpaceX, freeSpaceY;
@@ -266,7 +269,8 @@ void Shape::getAnchorXY(int& anchorX, int& anchorY) const
 	anchorY = getAnchorY();
 }
 
-void Shape::glueShape()
+//board
+void Shape::glueShape() 
 {
 	int freeSpaceX, freeSpaceY;
 
@@ -277,6 +281,7 @@ void Shape::glueShape()
 	}
 }
 
+//board
 void Shape::unGlueShape()
 {
 	int freeSpaceX, freeSpaceY;
@@ -288,13 +293,28 @@ void Shape::unGlueShape()
 	}
 }
 
+void Shape::turnToBomb()
+{
+	divider = 1;
+	shape = Shapes::BOMB;
+
+	//int anchorX = board.getXStart() + board.getWidth() / 2;
+	//int	anchorY = board.getYStart() + 1;
+	//blockArr[0].setCords(anchorX, anchorY); //Might not need
+
+	for (int i = 1; i < 4; i++)
+		blockArr[i].setChar(' ');
+}
+
+//board
 void Shape::teleportToFloor()
 {
 	while (canShapeMoveOffset(0, 1))
 		moveBy(0, 1);
 }
 
-void Shape::teleportToCeiling()
+//board
+void Shape::teleportToCeiling() //rewrite
 {
 	int lowestY = blockArr[0].getY();
 

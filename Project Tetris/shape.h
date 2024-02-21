@@ -3,7 +3,6 @@
 #include "board.h"
 #include "game.h"
 
-
 //Class that handles the shapes (tetromino) of the game.
 class Shape
 {
@@ -12,7 +11,7 @@ class Shape
 	int orientation; //The current orientation of the tetromino (because a shape can rotate during gameplay)
 	int divider; //Number of orientations a shape has
 	char ch;
-	enum class Shapes {I,O,T,S,Z,J,L}; //All the shapes that can appear in game
+	enum class Shapes { I, O, T, S, Z, J, L, BOMB }; //All the shapes that can appear in game
 	Shapes shape; //The current shape of the tetromino
 
 public:
@@ -26,7 +25,7 @@ public:
 	bool moveShapeDown(); //Moves the shape 1 place down (if possible)
 	bool moveShapeLeftRight(int key); //Moves the shape left/right if possible (according to the input given from the keyboard), and returns whether or not the shape moved.
 	void rotateShape(char key); //Rotates the shape (if possible)
-	virtual void takeAction(char input) = 0;
+	virtual void takeAction(char input) = 0; //To player
 
 	bool canShapeMoveOffset(int offsetX, int offsetY);
 	bool canShapeMoveToPosition(int positions[8]) const;
@@ -35,13 +34,13 @@ public:
 	int getOrientation() const;
 	int getDivider() const;
 	void getAnchorXY(int& anchorX, int& anchorY) const;
-	virtual bool botOrHuman() = 0;
+	virtual bool botOrHuman() = 0; //To player
 
 private:
 	void randomShape(int positions[8]); //Receives an array of 4 coordinates on-screen (8 integers), generates a random shape, and updates the array accordingly
 	void createCordsArr(int positions[8], int anchorX, int anchorY, int x1, int y1, int x2, int y2, int x3, int y3); //Sets new values to an empty positions array
-	virtual int getNextOrientation(int key) = 0; //Returns the next orientation of the block (relative to the input from the keyboard)
-	virtual int getOffsetForLeftRight(char input) = 0;
+	virtual int getNextOrientation(int key) = 0; //To player   //Returns the next orientation of the block (relative to the input from the keyboard)
+	virtual int getOffsetForLeftRight(char input) = 0; //To player
 
 protected:
 	Block blockArr[4] = {}; //Each shape is made of 4 blocks. This array represents the blocks that make the tetrominoe.
@@ -53,5 +52,6 @@ protected:
 	bool changeShapePosition(int positions[8]); //Receives a positions array and moves the blocks of the tetromino to the positions in the given array
 	void glueShape();
 	void unGlueShape();
+	void turnToBomb();
 };
 

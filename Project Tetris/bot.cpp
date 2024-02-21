@@ -131,37 +131,37 @@ void Bot::updateBestPosition(float newScore)
 	}
 }
 
-char Bot::getInputForAction(Action action)
-{
-	if (action == Action::LEFT)
-	{
-		if (playerNum == 1)
-			return (char)GameConfig::Lkeys::LEFT;
-		else
-			return (char)GameConfig::Rkeys::LEFT;
-	}
-	else if (action == Action::RIGHT)
-	{
-		if (playerNum == 1)
-			return (char)GameConfig::Lkeys::RIGHT;
-		else
-			return (char)GameConfig::Rkeys::RIGHT;
-	}
-	else if (action == Action::CLOCKWISE)
-	{
-		if (playerNum == 1)
-			return (char)GameConfig::Lkeys::CLOCKWISE;
-		else
-			return (char)GameConfig::Rkeys::CLOCKWISE;
-	}
-	else if (action == Action::COUNTER_CLOCKWISE)
-	{
-		if (playerNum == 1)
-			return (char)GameConfig::Lkeys::COUNTER_CLOCKWISE;
-		else
-			return (char)GameConfig::Rkeys::COUNTER_CLOCKWISE;
-	}
-}
+//char Bot::getInputForAction(Action action)
+//{
+//	if (action == Action::LEFT)
+//	{
+//		if (playerNum == 1)
+//			return (char)GameConfig::Lkeys::LEFT;
+//		else
+//			return (char)GameConfig::Rkeys::LEFT;
+//	}
+//	else if (action == Action::RIGHT)
+//	{
+//		if (playerNum == 1)
+//			return (char)GameConfig::Lkeys::RIGHT;
+//		else
+//			return (char)GameConfig::Rkeys::RIGHT;
+//	}
+//	else if (action == Action::CLOCKWISE)
+//	{
+//		if (playerNum == 1)
+//			return (char)GameConfig::Lkeys::CLOCKWISE;
+//		else
+//			return (char)GameConfig::Rkeys::CLOCKWISE;
+//	}
+//	else if (action == Action::COUNTER_CLOCKWISE)
+//	{
+//		if (playerNum == 1)
+//			return (char)GameConfig::Lkeys::COUNTER_CLOCKWISE;
+//		else
+//			return (char)GameConfig::Rkeys::COUNTER_CLOCKWISE;
+//	}
+//}
 
 int Bot::getNextOrientation(int key)
 {

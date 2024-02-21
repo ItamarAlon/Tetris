@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="block.cpp" />
     <ClCompile Include="board.cpp" />
+    <ClCompile Include="bomb.cpp" />
     <ClCompile Include="bot.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="general.cpp" />
@@ -141,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="block.h" />
     <ClInclude Include="board.h" />
+    <ClInclude Include="bomb.h" />
     <ClInclude Include="bot.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gameConfig.h" />
