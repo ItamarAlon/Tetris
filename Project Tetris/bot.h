@@ -9,7 +9,6 @@ class Bot : public Shape
 {
     Position tmp;
     Position& bestPosition = tmp;
-   // enum class Action {LEFT, RIGHT, CLOCKWISE, COUNTER_CLOCKWISE};
     const int playerNum = board.getPlayerNum();
 
 public:
