@@ -1,15 +1,19 @@
 #include "game.h"
 #include "human.h"
 #include "bot.h"
+#include "player.h"
+#include "bomb.h"
 
-Game::Game(Board& board1, Board& board2, int _speed) : boardP1(board1), boardP2(board2), speed(_speed)
+Game::Game(Board& board1, Board& board2, Shape& shape1, Shape& shape2, int _speed) : speed(_speed)
 {
+	player1 = new Human(board1, 1);
+	player2 = new Human(board2, 2);
 }
 
 Game::~Game()
 {
-	delete shapeP1;
-	delete shapeP2;
+	delete player1;
+	delete player2;
 }
 
 void Game::openMenu()
@@ -66,13 +70,13 @@ void Game::runGame()
 	ShowConsoleCursor(false); //During gameplay, we the cursor is turned off to make the game look better
 
 	clrscr();
-	boardP1.print();
-	boardP2.print();
+	player1->board.print();
+	player2->board.print();
 
 	while (!goToMenu) //The game keeps running, until a break happens (we'll see later)
 	{
-		runGameForPlayer(boardP1, shapeP1); //The program runs the game for each player using a function
-		runGameForPlayer(boardP2, shapeP2);
+		runGameForPlayer(player1); //The program runs the game for each player using a function
+		runGameForPlayer(player2);
 
 		for (int i = 0; i < 10; i++)
 		{
@@ -82,7 +86,7 @@ void Game::runGame()
 				break; //In case the player decided to go to the menu, the program exits the while loop
 		}
 
-		if (boardP1.isBoardFull() || boardP2.isBoardFull())
+		if (player1->board.isBoardFull() || player2->board.isBoardFull())
 			break; //If one of the blocks is full, we exit the loop (because the game ends)
 	}
 
@@ -90,17 +94,23 @@ void Game::runGame()
 		handleWinner();
 }
 
-void Game::runGameForPlayer(Board& board, Shape* shape)
+void Game::runGameForPlayer(Player* player)
 {
 	//In every frame:
-	bool IsShapeInAir = shape->moveShapeDown(); //The program moves the shape down the board, and updates whether or not the shape is still on the ground.
-	board.updateIsFull(); //Function that updates whether the board of the player is full or not
+	bool IsShapeInAir = player->shape->moveShapeDown(); //The program moves the shape down the board, and updates whether or not the shape is still on the ground.
+	player->board.updateIsFull(); //Function that updates whether the board of the player is full or not
 
 	if (!IsShapeInAir)
 	{
-		if (board.checkFullLine()) //If the shape landed, the program checks if there are any full lines that were deleted.
-			board.print(); //If there were, it prints the board again (which was updated)
-		shape->setShape(); //Then a new Tetromino is set
+		if (player->shape->isBomb())
+		{
+			((Bomb*)player->shape)->explode();
+			player->board.print();
+		}
+		else if (player->board.checkFullLine()) //If the shape landed, the program checks if there are any full lines that were deleted.
+			player->board.print(); //If there were, it prints the board again (which was updated)
+
+		player->setNewShape(); //Then a new Tetromino is set
 	}
 }
 
@@ -110,24 +120,24 @@ bool Game::handleInput()
 	if (_kbhit())
 		input = _getch(); //If a key was pressed, we save it
 
-	if (input == (char)GameConfig::Lkeys::ESC)
+	if (input == (char)GameConfig::ESC)
 	{
 		isGamePaused = true; //If ESC was pressed, the game is paused...
 		return true;
 	}
 
-	shapeP1->takeAction(input);
-	shapeP2->takeAction(input);
+	player1->takeAction(input);
+	player2->takeAction(input);
 	return false; //False is returned so that the loop will continue.
 }
 
 void Game::restartGame()
 {
-	boardP1.resetBoard();
-	boardP2.resetBoard();
+	player1->board.resetBoard();
+	player2->board.resetBoard();
 
-	shapeP1->setShape();
-	shapeP2->setShape();
+	player1->setNewShape(false);
+	player2->setNewShape(false);
 }
 
 bool Game::handleMenuInput(int input)
@@ -137,16 +147,16 @@ bool Game::handleMenuInput(int input)
 		switch (input)
 		{
 		case (int)GameConfig::menu::HUMANvHUMAN:
-			shapeP1 = new Human(boardP1);
-			shapeP2 = new Human(boardP2);
+			player1 = new Human(player1->board, 1);
+			player2 = new Human(player2->board, 2);
 			break;
 		case (int)GameConfig::menu::HUMANvCOMPUTER:
-			shapeP1 = new Human(boardP1);
-			shapeP2 = new Bot(boardP2);
+			player1 = new Human(player1->board, 1);
+			player2 = new Bot(player2->board, 2);
 			break;
 		case (int)GameConfig::menu::COMPUTERvCOMPUTER:
-			shapeP1 = new Bot(boardP1);
-			shapeP2 = new Bot(boardP2);
+			player1 = new Bot(player1->board, 1);
+			player2 = new Bot(player2->board, 2);
 			break;
 		default:
 			break;
@@ -203,10 +213,10 @@ void Game::handleWinner()
 {
 	//The programs enter this function only if one of the boards are full.
 	int winner;
-	if (boardP1.isBoardFull() && !boardP2.isBoardFull())
-		winner = boardP2.getPlayerNum(); 
-	else if (!boardP1.isBoardFull() && boardP2.isBoardFull())
-		winner = boardP1.getPlayerNum();
+	if (player1->board.isBoardFull() && !player2->board.isBoardFull())
+		winner = player2->board.getPlayerNum();
+	else if (!player1->board.isBoardFull() && player2->board.isBoardFull())
+		winner = player1->board.getPlayerNum();
 	else
 		winner = TIE; //If both boards are full, the game ends in a tie
 

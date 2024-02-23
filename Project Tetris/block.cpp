@@ -68,7 +68,6 @@ bool Block::isSpaceTakenOffset(int offsetX, int offsetY, const Board& playerBoar
 {
 	int freeSpaceX, freeSpaceY;
 	getFreeSpaceXY(playerBoard, freeSpaceX, freeSpaceY); //updates freeSpaceX and freeSpaceY to represnt the cords of the block in the freeSpace array.
-
 	if (playerBoard.isSpaceTaken(freeSpaceX + offsetX, freeSpaceY) || playerBoard.isSpaceTaken(freeSpaceX, freeSpaceY + offsetY)) 
 		return true; //If the space on board placed offsetX and offsetY values from the block is taken, return true.
 	return false;

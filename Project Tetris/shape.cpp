@@ -2,7 +2,7 @@
 
 Shape::Shape(Board& _board, char _ch) : board(_board), ch(_ch)
 {
-	setShape();
+	setShape(false);
 }
 
 Shape::Shape(const Shape& oldShape) : board(oldShape.board), ch(oldShape.ch)
@@ -39,16 +39,30 @@ Shape& Shape::operator=(const Shape& oldShape)
 	return *this;
 }
 
-void Shape::setShape()
+void Shape::setShape(bool allowBomb)
 {
 	int positions[8] = {};
 	randomShape(positions); //Function generates a random shape (out of the 7 shapes in the game) by giving coordinates of 4 blocks (which make a tetromino) to a positions array.
-	orientation = 0; //The beginning orientation of the shape will always be 0;
+	//orientation = 0; //The beginning orientation of the shape will always be 0;
 	for (int i = 0; i < 8; i += 2)
 	{
-		blockArr[i/2].setChar(ch);
-		blockArr[i/2].setCords(positions[i], positions[i + 1]); //Set the cords of every block in the array, from the positions array
+		blockArr[i / 2].setChar(ch);
+		blockArr[i / 2].setCords(positions[i], positions[i + 1]); //Set the cords of every block in the array, from the positions array
 	}
+}
+
+void Shape::setBomb()
+{
+	divider = 1;
+	numOfBlocks = 1;
+	shape = Shapes::BOMB;
+
+	int anchorX = board.getXStart() + board.getWidth() / 2;
+	int	anchorY = board.getYStart() + 1;
+	blockArr[0].setCords(anchorX, anchorY);
+
+	for (int i = 1; i < 4; i++)
+		blockArr[i].setChar(' ');
 }
 
 void Shape::randomShape(int positions[8]) 
@@ -61,20 +75,20 @@ void Shape::randomShape(int positions[8])
 
 void Shape::print()
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < numOfBlocks; i++)
 	{
 		if (blockArr[i].getChar() != ' ')
 			blockArr[i].print();
 	}
 }
 
-void Shape::moveBy(int x, int y) //rewrite
+void Shape::moveBy(int x, int y) 
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < numOfBlocks; i++)
 		blockArr[i].moveBy(x, y); //moves every block in the shape by x and y values
 }
-
-bool Shape::moveShapeDown() //board
+//board
+bool Shape::moveShapeDown() 
 {
 	if (canShapeMoveOffset(0, 1)) //If the shape can move down...
 	{
@@ -90,10 +104,10 @@ bool Shape::moveShapeDown() //board
 	}
 }
 //board
-bool Shape::moveShapeLeftRight(int input)//board
+bool Shape::moveShapeLeftRight(int offsetX)
 {
-	int offsetX;
-	offsetX = getOffsetForLeftRight(input); //Function returns the offset of x for the Tetromino, which depends on the input given by the player
+	//int offsetX;
+	//offsetX = getOffsetForLeftRight(input); //Function returns the offset of x for the Tetromino, which depends on the input given by the player
 
 	if (!canShapeMoveOffset(offsetX, 0))
 		return false;
@@ -103,60 +117,62 @@ bool Shape::moveShapeLeftRight(int input)//board
 	return true;
 }
 //board
-void Shape::rotateShape(char input)//board
+void Shape::rotateShape(int newOrientation)
 { 
+	if (newOrientation >= divider || newOrientation < 0)
+		newOrientation = 0;
+
 	int positions[8] = {};
 	int anchorX = blockArr[0].getX(), anchorY = blockArr[0].getY(); 
-	int nextOrientation = getNextOrientation(input);
 
 	//The function saves in positions[] the cords of the next orientation of the Tetromino (according to it's shape)
 	//It's worth pointing out that the O shape doesn't appear here, because it can't rotate. If the player tries to rotate it, nothing happens
 	switch (shape)
 	{
 	case Shapes::I:
-		if (nextOrientation == 1)
+		if (newOrientation == 1)
 			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, 0, 2); //orientation 1
 		else
 			createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, 2, 0); //orientation 0
 		break;
 	case Shapes::T:
-		if (nextOrientation == 1)
+		if (newOrientation == 1)
 		    createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, 1, 0); //orientation 1
-		else if (nextOrientation == 2)
+		else if (newOrientation == 2)
 			createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, 0, -1); //orientation 2
-		else if (nextOrientation == 3)
+		else if (newOrientation == 3)
 			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, -1, 0); //orientation 3
 		else
 			createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 0); //orientation 0
 		break;
 	case Shapes::S:
-		if (nextOrientation == 1)
+		if (newOrientation == 1)
 		    createCordsArr(positions, anchorX, anchorY, -1, 0, -1, -1, 0, 1); //orientation 1
 		else
 			createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, -1, 1); //orientation 0
 		break;
 	case Shapes::Z:
-		if (nextOrientation == 1)
+		if (newOrientation == 1)
 		    createCordsArr(positions, anchorX, anchorY, -1, 0, -1, 1, 0, -1);//orientation 1
 		else
 			createCordsArr(positions, anchorX, anchorY, -1, 0, 0, 1, 1, 1); //orientation 0
 		break;
 	case Shapes::J:
-		if (nextOrientation == 1)
+		if (newOrientation == 1)
 			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, 1, -1); //orientation 1
-		else if (nextOrientation == 2)
+		else if (newOrientation == 2)
 			createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, -1, -1); //orientation 2
-		else if (nextOrientation == 3)
+		else if (newOrientation == 3)
 			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, -1, 1); //orientation 3
 		else
 			createCordsArr(positions, anchorX, anchorY, 1, 0, -1, 0, 1, 1); //orientation 0
 		break;
 	case Shapes::L:
-		if (nextOrientation == 1)
+		if (newOrientation == 1)
 			createCordsArr(positions, anchorX, anchorY, 0, -1, 0, 1, 1, 1); //orientation 1
-		else if (nextOrientation == 2)
+		else if (newOrientation == 2)
 			createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, 1, -1); //orientation 2
-		else if (nextOrientation == 3)
+		else if (newOrientation == 3)
 			createCordsArr(positions, anchorX, anchorY, 0, 1, 0, -1, -1, -1); //orientation 3
 		else
 			createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, -1, 1); //orientation 0
@@ -166,7 +182,7 @@ void Shape::rotateShape(char input)//board
 	if (changeShapePosition(positions)) //A function is used to change the position of all the block according to the positions array. If it succeeds in doing so, it returns true
 	{
 		//print(); //Makes problems for bot
-		orientation = nextOrientation; //If the Tetromino was rotated, orientation is updated
+		orientation = newOrientation; //If the Tetromino was rotated, orientation is updated
 	}
 }
 
@@ -180,6 +196,16 @@ void Shape::createCordsArr(int positions[8], int anchorX, int anchorY, int x1, i
 	positions[5] = anchorY + y2;
 	positions[6] = anchorX + x3;
 	positions[7] = anchorY + y3;
+}
+
+void Shape::updateBestPosition(float score, Position& bestPosition)
+{
+	if (score > bestPosition.score)
+	{
+		getAnchorXY(bestPosition.anchorX, bestPosition.anchorY);
+		bestPosition.score = score;
+		bestPosition.orientation = getOrientation();
+	}
 }
 
 //int Shape::getOffsetForLeftRight(char input)
@@ -207,7 +233,7 @@ bool Shape::changeShapePosition(int positions[8])
 {
 	if (canShapeMoveToPosition(positions))
 	{
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < numOfBlocks; i++)
 			blockArr[i].moveTo(positions[i * 2], positions[i * 2 + 1]); //If the shape can move, than we move all blocks to their positions (from the positions array)
 		return true; //Because the shape changed it's position, true is returned
 	}
@@ -229,21 +255,21 @@ bool Shape::changeShapePosition(int positions[8])
 //	return nextOrientation;
 //}
 
-//board
-bool Shape::canShapeMoveOffset(int offsetX, int offsetY) //rewrite
+//board really
+bool Shape::canShapeMoveOffset(int offsetX, int offsetY)
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < numOfBlocks; i++)
 		if (blockArr[i].isSpaceTakenOffset(offsetX, offsetY, board)) //checks for every block, if the space under it is free or not
 			return false; //If the space is taken, then the shape can't move
 	return true;
 }
 
-//board
+//board really
 bool Shape::canShapeMoveToPosition(int positions[8]) const
 {
 	int freeSpaceX, freeSpaceY;
 
-	for (int i = 1; i < 4; i++)
+	for (int i = 0; i < numOfBlocks; i++)
 	{
 		board.convertXYToFreeSpaceXY(positions[i * 2], positions[i * 2 + 1], freeSpaceX, freeSpaceY);
 
@@ -269,41 +295,102 @@ void Shape::getAnchorXY(int& anchorX, int& anchorY) const
 	anchorY = getAnchorY();
 }
 
-//board
+bool Shape::isBomb() const
+{
+	return false;
+}
+
+//board really
+void Shape::findBestPosition(Position& bestPosition)
+{
+	ShowConsoleCursor(false);
+	//int time = 400; //temp
+	bestPosition.score = -9999999;
+	float score;
+	int divider = getDivider();
+	int spawnCords[8] = {};
+	getSpawnCords(spawnCords);
+	//print();//tmp
+
+	for (int i = 0; i < divider; i++)
+	{
+		while (canShapeMoveOffset(-1, 0))
+			moveBy(-1, 0);
+
+		while (true)
+		{
+			teleportToFloor();
+			score = getPositionScore();
+			updateBestPosition(score, bestPosition);
+			//Sleep(time);//tmp
+
+			teleportToCeiling();
+
+			if (canShapeMoveOffset(1, 0))
+			{
+				moveBy(1, 0);
+				//print(); //tmp
+				//Sleep(time);//tmp
+			}
+			else
+			{
+				changeShapePosition(spawnCords);
+				//print(); //tmp
+				break;
+			}
+		}
+		moveBy(0, 1);
+		rotateShape(orientation + 1);
+		//print(); //tmp
+		//ShowConsoleCursor(true);
+	}
+}
+
+//board really
+float Shape::getPositionScore()
+{
+	const Board temp = board;
+	glueShape();
+
+	int holeCount, fullLinesCount;
+	float bumpiness;
+	int holeWeight, bumpinessWeight, fullLinesWeight;
+
+	holeWeight = 6;
+	bumpinessWeight = 5;
+
+	fullLinesCount = board.getFullLinesCount();
+	board.checkFullLine();
+	holeCount = board.getHoleCount();
+	bumpiness = board.getBumpinessLevel(fullLinesWeight);
+
+	fullLinesWeight += 0;
+	board = temp;
+	return (float)(fullLinesCount * fullLinesWeight) - (bumpiness * (float)bumpinessWeight) - (float)(holeCount * holeWeight);
+}
+
+//board really
 void Shape::glueShape() 
 {
 	int freeSpaceX, freeSpaceY;
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < numOfBlocks; i++)
 	{
 		blockArr[i].getFreeSpaceXY(board, freeSpaceX, freeSpaceY); //We get the cords (in freeSpace) of the block in the array
 		board.setFreeSpaceValue(ch, freeSpaceX, freeSpaceY); //...and update freeSpace accordingly
 	}
 }
 
-//board
+//board really
 void Shape::unGlueShape()
 {
 	int freeSpaceX, freeSpaceY;
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < numOfBlocks; i++)
 	{
 		blockArr[i].getFreeSpaceXY(board, freeSpaceX, freeSpaceY); //We get the cords (in freeSpace) of the block in the array
 		board.setFreeSpaceValue(' ', freeSpaceX, freeSpaceY); //...and update freeSpace accordingly
 	}
-}
-
-void Shape::turnToBomb()
-{
-	divider = 1;
-	shape = Shapes::BOMB;
-
-	//int anchorX = board.getXStart() + board.getWidth() / 2;
-	//int	anchorY = board.getYStart() + 1;
-	//blockArr[0].setCords(anchorX, anchorY); //Might not need
-
-	for (int i = 1; i < 4; i++)
-		blockArr[i].setChar(' ');
 }
 
 //board
@@ -313,12 +400,12 @@ void Shape::teleportToFloor()
 		moveBy(0, 1);
 }
 
-//board
-void Shape::teleportToCeiling() //rewrite
+//board really
+void Shape::teleportToCeiling()
 {
 	int lowestY = blockArr[0].getY();
 
-	for (int i = 1; i < 4; i++)
+	for (int i = 1; i < numOfBlocks; i++)
 		if (blockArr[i].getY() < lowestY)
 			lowestY = blockArr[i].getY();
 
@@ -348,6 +435,7 @@ void Shape::getSpawnCords(int positions[8])
 		createCordsArr(positions, anchorX, anchorY, -1, 0, 1, 0, 2, 0); //For example here, The function receives the anchor cords, and the 3 non-anchor blocks are placed on the left of anchor, the right of anchor, and 2 places to the right of anchor. That creates an I shape.
 		break;
 	case Shapes::O:
+	case Shapes::BOMB:
 		divider = 1;
 		createCordsArr(positions, anchorX, anchorY, 1, 0, 0, 1, 1, 1);
 		break;

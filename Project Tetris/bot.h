@@ -2,34 +2,25 @@
 //#include "board.h"
 #include "shape.h"
 #include "position.h"
+#include "player.h"
 #include <cmath>
 
 //Shape that plays itself
-class Bot : public Shape
+class Bot : public Player
 {
-    Position tmp;
+    Position tmp; //will probably delete
     Position& bestPosition = tmp;
-    const int playerNum = board.getPlayerNum();
+    const int playerNum = getPlayerNum(); //will probably delete
 
 public:
-    Bot(Board& _board, char ch = -2); 
+    Bot(Board& _board, int _playerNum = 1);
     void takeAction(char input) override;
-    void findBestPosition(); //To Shape, but needs board
-    float getPositionScore(); //To Shape, but needs board
     bool botOrHuman() override;
-    void setShape(); //Might delete
-
-    void moveToPosition(const Position& bestPosition); //Will probably delete
+    void updateBestPosition();
+    void setNewShape(bool allowBomb = true) override;
 private:
     int getOffsetForLeftRight(char input) override;
-
-    int getHoleCount(); //To Board
-    float getBumpinessLevel(int& maxHeight); //To Board
-    int getFullLinesCount(); //To Board
-    int fillHeightsArr(int heights[]); //To Board
-
-    void updateBestPosition(float score); //To Shape
-    int getNextOrientation(int key) override;
+    int getNextOrientation(char input) override;
 
 };
 

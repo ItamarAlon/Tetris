@@ -1,10 +1,14 @@
 #pragma once
-#include "bot.h"
-class Bomb : public Bot
+#include "shape.h"
+class Bomb : public Shape
 {
+	Block& bomb = blockArr[0];
+public:
 	Bomb(Board& _board, char ch = '@');
-	void moveBy(int x, int y);
-	bool canShapeMoveOffset(int offsetX, int offsetY);
-	void teleportToCeiling();
+	int explode();
+	bool isBomb() const override;
+	float getPositionScore() override;
+private:
+	void getExplosionRectangle(int& startX, int& startY, int& endX, int& endY);
 };
 

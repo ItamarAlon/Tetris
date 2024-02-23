@@ -10,22 +10,25 @@
 using namespace std;
 
 #define TIE -1
+class Player;
 class Bot;
 class Human;
 class Shape;
 class Board;
+class Bomb;
 
 //Class that handles all the activities that happen during the game, including the menu, the shapes' movement, etc..
 class Game
 {
-	Board &boardP1, &boardP2; //The 2 boards used during the game (1 for each player)
-	Shape *shapeP1, *shapeP2; //The shapes that are gonna appear in each board
+	Player *player1, *player2;
+
+	//Board &boardP1, &boardP2; //The 2 boards used during the game (1 for each player)
+	//Shape &shapeP1, &shapeP2; //The shapes that are gonna appear in each board
 	int speed; //The speed of the game
 	bool isGamePaused = false; //Tells if the game is in paused mode or not (used for the menu)
-	enum class Type { HUMAN = true, BOT = false };
 
 public:
-	Game(Board& board1, Board& board2, int _speed = 200);
+	Game(Board& board1, Board& board2, Shape& shape1, Shape& shape2, int _speed = 200);
 	~Game();
 	void openMenu();
 	void printInstructions();
@@ -33,7 +36,7 @@ public:
 	void restartGame(); //Restarts the game that's currently running, in order to start a new game if needed.
 
 private:
-	void runGameForPlayer(Board& board, Shape* shape); //Function that runs the game for a specific player (used in runGame() to handle both players)
+	void runGameForPlayer(Player* player); //Function that runs the game for a specific player (used in runGame() to handle both players)
 	bool handleInput(); //Handles all the input from the keyboard
 	bool handleMenuInput(int input); //Handles all the input in the menu.
 	bool isMenuInputValid(int input);

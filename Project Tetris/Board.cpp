@@ -77,6 +77,59 @@ void Board::moveLinesDown(int line)
 			freeSpace[row][col] = freeSpace[row - 1][col]; //Every space in the freeSpace array is overwritten by the value "above" it
 }
 
+int Board::getHoleCount()
+{
+	int holeCounter = 0, row;
+
+	for (int col = 1; col <= WIDTH; col++)
+	{
+		row = 1;
+		while (!isSpaceTaken(col, row))
+			row++;
+
+		while (row < HEIGHT)
+		{
+			row++;
+			if (!isSpaceTaken(col, row)) //Should work
+				holeCounter++;
+		}
+	}
+
+	return holeCounter;
+}
+
+float Board::getBumpinessLevel(int& maxHeight)
+{
+	int heights[GameConfig::BOARD_WIDTH] = {};
+	maxHeight = fillHeightsArr(heights);
+
+	return standardDeviation(heights, WIDTH);
+}
+
+int Board::getFullLinesCount()
+{
+	int fullLineCounter = 0;
+
+	for (int row = HEIGHT; row > 0; row--)
+		if (isLineFull(row))
+			fullLineCounter++;
+
+	return fullLineCounter;
+}
+
+int Board::fillHeightsArr(int heights[])
+{
+	int maxHeight = heights[0] = getColumnHeight(1);
+
+	for (int i = 1; i < GameConfig::BOARD_WIDTH; i++)
+	{
+		heights[i] = getColumnHeight(i + 1);
+		if (heights[i] > maxHeight)
+			maxHeight = heights[i];
+	}
+	return maxHeight;
+}
+
 void Board::updateIsFull()
 {
 	isFull = isSpaceTaken(WIDTH / 2, 2); //The board is full if the space where the tetrominoes are supposed to spawn from, is taken.

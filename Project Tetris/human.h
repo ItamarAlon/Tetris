@@ -1,14 +1,14 @@
 #pragma once
-#include "shape.h"
-class Human : public Shape
+#include "player.h"
+class Human : public Player
 {
 	const int playerNum = board.getPlayerNum();
 public:
-	Human(Board& _board, char ch = -2);
+	Human(Board& _board, int _playerNum = 1);
 	void takeAction(char input) override;
 	bool botOrHuman() override;
 private:
-	int getNextOrientation(int key) override;
+	int getNextOrientation(char input) override;
 	int getOffsetForLeftRight(char input) override;
 
 };

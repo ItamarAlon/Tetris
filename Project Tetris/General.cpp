@@ -35,6 +35,13 @@ char getCapital(char ch)
 	return ch;
 }
 
+char getLowerCase(char capital)
+{
+	if (capital >= 'A' && capital <= 'Z')
+		return capital + 32;
+	return capital;
+}
+
 float calcAverage(int arr[], int size)
 {
 	int sum = 0;
@@ -54,4 +61,12 @@ float standardDeviation(int arr[], int size)
 	variance /= size;
 
 	return sqrt(variance);
+}
+
+bool oneInXChance(int x)
+{
+	int random = rand() % x;
+	if (random == 0)
+		return true;
+	return false;
 }

@@ -39,6 +39,12 @@ public:
 	void setFreeSpaceValue(char value, int x, int y); //Sets the value of a certain item in the freeSpace array
 	int getPlayerNum() const;
 	void convertXYToFreeSpaceXY(int x, int y, int& freeSpaceX, int& freeSpaceY) const;
+
+	int getHoleCount(); //To Board
+	float getBumpinessLevel(int& maxHeight); //To Board
+	int getFullLinesCount(); //To Board
 private:
 	void moveLinesDown(int line); //Moves all lines down by 1.
+
+	int fillHeightsArr(int heights[]); //To Board
 };
