@@ -6,7 +6,6 @@
 #include "gameConfig.h"
 #include "shape.h"
 #include "board.h"
-//#include "human.h"
 using namespace std;
 
 #define TIE -1
@@ -24,18 +23,17 @@ class Game
 
 	//Board &boardP1, &boardP2; //The 2 boards used during the game (1 for each player)
 	//Shape &shapeP1, &shapeP2; //The shapes that are gonna appear in each board
-	int speed; //The speed of the game
 	bool isGamePaused = false; //Tells if the game is in paused mode or not (used for the menu)
 
 public:
-	Game(Board& board1, Board& board2, Shape& shape1, Shape& shape2, int _speed = 200);
+	Game(Board& board1, Board& board2);
 	~Game();
 	void openMenu();
 	void printInstructions();
 	int chooseBotLevel(int botPlayerNum, bool onlyPlayer);
 	void runGame(); //Function that runs the game itself, including moving the shapes down, checking for any input from the player, etc..
 	void restartGame(); //Restarts the game that's currently running, in order to start a new game if needed.
-	bool setPlayers(int input);
+	bool setPlayers(int input); //Sets up the players for the game
 
 private:
 	void runGameForPlayer(Player* player); //Function that runs the game for a specific player (used in runGame() to handle both players)

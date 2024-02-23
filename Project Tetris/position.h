@@ -1,4 +1,5 @@
 #pragma once
+//Position, used to search for the best position so that the computer will know where to move
 struct Position
 {
     int anchorX, anchorY; 

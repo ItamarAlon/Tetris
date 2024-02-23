@@ -56,14 +56,6 @@ void Block::setCords(int x, int y)
 	setY(y);
 }
 
-void Block::moveBlockLeftRight(char key) //Currently not used. Might use for bomb later
-{
-	if (key == (char)GameConfig::Lkeys::LEFT || key == (char)GameConfig::Rkeys::LEFT)
-		moveBy(-1, 0);
-	else if (key == (char)GameConfig::Lkeys::RIGHT || key == (char)GameConfig::Rkeys::RIGHT)
-		moveBy(1, 0);
-}
-
 bool Block::isSpaceTakenOffset(int offsetX, int offsetY, const Board& playerBoard) const 
 {
 	int freeSpaceX, freeSpaceY;
@@ -73,20 +65,9 @@ bool Block::isSpaceTakenOffset(int offsetX, int offsetY, const Board& playerBoar
 	return false;
 }
 
-//void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY) const //Currently not used. Might use for bomb later
-//{
-//	if (key == (char)GameConfig::Lkeys::LEFT || key == (char)GameConfig::Rkeys::LEFT)
-//		offsetX = -1;  //If the input from the keyboard is left, than the block moves 1 place to the left (or, the x cord of the block goes down by 1)
-//	if (key == (char)GameConfig::Lkeys::RIGHT || key == (char)GameConfig::Rkeys::RIGHT)
-//		offsetX = 1; 
-//	offsetY = 0; //Either way, the block doesn't change it's height.
-//}
-
 void Block::getFreeSpaceXY(const Board& playerBoard, int& freeSpaceX, int& freeSpaceY) const
 {
 	playerBoard.convertXYToFreeSpaceXY(this->x, this->y, freeSpaceX, freeSpaceY);
-	//x = this->x - playerBoard.getXStart(); //The cords of a block in the freeSpace array is calculated by taking the cords of the block on-screen, and removing the Boards' cords on-screen.
-	//y = this->y - playerBoard.getYStart();
 }
 
 

@@ -1,15 +1,13 @@
 ﻿#include "board.h"
 
-Board::Board(int x, int y, int _playerNum) :X_START(x), Y_START(y), playerNum(_playerNum)
+Board::Board(int x, int y) : X_START(x), Y_START(y)
 {
 	resetBoard();
 }
 
-Board::Board(const Board& oldBoard) : X_START(oldBoard.X_START), Y_START(oldBoard.Y_START), playerNum(oldBoard.playerNum)
+Board::Board(const Board& oldBoard) : X_START(oldBoard.X_START), Y_START(oldBoard.Y_START)
 {
-	for (int row = 0; row < HEIGHT + 1; row++)
-		for (int col = 0; col < WIDTH + 2; col++)
-			freeSpace[row][col] = oldBoard.freeSpace[row][col];
+	*this = oldBoard;
 }
 
 Board& Board::operator=(const Board& oldBoard)
@@ -35,6 +33,7 @@ void Board::resetBoard()
 		this->freeSpace[0][col] = 220;
 		this->freeSpace[HEIGHT + 1][col] = 223;
 	}
+	isFull = false;
 }
 
 bool Board::isSpaceTaken(int freeSpaceX, int freeSpaceY) const
@@ -44,12 +43,12 @@ bool Board::isSpaceTaken(int freeSpaceX, int freeSpaceY) const
 	return false;
 }
 
-bool Board::checkFullLine()
+bool Board::clearFullLines()
 {
 	bool lineDeleted = false;
 	for (int row = HEIGHT; row > 0; row--) //The loop starts from the end of the board, where it's most likely that a line will be full of blocks.
 	{
-		if (isLineFull(row))
+		if (isLineFull(row)) 
 		{
 			lineDeleted = true;
 			moveLinesDown(row); //If a line is full, another function is called to moves all the lines above it 1 place down.
@@ -61,7 +60,7 @@ bool Board::checkFullLine()
 
 bool Board::isLineFull(int row)
 {
-	if (row < 1 || row > HEIGHT)
+	if (row < 1 || row > HEIGHT) //Just in the an illegal row number was given
 		row = HEIGHT;
 
 	for (int col = 1; col < WIDTH + 1; col++)
@@ -85,12 +84,12 @@ int Board::getHoleCount()
 	{
 		row = 1;
 		while (!isSpaceTaken(col, row))
-			row++;
+			row++; //Everytime a space is not taken, we move 1 space down
 
-		while (row < HEIGHT)
+		while (row < HEIGHT) //When we reach a taken space, if it's not the floor, we keep moving down the lines
 		{
 			row++;
-			if (!isSpaceTaken(col, row)) //Should work
+			if (!isSpaceTaken(col, row)) //Now, whenever we get a free space, it's a space under a block. So we consider it a hole and use the counter accordingly
 				holeCounter++;
 		}
 	}
@@ -102,8 +101,8 @@ float Board::getBumpinessLevel(int& maxHeight)
 {
 	int heights[GameConfig::BOARD_WIDTH] = {};
 	maxHeight = fillHeightsArr(heights);
-
-	return standardDeviation(heights, WIDTH);
+	//The bumpiness level of a board is determined by the standard deviation of all the column heights on the board. So if the difference in heights is bigger, the bumpiness level is higher
+	return standardDeviation(heights, WIDTH); 
 }
 
 int Board::getFullLinesCount()
@@ -148,11 +147,6 @@ char Board::getFreeSpaceValue(int x, int y) const
 void Board::setFreeSpaceValue(char value, int x, int y)
 {
 	freeSpace[y][x] = value;
-}
-
-int Board::getPlayerNum() const
-{
-	return playerNum;
 }
 
 void Board::print() const

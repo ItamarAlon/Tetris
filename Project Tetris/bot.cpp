@@ -8,7 +8,7 @@ Bot::Bot(Board& _board, GameConfig::Bot_Level _level, int _playerNum) : Player(_
 Bot::~Bot()
 {
 }
-
+//The function doesn't actually use the input. It's only there because it's a virtual function
 bool Bot::takeAction(char input)
 { 
 	if (!allowAction)
@@ -19,9 +19,9 @@ bool Bot::takeAction(char input)
 
 	if (shape->getOrientation() != goToPosition.orientation)
 	{
-		shape->rotateShape(nextOrientation);
+		shape->rotateShape(nextOrientation); //If the shape is not in the right orientation, we rotate it
 		shape->print();
-		cooldown = (int)GameConfig::Cooldowns::ROTATE;
+		cooldown = (int)GameConfig::Cooldowns::ROTATE; //cooldown until shape can be rotated again
 	}
 	else if (offSetX != 0)
 	{
@@ -30,11 +30,11 @@ bool Bot::takeAction(char input)
 	}
 	else
 	{
-		shape->moveShapeDown();
+		shape->moveShapeDown(); //When the shape is under the position it's suppose to go to, the computer increases the shape's speed
 		cooldown = (int)GameConfig::Cooldowns::DOWN;
 	}
 
-	allowAction = false;
+	allowAction = false; //after action was performed, the computer will have to wait
 	nextActionTick = (tick + cooldown) % numOfTicks;
 	return true;
 }
@@ -57,7 +57,9 @@ void Bot::updatePositions()
 {
 	shape->findBestAndWorstPosition(bestPosition, worstPosition);
 
-	if ((level == GameConfig::Bot_Level::GOOD && oneInXChance(40)) || (level == GameConfig::Bot_Level::NOVICE && oneInXChance(10)))
+	if (level == GameConfig::Bot_Level::GOOD && oneInXChance((int)GameConfig::Bot_Accuracy::GOOD))
+		goToPosition = worstPosition; //If the bot level is low enough, it has a chance to go to the worst position instead of the best
+	else if (level == GameConfig::Bot_Level::NOVICE && oneInXChance((int)GameConfig::Bot_Accuracy::NOVICE))
 		goToPosition = worstPosition;
 	else
 		goToPosition = bestPosition;
@@ -71,15 +73,7 @@ void Bot::setNewShape(bool allowBomb)
 
 int Bot::getNextOrientation(char input)
 {
-	return (shape->getOrientation() + 1) % shape->getDivider(); //Might make it smarter later
+	return (shape->getOrientation() + 1) % shape->getDivider();
 }
 
-void Bot::messUpPosition()
-{
-	int leftDistance = shape->getDistanceFromBorder(GameConfig::Direction::LEFT);
-	int rightDistance = shape->getDistanceFromBorder(GameConfig::Direction::RIGHT);
-
-	int randomOffset = generateNumberInInterval(-leftDistance, rightDistance);
-	bestPosition.anchorX += randomOffset;
-}
 

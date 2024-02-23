@@ -5,19 +5,9 @@ Shape::Shape(Board& _board, char _ch) : board(_board), ch(_ch)
 	setShape(false);
 }
 
-Shape::Shape(const Shape& oldShape) : board(oldShape.board), ch(oldShape.ch)
+Shape::Shape(const Shape& oldShape) : board(oldShape.board)
 {
-	//board = oldShape.board;
-	//ch = oldShape.ch;
-	shape = oldShape.shape;
-	orientation = oldShape.orientation;
-	divider = oldShape.divider;
-
-	for (int i = 0; i < 4; i++)
-	{
-		blockArr[i].setChar(oldShape.ch);
-		blockArr[i].setCords(oldShape.blockArr[i].getX(), oldShape.blockArr[i].getY()); //Set the cords of every block in the array, from the positions array
-	}
+	*this = oldShape;
 }
 
 Shape& Shape::operator=(const Shape& oldShape)
@@ -42,8 +32,7 @@ Shape& Shape::operator=(const Shape& oldShape)
 void Shape::setShape(bool allowBomb)
 {
 	int positions[8] = {};
-	randomShape(positions); //Function generates a random shape (out of the 7 shapes in the game) by giving coordinates of 4 blocks (which make a tetromino) to a positions array.
-	//orientation = 0; //The beginning orientation of the shape will always be 0;
+	randomShape(positions); //Function generates a random shape (out of the 7 regular shapes in the game) by giving coordinates of 4 blocks (which make a tetromino) to a positions array.
 	for (int i = 0; i < 8; i += 2)
 	{
 		blockArr[i / 2].setChar(ch);
@@ -54,7 +43,7 @@ void Shape::setShape(bool allowBomb)
 void Shape::setBomb()
 {
 	divider = 1;
-	numOfBlocks = 1;
+	numOfBlocks = 1; //A bomb has 1 block
 	shape = Shapes::BOMB;
 
 	int anchorX = board.getXStart() + board.getWidth() / 2;
@@ -62,13 +51,11 @@ void Shape::setBomb()
 	blockArr[0].setCords(anchorX, anchorY);
 
 	for (int i = 1; i < 4; i++)
-		blockArr[i].setChar(' ');
+		blockArr[i].setChar(' '); //The rest of the block are irrelevant
 }
 
 void Shape::randomShape(int positions[8]) 
 {
-	//shape = (Shapes)(rand() % 3); //for testing
-	//shape = (Shapes)1; //for testing
 	shape = (Shapes)(rand() % 7); //generate a random number from 0-6, each represents a different tetromino shape
 	getSpawnCords(positions);
 }
@@ -87,7 +74,7 @@ void Shape::moveBy(int x, int y)
 	for (int i = 0; i < numOfBlocks; i++)
 		blockArr[i].moveBy(x, y); //moves every block in the shape by x and y values
 }
-//board
+
 bool Shape::moveShapeDown() 
 {
 	if (canShapeMoveOffset(0, 1)) //If the shape can move down...
@@ -98,25 +85,22 @@ bool Shape::moveShapeDown()
 	}
 	else //If the shape can't move, then it's on the ground. So we update freeSpace so the program will remember that there are blocks there
 	{
-		glueShape();
+		glueShape(); //The shape is "glued" to the board
 		print();
 		return false; //because the shape can't move, then it's on the ground. So the function returns false (is used in the game class later)
 	}
 }
-//board
+
 bool Shape::moveShapeLeftRight(int offsetX)
 {
-	//int offsetX;
-	//offsetX = getOffsetForLeftRight(input); //Function returns the offset of x for the Tetromino, which depends on the input given by the player
-
 	if (!canShapeMoveOffset(offsetX, 0))
 		return false;
 
-	moveBy(offsetX, 0);//If the shape can move, we move it (depending on offsetX and offsetY)
+	moveBy(offsetX, 0); //If the shape can move, we move it (depending on offsetX)
 	print();
 	return true;
 }
-//board
+
 void Shape::rotateShape(int newOrientation)
 { 
 	if (newOrientation >= divider || newOrientation < 0)
@@ -180,10 +164,7 @@ void Shape::rotateShape(int newOrientation)
 	}
 
 	if (changeShapePosition(positions)) //A function is used to change the position of all the block according to the positions array. If it succeeds in doing so, it returns true
-	{
-		//print(); //Makes problems for bot
 		orientation = newOrientation; //If the Tetromino was rotated, orientation is updated
-	}
 }
 
 void Shape::createCordsArr(int positions[8], int anchorX, int anchorY, int x1, int y1, int x2, int y2, int x3, int y3)
@@ -202,7 +183,7 @@ void Shape::updateBestPosition(float score, Position& bestPosition)
 {
 	if (score > bestPosition.score)
 	{
-		getAnchorXY(bestPosition.anchorX, bestPosition.anchorY);
+		getAnchorXY(bestPosition.anchorX, bestPosition.anchorY); //the current best position is updated if the score of the current position is higher
 		bestPosition.score = score;
 		bestPosition.orientation = getOrientation();
 	}
@@ -210,7 +191,7 @@ void Shape::updateBestPosition(float score, Position& bestPosition)
 
 void Shape::updateWorstPosition(float score, Position& worstPosition)
 {
-	if (score < worstPosition.score)
+	if (score < worstPosition.score) //Similar for worst position
 	{
 		getAnchorXY(worstPosition.anchorX, worstPosition.anchorY);
 		worstPosition.score = score;
@@ -218,28 +199,6 @@ void Shape::updateWorstPosition(float score, Position& worstPosition)
 	}
 }
 
-
-//int Shape::getOffsetForLeftRight(char input)
-//{
-//	char left, right;
-//	if (board.getPlayerNum() == 1)
-//	{
-//		left = (char)GameConfig::Lkeys::LEFT;
-//		right = (char)GameConfig::Lkeys::RIGHT;
-//	}
-//	else
-//	{
-//		left = (char)GameConfig::Rkeys::LEFT;
-//		right = (char)GameConfig::Rkeys::RIGHT;
-//	}
-//
-//	if (input == left)
-//		return -1;  //If the input from the keyboard is left, than the shape moves 1 place to the left (or, the x cord of the block goes down by 1)
-//	if (input == right)
-//		return 1; //Else, the shape moves 1 place to the right
-//}
-
-//board
 bool Shape::changeShapePosition(int positions[8])
 {
 	if (canShapeMoveToPosition(positions))
@@ -251,22 +210,6 @@ bool Shape::changeShapePosition(int positions[8])
 	return false;
 }
 
-//int Shape::getNextOrientation(int key)
-//{
-//	int nextOrientation;
-//
-//	if (key == (char)GameConfig::Lkeys::CLOCKWISE)
-//		nextOrientation = (orientation + 1) % divider; //If rotating clockwise was chosen, we go to the nextOrientation (which returns to 0 after going through all orientations, which is why module is used
-//	else
-//		nextOrientation = orientation - 1; //Otherwise, orientation goes down by 1, which can cause it to turn -1 (which is illegal).
-//
-//	if (nextOrientation == -1) //so if the orientation is -1, we change it to the last orientation
-//		nextOrientation = divider - 1;
-//
-//	return nextOrientation;
-//}
-
-//board really
 bool Shape::canShapeMoveOffset(int offsetX, int offsetY)
 {
 	for (int i = 0; i < numOfBlocks; i++)
@@ -275,7 +218,6 @@ bool Shape::canShapeMoveOffset(int offsetX, int offsetY)
 	return true;
 }
 
-//board really
 bool Shape::canShapeMoveToPosition(int positions[8]) const
 {
 	int freeSpaceX, freeSpaceY;
@@ -316,20 +258,20 @@ int Shape::getDistanceFromBorder(GameConfig::Direction direction)
 	int offset = getOffsetX(direction);
 	int distance = 0;
 
-	while (canShapeMoveOffset(offset, 0))
+	while (canShapeMoveOffset(offset, 0)) 
 	{
-		moveBy(offset, 0);
+		moveBy(offset, 0); //The shape moves all the way the the given direction until it can't
 		distance++;
 	}
 
-	moveBy(-offset * distance, 0);
+	moveBy(-offset * distance, 0); //Then, we move it back to where it was (using the distance we got)
 	return distance;
 }
 
 void Shape::moveAllTheWay(GameConfig::Direction direction)
 {
-	int distance = getDistanceFromBorder(direction);
-	moveBy(distance * getOffsetX(direction), 0);
+	int distance = getDistanceFromBorder(direction); //gets the distance from the boarder
+	moveBy(distance * getOffsetX(direction), 0); //Moves that distance
 }
 
 int Shape::getOffsetX(GameConfig::Direction direction)
@@ -345,26 +287,15 @@ int Shape::getOffsetX(GameConfig::Direction direction)
 	}
 }
 
-//void Shape::getMovingSpace(int& leftest, int& rightest)
-//{
-//	Block* leftestBlock = getLeftestBlock();
-//	Block* rightestBlock = getRightestBlock();
-//
-//	leftest = leftestBlock->getX() - getDistanceFromBorder(GameConfig::Direction::LEFT);
-//}
-
-//board really
 void Shape::findBestAndWorstPosition(Position& best, Position& worst)
 {
 	ShowConsoleCursor(false);
-	//int time = 400; //temp
-	best.score = -9999999;
+	best.score = -9999999; //At the beginning, the best position gets a low score so it will be updated during search
 	worst.score = 9999999;
 	float score;
 	int divider = getDivider();
 	int spawnCords[8] = {};
-	getSpawnCords(spawnCords);
-	//print();//tmp
+	getSpawnCords(spawnCords); //Spawn cords of the shape
 
 	for (int i = 0; i < divider; i++)
 	{
@@ -374,57 +305,47 @@ void Shape::findBestAndWorstPosition(Position& best, Position& worst)
 		{
 			teleportToFloor();
 
-			score = getPositionScore();
-			updateBestPosition(score, best);
+			score = getPositionScore(); //For every run of the loop, we move the shape to the floor, calculates it's position's score...
+			updateBestPosition(score, best); //Update the score accordingly..
 			updateWorstPosition(score, worst);
-			//Sleep(time);//tmp
 
-			teleportToCeiling();
+			teleportToCeiling(); //Teleport it to the ceiling...
 
 			if (canShapeMoveOffset(1, 0))
-			{
-				moveBy(1, 0);
-				//print(); //tmp
-				//Sleep(time);//tmp
-			}
+				moveBy(1, 0); //And moving it to the left if possible
 			else
 			{
-				changeShapePosition(spawnCords);
-				//print(); //tmp
+				changeShapePosition(spawnCords); //If it already reached the end of the search, we return it back to spawn
 				break;
 			}
 		}
 		moveBy(0, 1);
-		rotateShape(orientation + 1);
-		//print(); //tmp
-		//ShowConsoleCursor(true);
+		rotateShape(orientation + 1); //Afterwards the shape is rotated before checking the best move for a new rotation
 	}
 }
 
-//board really
 float Shape::getPositionScore()
 {
-	const Board temp = board;
-	glueShape();
+	const Board temp = board; //We copy the board before calculating, to not ruin it during search
+	glueShape(); //We glue the shape (so we can check the score)
 
-	int holeCount, fullLinesCount;
+	int holeCount, fullLinesCount; //The score is calculated by those 3 values
 	float bumpiness;
 	int holeWeight, bumpinessWeight, fullLinesWeight;
 
-	holeWeight = 6;
-	bumpinessWeight = 5;
+	holeWeight = 6; //some values are more important than others, so different weights were given for them
+	bumpinessWeight = 5; //(weights chosen after testing)
 
 	fullLinesCount = board.getFullLinesCount();
-	board.checkFullLine();
+	board.clearFullLines(); //We clear the lines before checking the holeCount and bumpiness, to keep those values updated
 	holeCount = board.getHoleCount();
-	bumpiness = board.getBumpinessLevel(fullLinesWeight);
+	bumpiness = board.getBumpinessLevel(fullLinesWeight); //fullLineWeight is determined by the tallest column's hight (as clearing lines is more important when there are tall sets of blocks on the board)
 
-	fullLinesWeight += 0;
-	board = temp;
+	board = temp; //The board is returned back to normal after all the changes
+	//The score is calculated so that the bumpiness and holeCount will reduce the score, while the fullLines that are deleted will improve it
 	return (float)(fullLinesCount * fullLinesWeight) - (bumpiness * (float)bumpinessWeight) - (float)(holeCount * holeWeight);
 }
 
-//board really
 void Shape::glueShape() 
 {
 	int freeSpaceX, freeSpaceY;
@@ -436,7 +357,6 @@ void Shape::glueShape()
 	}
 }
 
-//board really
 void Shape::unGlueShape()
 {
 	int freeSpaceX, freeSpaceY;
@@ -448,23 +368,21 @@ void Shape::unGlueShape()
 	}
 }
 
-//board
 void Shape::teleportToFloor()
 {
 	while (canShapeMoveOffset(0, 1))
 		moveBy(0, 1);
 }
 
-//board really
 void Shape::teleportToCeiling()
 {
 	int lowestY = blockArr[0].getY();
 
 	for (int i = 1; i < numOfBlocks; i++)
 		if (blockArr[i].getY() < lowestY)
-			lowestY = blockArr[i].getY();
+			lowestY = blockArr[i].getY(); //We search for the lowestY in the shape...
 
-	moveBy(0, board.getYStart() - lowestY + 1);
+	moveBy(0, board.getYStart() - lowestY + 1); //And move the shape up depending on that lowestY
 }
 
 int Shape::getOrientation() const
@@ -517,26 +435,6 @@ void Shape::getSpawnCords(int positions[8])
 	}
 }
 
-Block* Shape::getLeftestBlock() 
-{
-	Block* leftest = blockArr;
-	for (int i = 1; i < numOfBlocks; i++)
-	{
-		if (blockArr[i].getX() < leftest->getX())
-			leftest = blockArr + i;
-	}
-	return leftest;
-}
 
-Block* Shape::getRightestBlock()
-{
-	Block* rightest = blockArr;
-	for (int i = 1; i < numOfBlocks; i++)
-	{
-		if (blockArr[i].getX() > rightest->getX())
-			rightest = blockArr + i;
-	}
-	return rightest;
-}
 
 

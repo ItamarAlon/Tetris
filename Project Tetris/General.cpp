@@ -57,10 +57,10 @@ float standardDeviation(int arr[], int size)
 	float variance = 0;
 
 	for (int i = 0; i < size; i++)
-		variance += pow(arr[i] - average, 2);
+		variance += pow(arr[i] - average, 2); //Formula for the variance of a group of numbers
 	variance /= size;
 
-	return sqrt(variance);
+	return sqrt(variance); //The standard Deviation is the square root of the variance
 }
 
 bool oneInXChance(int x)

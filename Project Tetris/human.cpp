@@ -13,7 +13,7 @@ bool Human::takeAction(char input)
 	if (!allowAction)
 		return false;
 
-	input = getLowerCase(input);
+	input = getLowerCase(input); //If the input was in uppercase, we turn it to lowercase so the functions will work currectly
 	int nextOrientation = getNextOrientation(input);
 	int offSetX = getOffsetForLeftRight(input);
 
@@ -22,7 +22,7 @@ bool Human::takeAction(char input)
 		{
 		case (char)GameConfig::Lkeys::LEFT:
 		case (char)GameConfig::Lkeys::RIGHT:
-			shape->moveShapeLeftRight(offSetX); //Using a function in case a shape needs to move Left/Right
+			shape->moveShapeLeftRight(offSetX); //The shape moves left/right, depending of the offSet given.
 			cooldown = (int)GameConfig::Cooldowns::LEFT_RIGHT;
 			allowAction = false;
 			break;

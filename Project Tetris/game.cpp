@@ -4,7 +4,7 @@
 #include "player.h"
 #include "bomb.h"
 
-Game::Game(Board& board1, Board& board2, Shape& shape1, Shape& shape2, int _speed) : speed(_speed)
+Game::Game(Board& board1, Board& board2)
 {
 	player1 = new Human(board1, 1);
 	player2 = new Human(board2, 2);
@@ -118,21 +118,19 @@ void Game::runGame()
 
 	while (!goToMenu) //The game keeps running, until a break happens (we'll see later)
 	{
-		if (player1->tick == 6)
+		if (player1->tick == 6) 
 			runGameForPlayer(player1); //The program runs the game for each player using a function
 		if (player2->tick == 6)
-			runGameForPlayer(player2); //The program runs the game for each player using a function
+			runGameForPlayer(player2); 
 		
 		Sleep(1); //Sleep is used in every run of the loop to slow the game down
 
 		goToMenu = handleGameInput(); //At every frame of the game, the program checks if the ESC key was pressed. If it did, the function returns true, and the program exits the loop
-		//if (goToMenu)
-		//	break; //In case the player decided to go to the menu, the program exits the while loop
 
 		if (goToMenu || player1->board.isBoardFull() || player2->board.isBoardFull())
-			break; //If one of the blocks is full, we exit the loop (because the game ends)
+			break; //If one of the blocks is full, or the player decided to go to the menu, we exit the loop 
 
-		player1->updateTick();
+		player1->updateTick(); //The tick is updated
 		player2->updateTick();
 	}
 
@@ -150,10 +148,10 @@ void Game::runGameForPlayer(Player* player)
 	{
 		if (player->shape->isBomb())
 		{
-			((Bomb*)player->shape)->explode();
+			((Bomb*)player->shape)->explode(); //If a bomb hit the floor, it explodes
 			player->board.print();
 		}
-		else if (player->board.checkFullLine()) //If the shape landed, the program checks if there are any full lines that were deleted.
+		else if (player->board.clearFullLines()) //If the shape landed, the program checks if there are any full lines that were deleted.
 			player->board.print(); //If there were, it prints the board again (which was updated)
 
 		player->setNewShape(); //Then a new Tetromino is set
@@ -169,30 +167,10 @@ bool Game::handleGameInput()
 	if (input == (char)GameConfig::ESC)
 		return true;
 	
-	player1->takeAction(input);
+	player1->takeAction(input); //The player takes action using the functions (which are changed depending on if the player is a human or a bot)
 	player2->takeAction(input);
 	
 	return false; //False is returned so that the loop will continue.
-
-	//char input = ' ';
-	//if (_kbhit())
-	//	input = _getch(); //If a key was pressed, we save it
-	//
-	//if (input == (char)GameConfig::ESC)
-	//	return true;
-	//
-	//if (allowAction)
-	//{
-	//	allowAction = !player1->takeAction(input);
-	//	nextActionTick = (tick + cooldown) % num;
-	//}
-	//if (allowAction)
-	//{
-	//	allowAction = !player2->takeAction(input);
-	//	nextActionTick = (tick + cooldown) % num;
-	//}
-	//
-	//return false; //False is returned so that the loop will continue.
 }
 
 void Game::restartGame()
@@ -305,9 +283,9 @@ void Game::handleWinner()
 	//The programs enter this function only if one of the boards are full.
 	int winner;
 	if (player1->board.isBoardFull() && !player2->board.isBoardFull())
-		winner = player2->board.getPlayerNum();
+		winner = player2->getPlayerNum();
 	else if (!player1->board.isBoardFull() && player2->board.isBoardFull())
-		winner = player1->board.getPlayerNum();
+		winner = player1->getPlayerNum();
 	else
 		winner = TIE; //If both boards are full, the game ends in a tie
 

@@ -2,7 +2,7 @@
 
 Player::Player(Board& _board, int _playerNum) : board(_board), playerNum(_playerNum)
 {
-	setNewShape(false);
+	setNewShape(false); //A new shape for the player is generated in the constructor. It was decided that the newShape will not be a bomb at the beginning
 }
 
 Player::~Player()
@@ -13,11 +13,6 @@ Player::~Player()
 int Player::getPlayerNum() const
 {
     return playerNum;
-}
-
-void Player::printBoard() //Will probably delete later
-{
-    board.print();
 }
 
 void Player::setNewShape(bool allowBomb)
