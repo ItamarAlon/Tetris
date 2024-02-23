@@ -2,7 +2,7 @@
 
 Bot::Bot(Board& _board, GameConfig::Bot_Level _level, int _playerNum) : Player(_board, _playerNum), level(_level)
 {
-	updatePosition();
+	updatePositions();
 }
 
 Bot::~Bot()
@@ -17,7 +17,7 @@ bool Bot::takeAction(char input)
 	int nextOrientation = getNextOrientation(' ');
 	int offSetX = getOffsetForLeftRight(' ');
 
-	if (shape->getOrientation() != gotoPosition.orientation)
+	if (shape->getOrientation() != goToPosition.orientation)
 	{
 		shape->rotateShape(nextOrientation);
 		shape->print();
@@ -41,9 +41,9 @@ bool Bot::takeAction(char input)
 
 int Bot::getOffsetForLeftRight(char input)
 {
-	if (shape->getAnchorX() < gotoPosition.anchorX)
+	if (shape->getAnchorX() < goToPosition.anchorX)
 		return 1;
-	else if (shape->getAnchorX() > gotoPosition.anchorX)
+	else if (shape->getAnchorX() > goToPosition.anchorX)
 		return -1;
 	return 0;
 }
@@ -53,18 +53,20 @@ bool Bot::botOrHuman()
 	return (bool)GameConfig::Type::BOT;
 }
 
-void Bot::updatePosition()
+void Bot::updatePositions()
 {
-	shape->findBestPosition(gotoPosition);
+	shape->findBestAndWorstPosition(bestPosition, worstPosition);
 
 	if ((level == GameConfig::Bot_Level::GOOD && oneInXChance(40)) || (level == GameConfig::Bot_Level::NOVICE && oneInXChance(10)))
-		messUpPosition();
+		goToPosition = worstPosition;
+	else
+		goToPosition = bestPosition;
 }
 
 void Bot::setNewShape(bool allowBomb)
 {
 	Player::setNewShape(allowBomb);
-	updatePosition();
+	updatePositions();
 }
 
 int Bot::getNextOrientation(char input)
@@ -78,6 +80,6 @@ void Bot::messUpPosition()
 	int rightDistance = shape->getDistanceFromBorder(GameConfig::Direction::RIGHT);
 
 	int randomOffset = generateNumberInInterval(-leftDistance, rightDistance);
-	gotoPosition.anchorX += randomOffset;
+	bestPosition.anchorX += randomOffset;
 }
 

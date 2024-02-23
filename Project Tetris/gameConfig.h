@@ -14,7 +14,7 @@ public:
 	enum class menu { HUMANvHUMAN = 1, HUMANvCOMPUTER = 2, COMPUTERvCOMPUTER = 3, PAUSED_GAME = 4, INSTRUCTIONS = 8, EXIT = 9 };
 	enum class Type { HUMAN = true, BOT = false };
 	enum class Direction { LEFT, RIGHT };
-	enum class Cooldowns {ROTATE = 10, LEFT_RIGHT = 3, DOWN = 0};
+	enum class Cooldowns {ROTATE = 10, LEFT_RIGHT = 3, DOWN = 1};
 
 	enum class Bot_Level { BEST = 3, GOOD = 2, NOVICE = 1 };
 

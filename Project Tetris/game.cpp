@@ -108,34 +108,6 @@ bool Game::handleBotMenuInput(int input)
 
 void Game::runGame()
 {
-	//bool goToMenu = false;
-	//isGamePaused = true;
-	//ShowConsoleCursor(false); //During gameplay, we the cursor is turned off to make the game look better
-	//
-	//clrscr();
-	//player1->board.print();
-	//player2->board.print();
-	//
-	//while (!goToMenu) //The game keeps running, until a break happens (we'll see later)
-	//{
-	//	runGameForPlayer(player1); //The program runs the game for each player using a function
-	//	runGameForPlayer(player2);
-	//
-	//	for (int i = 0; i < 20; i++)
-	//	{
-	//		Sleep(speed / 20); //Sleep is used in every run of the loop to slow the game down
-	//		goToMenu = handleGameInput(); //At every frame of the game, the program checks if the ESC key was pressed. If it did, the function returns true, and the program exits the loop
-	//		if (goToMenu)
-	//			break; //In case the player decided to go to the menu, the program exits the while loop
-	//	}
-	//
-	//	if (player1->board.isBoardFull() || player2->board.isBoardFull())
-	//		break; //If one of the blocks is full, we exit the loop (because the game ends)
-	//}
-	//
-	//if (!goToMenu) //After exiting the loop, we check if the player wanted to go to the menu. If he didn't, it means the game ended so the winner is declared. Otherwise, the program exits the function (right back to the menu function)
-	//	handleWinner();
-
 	bool goToMenu = false;
 	isGamePaused = true;
 	ShowConsoleCursor(false); //During gameplay, we the cursor is turned off to make the game look better
@@ -146,12 +118,9 @@ void Game::runGame()
 
 	while (!goToMenu) //The game keeps running, until a break happens (we'll see later)
 	{
-		gotoxy(0, 0);//tmp
-		cout << player1->tick;//tmp
-
-		if (player1->tick == 0)
+		if (player1->tick == 6)
 			runGameForPlayer(player1); //The program runs the game for each player using a function
-		if (player2->tick == 0)
+		if (player2->tick == 6)
 			runGameForPlayer(player2); //The program runs the game for each player using a function
 		
 		Sleep(1); //Sleep is used in every run of the loop to slow the game down

@@ -8,8 +8,11 @@
 //Shape that plays itself
 class Bot : public Player
 {
-    Position tmp; //will probably delete
-    Position& gotoPosition = tmp;
+    Position tmp1, tmp2, tmp3; //will probably delete
+    Position& bestPosition = tmp1;
+    Position& worstPosition = tmp2;
+    Position& goToPosition = tmp3;
+
     const int playerNum = getPlayerNum(); //will probably delete
     const GameConfig::Bot_Level level;
 
@@ -18,7 +21,7 @@ public:
     ~Bot();
     bool takeAction(char input) override;
     bool botOrHuman() override;
-    void updatePosition();
+    void updatePositions();
     void setNewShape(bool allowBomb = true) override;
     void messUpPosition();
 private:

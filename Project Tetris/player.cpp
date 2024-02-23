@@ -2,7 +2,7 @@
 
 Player::Player(Board& _board, int _playerNum) : board(_board), playerNum(_playerNum)
 {
-	setNewShape();
+	setNewShape(false);
 }
 
 Player::~Player()

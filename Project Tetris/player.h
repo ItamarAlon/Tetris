@@ -14,7 +14,7 @@ protected:
 	bool allowAction = true;
 	int cooldown = 0;
 	int nextActionTick = 0;
-	int numOfTicks = 20;
+	int numOfTicks = 17;
 
 public:
 	Player(Board& _board, int _playerNum = 1);

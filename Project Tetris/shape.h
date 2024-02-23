@@ -43,13 +43,14 @@ public:
 	int getDistanceFromBorder(GameConfig::Direction direction);
 	//void getMovingSpace(int& leftest, int& rightest);
 
-	void findBestPosition(Position& bestPosition); //To Shape, but needs board
+	void findBestAndWorstPosition(Position& best, Position& worse); //To Shape, but needs board
 	virtual float getPositionScore(); //To Shape, but needs board
 
 private:
 	void randomShape(int positions[8]); //Receives an array of 4 coordinates on-screen (8 integers), generates a random shape, and updates the array accordingly
 	void createCordsArr(int positions[8], int anchorX, int anchorY, int x1, int y1, int x2, int y2, int x3, int y3); //Sets new values to an empty positions array
 	void updateBestPosition(float score, Position& bestPosition); //To Shape
+	void updateWorstPosition(float score, Position& worstPosition);
 	Block* getLeftestBlock();
 	Block* getRightestBlock();
 	void moveAllTheWay(GameConfig::Direction direction);

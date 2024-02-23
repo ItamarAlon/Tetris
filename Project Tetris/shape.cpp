@@ -208,6 +208,16 @@ void Shape::updateBestPosition(float score, Position& bestPosition)
 	}
 }
 
+void Shape::updateWorstPosition(float score, Position& worstPosition)
+{
+	if (score < worstPosition.score)
+	{
+		getAnchorXY(worstPosition.anchorX, worstPosition.anchorY);
+		worstPosition.score = score;
+		worstPosition.orientation = getOrientation();
+	}
+}
+
 
 //int Shape::getOffsetForLeftRight(char input)
 //{
@@ -344,11 +354,12 @@ int Shape::getOffsetX(GameConfig::Direction direction)
 //}
 
 //board really
-void Shape::findBestPosition(Position& bestPosition)
+void Shape::findBestAndWorstPosition(Position& best, Position& worst)
 {
 	ShowConsoleCursor(false);
 	//int time = 400; //temp
-	bestPosition.score = -9999999;
+	best.score = -9999999;
+	worst.score = 9999999;
 	float score;
 	int divider = getDivider();
 	int spawnCords[8] = {};
@@ -362,8 +373,10 @@ void Shape::findBestPosition(Position& bestPosition)
 		while (true)
 		{
 			teleportToFloor();
+
 			score = getPositionScore();
-			updateBestPosition(score, bestPosition);
+			updateBestPosition(score, best);
+			updateWorstPosition(score, worst);
 			//Sleep(time);//tmp
 
 			teleportToCeiling();
