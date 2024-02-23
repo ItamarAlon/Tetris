@@ -32,14 +32,17 @@ public:
 	~Game();
 	void openMenu();
 	void printInstructions();
+	int chooseBotLevel(int botPlayerNum, bool onlyPlayer);
 	void runGame(); //Function that runs the game itself, including moving the shapes down, checking for any input from the player, etc..
 	void restartGame(); //Restarts the game that's currently running, in order to start a new game if needed.
+	bool setPlayers(int input);
 
 private:
 	void runGameForPlayer(Player* player); //Function that runs the game for a specific player (used in runGame() to handle both players)
-	bool handleInput(); //Handles all the input from the keyboard
+	bool handleGameInput(); //Handles all the input from the keyboard
 	bool handleMenuInput(int input); //Handles all the input in the menu.
 	bool isMenuInputValid(int input);
 	void handleWinner(); //Checks who's the winning player at the end of the game, and prints a congratulation message.
+	bool handleBotMenuInput(int input);
 };
 

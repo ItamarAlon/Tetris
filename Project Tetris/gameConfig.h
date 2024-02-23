@@ -13,6 +13,10 @@ public:
 	enum class Rkeys { LEFT = 'j', RIGHT = 'l', CLOCKWISE = 'k', COUNTER_CLOCKWISE = 'i', DOWN = 'm' }; // enum classes of the game's controls
 	enum class menu { HUMANvHUMAN = 1, HUMANvCOMPUTER = 2, COMPUTERvCOMPUTER = 3, PAUSED_GAME = 4, INSTRUCTIONS = 8, EXIT = 9 };
 	enum class Type { HUMAN = true, BOT = false };
+	enum class Direction { LEFT, RIGHT };
+	enum class Cooldowns {ROTATE = 10, LEFT_RIGHT = 3, DOWN = 0};
+
+	enum class Bot_Level { BEST = 3, GOOD = 2, NOVICE = 1 };
 
 	static constexpr char ESC = 27;
 	static constexpr int BOARD_WIDTH = 12;

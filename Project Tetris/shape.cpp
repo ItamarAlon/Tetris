@@ -208,6 +208,7 @@ void Shape::updateBestPosition(float score, Position& bestPosition)
 	}
 }
 
+
 //int Shape::getOffsetForLeftRight(char input)
 //{
 //	char left, right;
@@ -300,6 +301,48 @@ bool Shape::isBomb() const
 	return false;
 }
 
+int Shape::getDistanceFromBorder(GameConfig::Direction direction)
+{
+	int offset = getOffsetX(direction);
+	int distance = 0;
+
+	while (canShapeMoveOffset(offset, 0))
+	{
+		moveBy(offset, 0);
+		distance++;
+	}
+
+	moveBy(-offset * distance, 0);
+	return distance;
+}
+
+void Shape::moveAllTheWay(GameConfig::Direction direction)
+{
+	int distance = getDistanceFromBorder(direction);
+	moveBy(distance * getOffsetX(direction), 0);
+}
+
+int Shape::getOffsetX(GameConfig::Direction direction)
+{
+	switch (direction)
+	{
+	case GameConfig::Direction::LEFT:
+		return -1;
+	case GameConfig::Direction::RIGHT:
+		return 1;
+	default:
+		return 0;
+	}
+}
+
+//void Shape::getMovingSpace(int& leftest, int& rightest)
+//{
+//	Block* leftestBlock = getLeftestBlock();
+//	Block* rightestBlock = getRightestBlock();
+//
+//	leftest = leftestBlock->getX() - getDistanceFromBorder(GameConfig::Direction::LEFT);
+//}
+
 //board really
 void Shape::findBestPosition(Position& bestPosition)
 {
@@ -314,8 +357,7 @@ void Shape::findBestPosition(Position& bestPosition)
 
 	for (int i = 0; i < divider; i++)
 	{
-		while (canShapeMoveOffset(-1, 0))
-			moveBy(-1, 0);
+		moveAllTheWay(GameConfig::Direction::LEFT);
 
 		while (true)
 		{
@@ -462,5 +504,26 @@ void Shape::getSpawnCords(int positions[8])
 	}
 }
 
+Block* Shape::getLeftestBlock() 
+{
+	Block* leftest = blockArr;
+	for (int i = 1; i < numOfBlocks; i++)
+	{
+		if (blockArr[i].getX() < leftest->getX())
+			leftest = blockArr + i;
+	}
+	return leftest;
+}
+
+Block* Shape::getRightestBlock()
+{
+	Block* rightest = blockArr;
+	for (int i = 1; i < numOfBlocks; i++)
+	{
+		if (blockArr[i].getX() > rightest->getX())
+			rightest = blockArr + i;
+	}
+	return rightest;
+}
 
 

@@ -29,3 +29,11 @@ void Player::setNewShape(bool allowBomb)
 		shape = new Shape(board);
 }
 
+void Player::updateTick()
+{
+	if (tick == nextActionTick)
+		allowAction = true;
+
+	tick = (tick + 1) % numOfTicks;
+}
+

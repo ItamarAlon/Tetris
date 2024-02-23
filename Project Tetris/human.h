@@ -5,7 +5,8 @@ class Human : public Player
 	const int playerNum = board.getPlayerNum();
 public:
 	Human(Board& _board, int _playerNum = 1);
-	void takeAction(char input) override;
+	~Human();
+	bool takeAction(char input) override;
 	bool botOrHuman() override;
 private:
 	int getNextOrientation(char input) override;

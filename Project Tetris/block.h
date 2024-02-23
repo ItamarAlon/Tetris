@@ -23,7 +23,7 @@ public:
 	char getChar() const;
 	void moveBlockLeftRight(char key); //This function moves the block 1 place to the left/right (depending on the input from the keyboard)
 	bool isSpaceTakenOffset(int offsetX, int offsetY, const Board& playerBoard) const; //This function checks if the space on board, relative to the block's location, is free or not.
-	void getOffsetFromInput(char key, int& offsetX, int& offsetY) const; // This function returns the 2 offset value (relative to the block's location), according to the input taken from the keyboard.
+	//void getOffsetFromInput(char key, int& offsetX, int& offsetY) const; // This function returns the 2 offset value (relative to the block's location), according to the input taken from the keyboard.
 	void getFreeSpaceXY(const Board& playerBoard, int& x, int& y) const; //This function returns the coordinates of the block in the freeSpace array (from the board class).
 
 

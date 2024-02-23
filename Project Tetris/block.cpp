@@ -73,14 +73,14 @@ bool Block::isSpaceTakenOffset(int offsetX, int offsetY, const Board& playerBoar
 	return false;
 }
 
-void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY) const //Currently not used. Might use for bomb later
-{
-	if (key == (char)GameConfig::Lkeys::LEFT || key == (char)GameConfig::Rkeys::LEFT)
-		offsetX = -1;  //If the input from the keyboard is left, than the block moves 1 place to the left (or, the x cord of the block goes down by 1)
-	if (key == (char)GameConfig::Lkeys::RIGHT || key == (char)GameConfig::Rkeys::RIGHT)
-		offsetX = 1; 
-	offsetY = 0; //Either way, the block doesn't change it's height.
-}
+//void Block::getOffsetFromInput(char key, int& offsetX, int& offsetY) const //Currently not used. Might use for bomb later
+//{
+//	if (key == (char)GameConfig::Lkeys::LEFT || key == (char)GameConfig::Rkeys::LEFT)
+//		offsetX = -1;  //If the input from the keyboard is left, than the block moves 1 place to the left (or, the x cord of the block goes down by 1)
+//	if (key == (char)GameConfig::Lkeys::RIGHT || key == (char)GameConfig::Rkeys::RIGHT)
+//		offsetX = 1; 
+//	offsetY = 0; //Either way, the block doesn't change it's height.
+//}
 
 void Block::getFreeSpaceXY(const Board& playerBoard, int& freeSpaceX, int& freeSpaceY) const
 {

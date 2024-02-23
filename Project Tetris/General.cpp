@@ -70,3 +70,14 @@ bool oneInXChance(int x)
 		return true;
 	return false;
 }
+
+int generateNumberInInterval(int a, int b)
+{
+	if (a == b)
+		return a;
+	if (a > b)
+		swap(a, b);
+
+	int distance = b - a + 1;
+	return rand() % distance + a;
+}

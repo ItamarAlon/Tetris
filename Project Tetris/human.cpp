@@ -4,52 +4,74 @@ Human::Human(Board& _board, int _playerNum) : Player(_board, _playerNum)
 {
 }
 
-void Human::takeAction(char input)
+Human::~Human()
 {
+}
+
+bool Human::takeAction(char input)
+{
+	if (!allowAction)
+		return false;
+
 	input = getLowerCase(input);
 	int nextOrientation = getNextOrientation(input);
 	int offSetX = getOffsetForLeftRight(input);
 
 	if (getPlayerNum() == 1)
-	{
 		switch (input)
 		{
 		case (char)GameConfig::Lkeys::LEFT:
 		case (char)GameConfig::Lkeys::RIGHT:
 			shape->moveShapeLeftRight(offSetX); //Using a function in case a shape needs to move Left/Right
+			cooldown = (int)GameConfig::Cooldowns::LEFT_RIGHT;
+			allowAction = false;
 			break;
 		case (char)GameConfig::Lkeys::DOWN:
 			shape->moveShapeDown(); //If DOWN was pressed, we need to increase the shape's speed. So we move it down by 1 to mimik the feeling of increased speed
+			cooldown = (int)GameConfig::Cooldowns::DOWN;
+			allowAction = false;
 			break;
 		case (char)GameConfig::Lkeys::CLOCKWISE:
 		case (char)GameConfig::Lkeys::COUNTER_CLOCKWISE:
 			shape->rotateShape(nextOrientation);
 			shape->print();
+			cooldown = (int)GameConfig::Cooldowns::ROTATE;
+			allowAction = false;
 			break;
 		default:
 			break;
 		}
-	}
 	else
-	{
 		switch (input)
 		{
 		case (char)GameConfig::Rkeys::LEFT:
 		case (char)GameConfig::Rkeys::RIGHT:
 			shape->moveShapeLeftRight(offSetX); //Using a function in case a shape needs to move Left/Right
+			cooldown = (int)GameConfig::Cooldowns::LEFT_RIGHT;
+			allowAction = false;
 			break;
 		case (char)GameConfig::Rkeys::DOWN:
 			shape->moveShapeDown(); //If DOWN was pressed, we need to increase the shape's speed. So we move it down by 1 to mimik the feeling of increased speed
+			cooldown = (int)GameConfig::Cooldowns::DOWN;
+			allowAction = false;
 			break;
 		case (char)GameConfig::Rkeys::CLOCKWISE:
 		case (char)GameConfig::Rkeys::COUNTER_CLOCKWISE:
 			shape->rotateShape(nextOrientation);
 			shape->print();
+			cooldown = (int)GameConfig::Cooldowns::ROTATE;
+			allowAction = false;
 			break;
 		default:
 			break;
 		}
+
+	if (!allowAction)
+	{
+		nextActionTick = (tick + cooldown) % numOfTicks;
+		return true;
 	}
+	return false;
 }
 
 int Human::getNextOrientation(char input)

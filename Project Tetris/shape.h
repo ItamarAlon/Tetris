@@ -30,7 +30,6 @@ public:
 	bool moveShapeDown(); //Moves the shape 1 place down (if possible)
 	bool moveShapeLeftRight(int offsetX); //Moves the shape left/right if possible (according to the input given from the keyboard), and returns whether or not the shape moved.
 	void rotateShape(int newOrientation); //Rotates the shape (if possible)
-	//virtual void takeAction(char input) = 0; //To player
 
 	bool canShapeMoveOffset(int offsetX, int offsetY);
 	bool canShapeMoveToPosition(int positions[8]) const;
@@ -40,7 +39,9 @@ public:
 	int getDivider() const;
 	void getAnchorXY(int& anchorX, int& anchorY) const;
 	virtual bool isBomb() const;
-	//virtual bool botOrHuman() = 0; //To player
+
+	int getDistanceFromBorder(GameConfig::Direction direction);
+	//void getMovingSpace(int& leftest, int& rightest);
 
 	void findBestPosition(Position& bestPosition); //To Shape, but needs board
 	virtual float getPositionScore(); //To Shape, but needs board
@@ -48,9 +49,12 @@ public:
 private:
 	void randomShape(int positions[8]); //Receives an array of 4 coordinates on-screen (8 integers), generates a random shape, and updates the array accordingly
 	void createCordsArr(int positions[8], int anchorX, int anchorY, int x1, int y1, int x2, int y2, int x3, int y3); //Sets new values to an empty positions array
-	//virtual int getNextOrientation(int key) = 0; //To player   //Returns the next orientation of the block (relative to the input from the keyboard)
-	//virtual int getOffsetForLeftRight(char input) = 0; //To player
 	void updateBestPosition(float score, Position& bestPosition); //To Shape
+	Block* getLeftestBlock();
+	Block* getRightestBlock();
+	void moveAllTheWay(GameConfig::Direction direction);
+	int getOffsetX(GameConfig::Direction direction);
+
 protected:
 	enum class Type { HUMAN = true, BOT = false };
 	void setBomb();

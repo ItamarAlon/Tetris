@@ -14,3 +14,13 @@ char getLowerCase(char capital);
 float calcAverage(int arr[], int size);
 float standardDeviation(int arr[], int size);
 bool oneInXChance(int x);
+//template<class Type>void swap(Type& a, Type& b);
+int generateNumberInInterval(int a, int b);
+
+//template<class Type>
+//inline void swap(Type& a, Type& b)
+//{
+//	Type tmp = a;
+//	a = b;
+//	b = tmp;
+//}
